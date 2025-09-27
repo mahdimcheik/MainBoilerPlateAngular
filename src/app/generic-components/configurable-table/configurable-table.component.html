@@ -1,0 +1,33 @@
+<p-table #table [value]="data()" [paginator]="true" [rows]="rows()" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20]" [responsiveLayout]="'scroll'" [resizableColumns]="true" [reorderableColumns]="true" [columns]="columns()">
+    <!-- [globalFilterFields]="columns()?.map(col => col.field) ?? []" -->
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            @for (col of columns; track col.field) {
+                <th [pSortableColumn]="col.field" [style.width]="col.width">
+                    {{ col.header }}
+                    @if (col.sortable) {
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                    }
+                </th>
+            }
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-row let-columns="columns">
+        <tr>
+            @for (col of columns; track col.field) {
+                <td>
+                    @if (col.templateName) {
+                        <ng-container>
+                            <ng-container *ngTemplateOutlet="findTemplate(col.templateName); context: { $implicit: row[col.field], row: row }"></ng-container>
+                        </ng-container>
+                    } @else {
+                        <ng-container #defaultCell>
+                            {{ row[col.field] }}
+                        </ng-container>
+                    }
+                </td>
+            }
+        </tr>
+    </ng-template>
+</p-table>
