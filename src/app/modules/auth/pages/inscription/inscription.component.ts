@@ -44,6 +44,18 @@ export class InscriptionComponent implements OnInit {
         const genders = this.genders();
         return genders.length > 0 ? (genders.find((gender) => gender.name.toLowerCase() === 'other') ?? genders[0]) : null;
     });
+    roleOptions = [
+        {
+            id: '87a0a5ed-c7bb-4394-a163-7ed7560b4a01',
+            name: 'Etudiant',
+            label: 'Etudiant'
+        },
+        {
+            id: '87a0a5ed-c7bb-4394-a163-7ed7560b3703',
+            name: 'Professeur',
+            label: 'Professeur'
+        }
+    ];
     inscriptionFormStructure!: Structure;
     userForm!: FormGroup;
 
@@ -65,6 +77,7 @@ export class InscriptionComponent implements OnInit {
                 dateOfBirth: [new Date('1986-04-21'), [Validators.required, ageValidator()]],
                 gender: [this.selectedGender()?.id, [Validators.required]],
                 title: [''],
+                role: [this.roleOptions[0].id, [Validators.required]],
                 description: [''],
                 privacyPolicyConsent: [false, [Validators.requiredTrue]],
                 dataProcessingConsent: [false, [Validators.requiredTrue]]
@@ -86,6 +99,20 @@ export class InscriptionComponent implements OnInit {
                     name: 'inscriptionForm',
                     label: 'Inscription',
                     fields: [
+                        {
+                            id: 'role',
+                            name: 'role',
+                            type: 'select',
+                            label: "Je m'inscris en tant que",
+                            displayKey: 'name',
+                            compareKey: 'id',
+                            required: true,
+                            value: this.roleOptions[0].id,
+                            placeholder: 'Choissir un rôle',
+                            options: this.roleOptions,
+                            fullWidth: true,
+                            validation: [Validators.required]
+                        },
                         {
                             id: 'firstName',
                             name: 'firstName',
@@ -246,7 +273,8 @@ export class InscriptionComponent implements OnInit {
             title: formValue.optionalFields.title,
             description: formValue.optionalFields.description,
             privacyPolicyConsent: formValue.privacy.privacyPolicyConsent,
-            dataProcessingConsent: formValue.privacy.dataProcessingConsent
+            dataProcessingConsent: formValue.privacy.dataProcessingConsent,
+            roleId: formValue.inscriptionForm.role
         };
 
         try {

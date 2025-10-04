@@ -490,7 +490,7 @@
                                                         @for (option of getSelectOptions(field); track option) {
                                                             <div class="flex items-center gap-3 configurable-form-radio-option">
                                                                 <p-radiobutton
-                                                                    [id]="field.id + '_' + getOptionValue(option, field)"
+                                                                    [inputId]="field.id + '_' + getOptionValue(option, field)"
                                                                     [formControlName]="field.name"
                                                                     [value]="getOptionValue(option, field)"
                                                                     class="configurable-form-input configurable-form-radio"
