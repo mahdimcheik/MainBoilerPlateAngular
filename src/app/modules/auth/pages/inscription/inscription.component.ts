@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { finalize, firstValueFrom, tap } from 'rxjs';
 import { EnumGender, GenderDropDown } from '../../../../shared/models/user';
-import { UserCreateDTO } from '../../../../shared/services/userMain.service';
 import { ageValidator, passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
 import { MessageService } from 'primeng/api';
 import { FluidModule } from 'primeng/fluid';
@@ -21,6 +20,7 @@ import { LogoComponent } from '../../../../pages/landing/components/logo/logo.co
 import { CookieConsentService } from '../../../../shared/services/cookie-consent.service';
 import { Structure } from '../../../../generic-components/configurable-form/related-models';
 import { ConfigurableFormComponent } from '../../../../generic-components/configurable-form/configurable-form.component';
+import { UserCreateDTO } from '../../../../../api';
 
 @Component({
     selector: 'app-inscription',
@@ -206,13 +206,13 @@ export class InscriptionComponent {
             password: formValue.inscriptionForm.password,
             firstName: formValue.inscriptionForm.firstName,
             lastName: formValue.inscriptionForm.lastName,
-            gender: formValue.inscriptionForm.gender.value,
-            dateOfBirth: formValue.inscriptionForm.dateOfBirth.toISOString(),
-            phoneNumber: formValue.optionalFields.phoneNumber,
-            title: formValue.optionalFields.title,
-            description: formValue.optionalFields.description,
-            privacyPolicyConsent: formValue.privacy.privacyPolicyConsent,
-            dataProcessingConsent: formValue.privacy.dataProcessingConsent
+            // gender: formValue.inscriptionForm.gender.value,
+            dateOfBirth: formValue.inscriptionForm.dateOfBirth.toISOString()
+            // phoneNumber: formValue.optionalFields.phoneNumber,
+            // title: formValue.optionalFields.title,
+            // description: formValue.optionalFields.description,
+            // privacyPolicyConsent: formValue.privacy.privacyPolicyConsent,
+            // dataProcessingConsent: formValue.privacy.dataProcessingConsent
         };
 
         try {

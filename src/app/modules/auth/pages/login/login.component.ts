@@ -3,7 +3,6 @@ import { UserMainService } from '../../../../shared/services/userMain.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { catchError } from 'rxjs';
-import { UserLoginDTO } from '../../../../shared/services/userMain.service';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
@@ -15,6 +14,7 @@ import { LogoComponent } from '../../../../pages/landing/components/logo/logo.co
 import { Structure } from '../../../../generic-components/configurable-form/related-models';
 import { ConfigurableFormComponent } from '../../../../generic-components/configurable-form/configurable-form.component';
 import { environment } from '../../../../../environments/environment';
+import { UserLoginDTO } from '../../../../../api';
 
 @Component({
     selector: 'app-login',

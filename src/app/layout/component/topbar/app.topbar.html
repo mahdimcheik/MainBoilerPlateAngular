@@ -45,7 +45,7 @@
                 <a type="button" class="layout-topbar-action h-[50px] flex items-start" [routerLink]="['/dashboard/profile/me']">
                     <div class="relative min-w-[32px]">
                         @if (user().email) {
-                        <p-avatar [image]="user().imgUrl ?? ''" shape="circle"></p-avatar>
+                        <p-avatar [image]="''" shape="circle"></p-avatar>
                         } @else {
                         <i class="pi pi-user" style="font-size: 1.5rem"></i>
                         }

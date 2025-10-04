@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Theme } from './theme.service';
 import { layoutConfig } from '../../layout/service/layout.service';
-import { UserResponseDTO } from '../../api/models/UserResponseDTO';
+import { UserResponseDTO } from '../../../api';
 /**
  * Service pour gérer le stockage local (localStorage).
  * Fournit des méthodes pour obtenir et définir le thème, l'utilisateur et la configuration de mise en page.

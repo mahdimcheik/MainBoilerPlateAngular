@@ -4,7 +4,6 @@ import { passwordStrengthValidator, passwordValidator } from '../../../../shared
 import { ActivatedRoute, Router } from '@angular/router';
 import { delay, finalize, firstValueFrom, tap } from 'rxjs';
 import { UserMainService } from '../../../../shared/services/userMain.service';
-import { UserChangePasswordDTO } from '../../../../shared/services/userMain.service';
 import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
 import { MessageModule } from 'primeng/message';
@@ -18,6 +17,7 @@ import { MessageService } from 'primeng/api';
 import { LogoComponent } from '../../../../pages/landing/components/logo/logo.component';
 import { ConfigurableFormComponent } from '../../../../generic-components/configurable-form/configurable-form.component';
 import { Structure } from '../../../../generic-components/configurable-form/related-models';
+import { PasswordRecoveryInput } from '../../../../../api';
 @Component({
     selector: 'app-change-password',
     imports: [FluidModule, ButtonModule, PasswordModule, InputTextModule, ConfigurableFormComponent, MessageModule, InputTextModule, ToastModule, SelectModule, PasswordModule, FormsModule, ReactiveFormsModule, LogoComponent],
@@ -90,7 +90,7 @@ export class ChangePasswordComponent implements OnInit {
 
     async submit(e: FormGroup) {
         await firstValueFrom(
-            (this.authService as any).resetPassword(e.value as UserChangePasswordDTO).pipe(
+            this.authService.resetPassword(e.value as PasswordRecoveryInput).pipe(
                 tap((res) => {
                     this.router.navigate(['/']);
                     this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Mot de passe réinitialisé avec succès' });

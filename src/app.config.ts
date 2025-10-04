@@ -11,9 +11,12 @@ import { MessageService } from 'primeng/api';
 import { cookiesInterceptor } from './app/shared/interceptors/cookies.interceptor';
 import { loaderInterceptor } from './app/shared/interceptors/loader.interceptor';
 import { exceptionLoaderInterceptor } from './app/shared/interceptors/exception-loader.interceptor';
+import { provideDefaultClient } from './api/providers';
+import { environment } from './environments/environment';
 
 export const appConfig: ApplicationConfig = {
     providers: [
+        provideDefaultClient({ basePath: environment.BACK_URL }),
         provideRouter(appRoutes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }), withEnabledBlockingInitialNavigation()),
         provideHttpClient(withInterceptors([TokenInterceptor, cookiesInterceptor, errorHandlerInterceptor, exceptionLoaderInterceptor, loaderInterceptor])), // errorHandlerInterceptor
         MessageService,
