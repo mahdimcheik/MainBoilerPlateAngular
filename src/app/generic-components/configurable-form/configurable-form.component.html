@@ -172,9 +172,8 @@
 
                                         @if (element.type === 'checkbox') {
                                             <div class="flex items-start gap-3 configurable-form-checkbox-container">
-                                                @let id = element.id;
-                                                <p-checkbox [id]="id" [formControlName]="element.name" [binary]="true" class="configurable-form-input configurable-form-checkbox" />
-                                                <label [for]="id" class="text-sm leading-relaxed cursor-pointer configurable-form-checkbox-label">
+                                                <p-checkbox [inputId]="element.id" [formControlName]="element.name" [binary]="true" class="configurable-form-input configurable-form-checkbox" />
+                                                <label [for]="element.id" class="text-sm leading-relaxed cursor-pointer configurable-form-checkbox-label">
                                                     {{ element.placeholder || element.label }}
                                                 </label>
                                             </div>
@@ -380,7 +379,7 @@
                                                         <p-inputGroupAddon>
                                                             <button
                                                                 type="button"
-                                                                class="p-button-icon-only p-button-text"
+                                                                class="p-button-icon-only p-button-text flex items-center justify-center"
                                                                 (click)="togglePasswordVisibility(field.id)"
                                                                 [attr.aria-label]="isPasswordVisible(field.id) ? 'Hide password' : 'Show password'"
                                                             >
@@ -478,7 +477,7 @@
                                                 <!-- Checkbox -->
                                                 @if (field.type === 'checkbox') {
                                                     <div class="flex items-start gap-3 configurable-form-checkbox-container">
-                                                        <p-checkbox [id]="field.id" [formControlName]="field.name" [binary]="true" class="configurable-form-input configurable-form-checkbox" />
+                                                        <p-checkbox [inputId]="field.id" [formControlName]="field.name" [binary]="true" class="configurable-form-input configurable-form-checkbox" />
                                                         <label [for]="field.id" class="text-sm leading-relaxed cursor-pointer configurable-form-checkbox-label">
                                                             {{ field.placeholder || field.label }}
                                                         </label>
