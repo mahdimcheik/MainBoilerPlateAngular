@@ -5,6 +5,6 @@
 export type PasswordResetResponseDTO = {
     resetToken?: string | null;
     email?: string | null;
-    id?: string | null;
+    id?: string;
 };
 
