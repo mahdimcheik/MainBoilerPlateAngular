@@ -21,22 +21,22 @@ import { PasswordModule } from 'primeng/password';
     styleUrls: ['./configurable-form.component.scss'],
     standalone: true,
     imports: [
-    ReactiveFormsModule,
-    PasswordModule,
-    CustomUploadFileComponent,
-    InputTextModule,
-    InputNumberModule,
-    TextareaModule,
-    SelectModule,
-    MultiSelectModule,
-    CheckboxModule,
-    RadioButtonModule,
-    DatePickerModule,
-    ColorPickerModule,
-    ButtonModule,
-    InputGroupModule,
-    InputGroupAddonModule
-],
+        ReactiveFormsModule,
+        PasswordModule,
+        CustomUploadFileComponent,
+        InputTextModule,
+        InputNumberModule,
+        TextareaModule,
+        SelectModule,
+        MultiSelectModule,
+        CheckboxModule,
+        RadioButtonModule,
+        DatePickerModule,
+        ColorPickerModule,
+        ButtonModule,
+        InputGroupModule,
+        InputGroupAddonModule
+    ],
     templateUrl: './configurable-form.component.html',
     changeDetection: ChangeDetectionStrategy.Default
 })
@@ -381,10 +381,20 @@ export class ConfigurableFormComponent implements OnInit {
     }
 
     getOptionLabel(option: any, field: FormField<any>): string {
+        let label: string;
+
         if (field.displayKey) {
-            return option[field.displayKey];
+            label = option[field.displayKey];
+        } else {
+            label = option.label !== undefined ? option.label : option.toString();
         }
-        return option.label !== undefined ? option.label : option.toString();
+
+        // Appliquer le formateur de valeur s'il est défini
+        if (field.valueFormatter) {
+            return field.valueFormatter(option);
+        }
+
+        return label;
     }
 
     getSortedFieldsInGroup(group: FormFieldGroup): FormField<any>[] {

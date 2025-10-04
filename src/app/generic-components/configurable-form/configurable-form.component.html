@@ -128,12 +128,19 @@
                                                 [id]="element.id"
                                                 [formControlName]="element.name"
                                                 [options]="getSelectOptions(element)"
-                                                [optionLabel]="element.displayKey"
-                                                [optionValue]="element.compareKey"
+                                                [optionLabel]="element.displayKey || 'label'"
+                                                [optionValue]="element.compareKey || 'value'"
                                                 [placeholder]="element.placeholder || 'Sélectionnez une option'"
                                                 class="w-full configurable-form-input configurable-form-select"
                                                 [class.p-invalid]="isDirectFieldInvalid(element.name)"
-                                            />
+                                            >
+                                                <ng-template pTemplate="item" let-option>
+                                                    {{ getOptionLabel(option, element) }}
+                                                </ng-template>
+                                                <ng-template pTemplate="selectedItem" let-option>
+                                                    {{ getOptionLabel(option, element) }}
+                                                </ng-template>
+                                            </p-select>
                                         }
 
                                         @if (element.type === 'multiselect') {
@@ -141,15 +148,26 @@
                                                 [id]="element.id"
                                                 [formControlName]="element.name"
                                                 [options]="getSelectOptions(element)"
-                                                [optionLabel]="element.displayKey"
-                                                [optionValue]="element.compareKey"
+                                                [optionLabel]="element.displayKey || 'label'"
+                                                [optionValue]="element.compareKey || 'value'"
                                                 [placeholder]="element.placeholder || 'Sélectionnez vos options'"
                                                 [selectAll]="true"
                                                 [showToggleAll]="true"
                                                 selectAllLabel="Sélectionner tout"
                                                 class="w-full configurable-form-input configurable-form-select"
                                                 [class.p-invalid]="isDirectFieldInvalid(element.name)"
-                                            />
+                                            >
+                                                <ng-template pTemplate="item" let-option>
+                                                    {{ getOptionLabel(option, element) }}
+                                                </ng-template>
+                                                <ng-template pTemplate="selectedItems" let-value>
+                                                    @for (option of value; track option) {
+                                                        <div class="inline-flex items-center py-0.5 pl-2 pr-1 rounded-full text-sm bg-primary text-primary-contrast mr-2">
+                                                            <span>{{ getOptionLabel(option, element) }}</span>
+                                                        </div>
+                                                    }
+                                                </ng-template>
+                                            </p-multiselect>
                                         }
 
                                         @if (element.type === 'checkbox') {
@@ -414,12 +432,19 @@
                                                         [id]="field.id"
                                                         [formControlName]="field.name"
                                                         [options]="getSelectOptions(field)"
-                                                        [optionLabel]="field.displayKey"
-                                                        [optionValue]="field.compareKey"
+                                                        [optionLabel]="field.displayKey || 'label'"
+                                                        [optionValue]="field.compareKey || 'value'"
                                                         [placeholder]="field.placeholder || 'Sélectionnez une option'"
                                                         class="w-full configurable-form-input configurable-form-select"
                                                         [class.p-invalid]="isFieldInvalid(element.id, field.name)"
-                                                    />
+                                                    >
+                                                        <ng-template pTemplate="item" let-option>
+                                                            {{ getOptionLabel(option, field) }}
+                                                        </ng-template>
+                                                        <ng-template pTemplate="selectedItem" let-option>
+                                                            {{ getOptionLabel(option, field) }}
+                                                        </ng-template>
+                                                    </p-select>
                                                 }
 
                                                 <!-- MultiSelect -->
@@ -428,15 +453,26 @@
                                                         [id]="field.id"
                                                         [formControlName]="field.name"
                                                         [options]="getSelectOptions(field)"
-                                                        [optionLabel]="field.displayKey"
-                                                        [optionValue]="field.compareKey"
+                                                        [optionLabel]="field.displayKey || 'label'"
+                                                        [optionValue]="field.compareKey || 'value'"
                                                         [placeholder]="field.placeholder || 'Sélectionnez vos options'"
                                                         [selectAll]="true"
                                                         [showToggleAll]="true"
                                                         selectAllLabel="Sélectionner tout"
                                                         class="w-full configurable-form-input configurable-form-select"
                                                         [class.p-invalid]="isFieldInvalid(element.id, field.name)"
-                                                    />
+                                                    >
+                                                        <ng-template pTemplate="item" let-option>
+                                                            {{ getOptionLabel(option, field) }}
+                                                        </ng-template>
+                                                        <ng-template pTemplate="selectedItems" let-value>
+                                                            @for (option of value; track option) {
+                                                                <div class="inline-flex items-center py-0.5 pl-2 pr-1 rounded-full text-sm bg-primary text-primary-contrast mr-2">
+                                                                    <span>{{ getOptionLabel(option, field) }}</span>
+                                                                </div>
+                                                            }
+                                                        </ng-template>
+                                                    </p-multiselect>
                                                 }
 
                                                 <!-- Checkbox -->

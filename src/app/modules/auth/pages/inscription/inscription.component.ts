@@ -63,7 +63,7 @@ export class InscriptionComponent implements OnInit {
                 lastName: ['', [Validators.required]],
                 phoneNumber: [''],
                 dateOfBirth: [new Date('1986-04-21'), [Validators.required, ageValidator()]],
-                gender: [this.selectedGender(), [Validators.required]],
+                gender: [this.selectedGender()?.id, [Validators.required]],
                 title: [''],
                 description: [''],
                 privacyPolicyConsent: [false, [Validators.requiredTrue]],
@@ -150,8 +150,24 @@ export class InscriptionComponent implements OnInit {
                             placeholder: 'Genre',
                             required: true,
                             options: this.genders(),
-                            value: this.selectedGender(),
-                            displayKey: 'name'
+                            value: this.selectedGender()?.id,
+                            displayKey: 'name',
+                            compareKey: 'id',
+                            valueFormatter: (gender: any) => {
+                                if (!gender || !gender.name) return '';
+
+                                // Translate gender names from English to French
+                                switch (gender.name.toLowerCase()) {
+                                    case 'male':
+                                        return 'Homme';
+                                    case 'female':
+                                        return 'Femme';
+                                    case 'other':
+                                        return 'Préfère ne pas dire';
+                                    default:
+                                        return gender.name;
+                                }
+                            }
                         }
                     ],
                     groupValidators: [passwordValidator('password', 'confirmPassword')]
@@ -224,7 +240,7 @@ export class InscriptionComponent implements OnInit {
             password: formValue.inscriptionForm.password,
             firstName: formValue.inscriptionForm.firstName,
             lastName: formValue.inscriptionForm.lastName,
-            genderId: formValue.inscriptionForm.gender.value?.id,
+            genderId: formValue.inscriptionForm.gender,
             dateOfBirth: formValue.inscriptionForm.dateOfBirth.toISOString(),
             phoneNumber: formValue.optionalFields.phoneNumber,
             title: formValue.optionalFields.title,

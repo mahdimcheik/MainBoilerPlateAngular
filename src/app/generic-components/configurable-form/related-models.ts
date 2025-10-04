@@ -32,6 +32,9 @@ export interface FormField<T> {
     showUploadButton?: boolean;
     showCancelButton?: boolean;
     auto?: boolean;
+
+    // value formatter
+    valueFormatter?: (value: T | T[]) => any;
 }
 
 export interface FormFieldGroup {
