@@ -1,52 +1,52 @@
-name: CD Pipeline for Angular Project
+# name: CD Pipeline for Angular Project
+
+# # on:
+# #   workflow_run:
+# #     workflows:
+# #       - "CI Pipeline for Angular Project"
+# #     types:
+# #       - completed
 
 # on:
-#   workflow_run:
-#     workflows:
-#       - "CI Pipeline for Angular Project"
-#     types:
-#       - completed
+#   push:
+#       branches:
+#           - test
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-on:
-  push:
-      branches:
-          - test
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+#     steps:
+#       - name: Get version
+#         id: set_version
+#         run: echo "FRONT_IMAGE_VERSION_TEST=test" >> $GITHUB_ENV
 
-    steps:
-      - name: Get version
-        id: set_version
-        run: echo "FRONT_IMAGE_VERSION_TEST=test" >> $GITHUB_ENV
+#       - name: Checkout the branch
+#         uses: actions/checkout@v4
 
-      - name: Checkout the branch
-        uses: actions/checkout@v4
+#       - name: Login to docker hub
+#         uses: docker/login-action@v2
+#         with:
+#             username: ${{ secrets.DOCKER_HUB_USERNAME }}
+#             password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Login to docker hub
-        uses: docker/login-action@v2
-        with:
-            username: ${{ secrets.DOCKER_HUB_USERNAME }}
-            password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+#       # Step 2: build the docker image 
+#       - name: Build the docker image
+#         run: docker build --target test-runtime -t mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION_TEST }} .
 
-      # Step 2: build the docker image 
-      - name: Build the docker image
-        run: docker build --target test-runtime -t mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION_TEST }} .
-
-      # Step 3: Push the docker image to the docker hub
-      - name: Push the docker image to the docker hub
-        run: docker push mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION_TEST }}
+#       # Step 3: Push the docker image to the docker hub
+#       - name: Push the docker image to the docker hub
+#         run: docker push mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION_TEST }}
 
 
 
-      # Step 5:  deploy on VPS via SSH
-      - name: Deploy on VPS via SSH
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
-          script: |
-            export FRONT_IMAGE_VERSION_TEST=${{ env.FRONT_IMAGE_VERSION_TEST }}
-            docker pull mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION_TEST }}
-            docker compose -f /root/skillhive-test/frontend/docker-compose.yml up -d --force-recreate
+#       # Step 5:  deploy on VPS via SSH
+#       - name: Deploy on VPS via SSH
+#         uses: appleboy/ssh-action@v1.0.0
+#         with:
+#           host: ${{ secrets.VPS_HOST }}
+#           username: ${{ secrets.VPS_USER }}
+#           key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+#           script: |
+#             export FRONT_IMAGE_VERSION_TEST=${{ env.FRONT_IMAGE_VERSION_TEST }}
+#             docker pull mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION_TEST }}
+#             docker compose -f /root/skillhive-test/frontend/docker-compose.yml up -d --force-recreate
