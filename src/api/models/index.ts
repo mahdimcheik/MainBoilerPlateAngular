@@ -45,6 +45,13 @@ export interface PasswordResetResponseDTOResponseDTO {
     count?: number | null;
 }
 
+export interface StatusAccountDTO {
+    readonly id?: string;
+    readonly name?: string | null;
+    readonly color?: string | null;
+    readonly icon?: string | null;
+}
+
 export interface StringResponseDTO {
     message?: string | null;
     status?: number | null;
@@ -86,6 +93,7 @@ export interface UserResponseDTO {
     firstName?: string | null;
     lastName?: string | null;
     email?: string | null;
+    status?: StatusAccountDTO;
     roles?: string[];
 }
 
