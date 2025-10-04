@@ -13,14 +13,14 @@ export interface ForgotPasswordInput {
 }
 
 export interface LoginOutputDTO {
-    token?: string | null;
-    refreshToken?: string | null;
-    user?: UserResponseDTO;
+    token: string;
+    refreshToken: string;
+    user: UserResponseDTO;
 }
 
 export interface LoginOutputDTOResponseDTO {
-    message?: string | null;
-    status?: number | null;
+    message: string;
+    status: number;
     data?: LoginOutputDTO;
     count?: number | null;
 }
@@ -33,34 +33,34 @@ export interface PasswordRecoveryInput {
 }
 
 export interface PasswordResetResponseDTO {
-    resetToken?: string | null;
-    email?: string | null;
-    id?: string;
+    resetToken: string;
+    email: string;
+    id: string;
 }
 
 export interface PasswordResetResponseDTOResponseDTO {
-    message?: string | null;
-    status?: number | null;
+    message: string;
+    status: number;
     data?: PasswordResetResponseDTO;
     count?: number | null;
 }
 
 export interface StatusAccountDTO {
-    readonly id?: string;
-    readonly name?: string | null;
-    readonly color?: string | null;
+    readonly id: string;
+    readonly name: string;
+    readonly color: string;
     readonly icon?: string | null;
 }
 
 export interface StringResponseDTO {
-    message?: string | null;
-    status?: number | null;
+    message: string;
+    status: number;
     data?: string | null;
     count?: number | null;
 }
 
 export interface UserCreateDTO {
-    email?: string;
+    email: string;
     password: string;
     firstName: string;
     lastName: string;
@@ -69,13 +69,13 @@ export interface UserCreateDTO {
 }
 
 export interface UserInfosWithtoken {
-    token?: string | null;
-    user?: UserResponseDTO;
+    token: string;
+    user: UserResponseDTO;
 }
 
 export interface UserInfosWithtokenResponseDTO {
-    message?: string | null;
-    status?: number | null;
+    message: string;
+    status: number;
     data?: UserInfosWithtoken;
     count?: number | null;
 }
@@ -89,25 +89,25 @@ export interface UserLoginDTO {
 }
 
 export interface UserResponseDTO {
-    id?: string;
-    firstName?: string | null;
-    lastName?: string | null;
-    email?: string | null;
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
     status?: StatusAccountDTO;
-    roles?: string[];
+    roles: string[];
 }
 
 export interface UserResponseDTOResponseDTO {
-    message?: string | null;
-    status?: number | null;
+    message: string;
+    status: number;
     data?: UserResponseDTO;
     count?: number | null;
 }
 
 export interface UserUpdateDTO {
-    firstName?: string | null;
-    lastName?: string | null;
-    dateOfBirth?: Date;
+    firstName: string;
+    lastName: string;
+    dateOfBirth: Date;
 }
 
 /** Request Options for Angular HttpClient requests */
