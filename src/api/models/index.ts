@@ -12,6 +12,20 @@ export interface ForgotPasswordInput {
     email: string;
 }
 
+export interface GenderDTO {
+    readonly id: string;
+    readonly name: string;
+    readonly color: string;
+    readonly icon?: string | null;
+}
+
+export interface GenderDTOListResponseDTO {
+    message: string;
+    status: number;
+    data?: GenderDTO[];
+    count?: number | null;
+}
+
 export interface LoginOutputDTO {
     token: string;
     refreshToken: string;
@@ -64,8 +78,14 @@ export interface UserCreateDTO {
     password: string;
     firstName: string;
     lastName: string;
+    dataProcessingConsent: boolean;
+    privacyPolicyConsent: boolean;
+    title?: string | null;
+    description?: string | null;
+    phoneNumber?: string | null;
     dateOfBirth?: Date;
     roleId?: string;
+    genderId?: string;
 }
 
 export interface UserInfosWithtoken {
@@ -93,7 +113,11 @@ export interface UserResponseDTO {
     firstName: string;
     lastName: string;
     email: string;
+    title?: string | null;
+    description?: string | null;
+    phoneNumber?: string | null;
     status?: StatusAccountDTO;
+    gender?: GenderDTO;
     roles: string[];
 }
 
