@@ -4,4 +4,7 @@
             <p-chip [label]="chip.name" [icon]="chip.icon ?? ''" [style]="{ 'background-color': chip.color }" />
         </div>
     }
+    @if (chips().length === 0) {
+        <div class="text-gray-500">{{ noContent() ?? 'Pas de contenu' }}</div>
+    }
 </div>

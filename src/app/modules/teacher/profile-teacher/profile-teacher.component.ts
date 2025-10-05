@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { SmartSectionComponent } from '../../../generic-components/smart-section/smart-section.component';
 import { ButtonModule } from 'primeng/button';
 import { Image } from 'primeng/image';
@@ -9,6 +9,8 @@ import { PersonnalInfosComponent } from '../../../generic-components/personnal-i
 import { ChipsListComponent } from '../../../generic-components/chips-list/chips-list.component';
 import { LanguageResponseDTO } from '../../../../api';
 import { CursusesListComponent } from '../../../generic-components/cursuses-list/cursuses-list.component';
+import { LanguagesStoreService } from '../../../shared/services/languages.store.service';
+import { UserMainService } from '../../../shared/services/userMain.service';
 
 @Component({
     selector: 'app-profile-teacher',
@@ -16,35 +18,16 @@ import { CursusesListComponent } from '../../../generic-components/cursuses-list
     templateUrl: './profile-teacher.component.html',
     styleUrl: './profile-teacher.component.scss'
 })
-export class ProfileTeacherComponent {
-    languages = signal<LanguageResponseDTO[]>([
-        {
-            id: '1',
-            name: 'Francais',
-            icon: 'pi pi-globe',
-            color: '#F7DF1E',
-            createdAt: new Date()
-        },
-        {
-            id: '2',
-            name: 'Anglais',
-            icon: 'pi pi-globe',
-            color: '#F7DF1E',
-            createdAt: new Date()
-        },
-        {
-            id: '3',
-            name: 'Arabe',
-            icon: 'pi pi-globe',
-            color: '#F7DF1E',
-            createdAt: new Date()
-        },
-        {
-            id: '4',
-            name: 'Espagnol',
-            icon: 'pi pi-globe',
-            color: '#F7DF1E',
-            createdAt: new Date()
-        }
-    ]);
+export class ProfileTeacherComponent implements OnInit {
+    languagesStoreService = inject(LanguagesStoreService);
+    userMainService = inject(UserMainService);
+
+    languages = this.languagesStoreService.languages;
+    user = this.userMainService.userConnected;
+    ngOnInit(): void {
+        this.loadData();
+    }
+    async loadData() {
+        await this.languagesStoreService.getLanguageByUserId(this.user().id);
+    }
 }

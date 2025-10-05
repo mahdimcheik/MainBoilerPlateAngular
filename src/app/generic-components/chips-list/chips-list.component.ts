@@ -11,4 +11,5 @@ import { TooltipModule } from 'primeng/tooltip';
 })
 export class ChipsListComponent {
     chips = model<(LanguageResponseDTO & { description: string })[] | ProgrammingLanguage[]>([]);
+    noContent = model<string | null>(null);
 }

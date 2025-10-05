@@ -136,6 +136,22 @@ export class LanguagesService {
         return this.httpClient.post(url, userLanguageDTO, requestOptions);
     }
 
+    languagesUserUpdateLanguagesPost(requestBody?: string[], observe?: 'body', options?: RequestOptions<'json'>): Observable<ObjectResponseDTO>;
+    languagesUserUpdateLanguagesPost(requestBody?: string[], observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<ObjectResponseDTO>>;
+    languagesUserUpdateLanguagesPost(requestBody?: string[], observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<ObjectResponseDTO>>;
+    languagesUserUpdateLanguagesPost(requestBody?: string[], observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+        const url = `${this.basePath}/languages/user/update-languages`;
+
+        const requestOptions: any = {
+            observe: observe as any,
+            reportProgress: options?.reportProgress,
+            withCredentials: options?.withCredentials,
+            context: this.createContextWithClientId(options?.context)
+        };
+
+        return this.httpClient.post(url, requestBody, requestOptions);
+    }
+
     languagesUserRemovePost(userLanguageDTO?: UserLanguageDTO, observe?: 'body', options?: RequestOptions<'json'>): Observable<ObjectResponseDTO>;
     languagesUserRemovePost(userLanguageDTO?: UserLanguageDTO, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<ObjectResponseDTO>>;
     languagesUserRemovePost(userLanguageDTO?: UserLanguageDTO, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<ObjectResponseDTO>>;
