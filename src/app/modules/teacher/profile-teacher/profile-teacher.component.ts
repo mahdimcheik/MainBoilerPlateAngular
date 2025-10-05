@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { SmartSectionComponent } from '../../../generic-components/smart-section/smart-section.component';
 import { ButtonModule } from 'primeng/button';
 import { Image } from 'primeng/image';
@@ -6,11 +6,45 @@ import { FormationsListComponent } from '../../../generic-components/formations-
 import { FormationComponent } from '../../../generic-components/formation/formation.component';
 import { AddressesListComponent } from '../../../generic-components/addresses-list/addresses-list.component';
 import { PersonnalInfosComponent } from '../../../generic-components/personnal-infos/personnal-infos.component';
+import { ChipsListComponent } from '../../../generic-components/chips-list/chips-list.component';
+import { LanguageResponseDTO } from '../../../../api';
+import { CursusesListComponent } from '../../../generic-components/cursuses-list/cursuses-list.component';
 
 @Component({
     selector: 'app-profile-teacher',
-    imports: [SmartSectionComponent, ButtonModule, Image, FormationsListComponent, AddressesListComponent, PersonnalInfosComponent],
+    imports: [SmartSectionComponent, ButtonModule, Image, FormationsListComponent, AddressesListComponent, PersonnalInfosComponent, ChipsListComponent, CursusesListComponent],
     templateUrl: './profile-teacher.component.html',
     styleUrl: './profile-teacher.component.scss'
 })
-export class ProfileTeacherComponent {}
+export class ProfileTeacherComponent {
+    languages = signal<LanguageResponseDTO[]>([
+        {
+            id: '1',
+            name: 'Francais',
+            icon: 'pi pi-code',
+            color: '#F7DF1E',
+            createdAt: new Date()
+        },
+        {
+            id: '2',
+            name: 'Anglais',
+            icon: 'pi pi-code',
+            color: '#F7DF1E',
+            createdAt: new Date()
+        },
+        {
+            id: '3',
+            name: 'Arabe',
+            icon: 'pi pi-globe',
+            color: '#F7DF1E',
+            createdAt: new Date()
+        },
+        {
+            id: '4',
+            name: 'Espagnol',
+            icon: 'pi pi-globe',
+            color: '#F7DF1E',
+            createdAt: new Date()
+        }
+    ]);
+}

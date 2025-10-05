@@ -144,6 +144,18 @@ export interface CategoryCursus {
     cursuses?: Cursus[];
 }
 
+/** DTO pour la catégorie de cursus */
+export interface CategoryCursusDTO {
+    /** Identifiant de la catégorie */
+    id: string;
+    /** Nom de la catégorie */
+    name: string;
+    /** Couleur de la catégorie */
+    color: string;
+    /** Icône de la catégorie */
+    icon?: string | null;
+}
+
 export interface Cursus {
     id: string;
     createdAt: Date;
@@ -159,6 +171,96 @@ export interface Cursus {
     teacherId?: string;
     teacher?: UserApp;
     categories?: CategoryCursus[];
+}
+
+/** DTO pour associer/dissocier une catégorie à un cursus */
+export interface CursusCategoryDTO {
+    /** Identifiant du cursus */
+    cursusId: string;
+    /** Identifiant de la catégorie */
+    categoryId: string;
+}
+
+/** DTO pour la création d'un nouveau cursus */
+export interface CursusCreateDTO {
+    /** Nom du cursus */
+    name: string;
+    /** Couleur associée au cursus (code hexadécimal) */
+    color: string;
+    /** Icône associée au cursus */
+    icon?: string | null;
+    /** Description détaillée du cursus */
+    description?: string | null;
+    /** URL de l'image du cursus */
+    imgUrl?: string;
+    /** Identifiant du niveau du cursus */
+    levelId: string;
+    /** Identifiant de l'enseignant du cursus */
+    teacherId: string;
+    /** Liste des identifiants des catégories à associer au cursus */
+    categoryIds?: string[];
+}
+
+/** DTO pour l'affichage des informations d'un cursus */
+export interface CursusResponseDTO {
+    /** Identifiant unique du cursus */
+    id: string;
+    /** Nom du cursus */
+    name: string;
+    /** Couleur associée au cursus (code hexadécimal) */
+    color: string;
+    /** Icône associée au cursus */
+    icon?: string | null;
+    /** Description détaillée du cursus */
+    description?: string | null;
+    /** URL de l'image du cursus */
+    imgUrl?: string | null;
+    /** Identifiant du niveau du cursus */
+    levelId: string;
+    level?: LevelCursusDTO;
+    /** Identifiant de l'enseignant du cursus */
+    teacherId: string;
+    teacher?: TeacherDTO;
+    /** Liste des catégories associées au cursus */
+    categories?: CategoryCursusDTO[];
+    /** Date de création de l'enregistrement */
+    createdAt: Date;
+    /** Date de dernière mise à jour */
+    updatedAt?: Date | null;
+}
+
+export interface CursusResponseDTOListResponseDTO {
+    message: string;
+    status: number;
+    data?: CursusResponseDTO[];
+    count?: number | null;
+}
+
+export interface CursusResponseDTOResponseDTO {
+    message: string;
+    status: number;
+    data?: CursusResponseDTO;
+    count?: number | null;
+}
+
+/** DTO pour la mise à jour d'un cursus existant */
+export interface CursusUpdateDTO {
+    /** Nom du cursus */
+    name: string;
+    /** Couleur associée au cursus (code hexadécimal) */
+    color: string;
+    /** Icône associée au cursus */
+    icon?: string | null;
+    /** Description détaillée du cursus */
+    description?: string | null;
+    /** URL de l'image du cursus */
+    imgUrl?: string;
+    /** Identifiant du niveau du cursus */
+    levelId: string;
+    /** Identifiant de l'enseignant du cursus */
+    teacherId: string;
+    /** Liste des identifiants des catégories à associer au cursus */
+    categoryIds?: string[];
 }
 
 export interface Experience {
@@ -424,6 +526,18 @@ export interface LevelCursus {
     icon?: string | null;
 }
 
+/** DTO pour le niveau de cursus */
+export interface LevelCursusDTO {
+    /** Identifiant du niveau */
+    id: string;
+    /** Nom du niveau */
+    name: string;
+    /** Couleur du niveau */
+    color: string;
+    /** Icône du niveau */
+    icon?: string | null;
+}
+
 export interface LoginOutputDTO {
     token: string;
     refreshToken: string;
@@ -479,6 +593,74 @@ export interface PasswordResetResponseDTOResponseDTO {
     count?: number | null;
 }
 
+export interface ProgrammingLanguage {
+    id: string;
+    createdAt: Date;
+    updatedAt?: Date | null;
+    archivedAt?: Date | null;
+    name: string;
+    color: string;
+    icon?: string | null;
+    description?: string | null;
+    users?: UserApp[];
+}
+
+/** DTO pour la création d'un nouveau langage de programmation */
+export interface ProgrammingLanguageCreateDTO {
+    /** Nom du langage de programmation */
+    name: string;
+    /** Couleur associée au langage (code hexadécimal) */
+    color: string;
+    /** Icône associée au langage */
+    icon?: string | null;
+    /** Description du langage de programmation */
+    description?: string | null;
+}
+
+/** DTO pour l'affichage des informations d'un langage de programmation */
+export interface ProgrammingLanguageResponseDTO {
+    /** Identifiant unique du langage de programmation */
+    id: string;
+    /** Nom du langage de programmation */
+    name: string;
+    /** Couleur associée au langage (code hexadécimal) */
+    color: string;
+    /** Icône associée au langage */
+    icon?: string | null;
+    /** Description du langage de programmation */
+    description?: string | null;
+    /** Date de création de l'enregistrement */
+    createdAt: Date;
+    /** Date de dernière mise à jour */
+    updatedAt?: Date | null;
+}
+
+export interface ProgrammingLanguageResponseDTOListResponseDTO {
+    message: string;
+    status: number;
+    data?: ProgrammingLanguageResponseDTO[];
+    count?: number | null;
+}
+
+export interface ProgrammingLanguageResponseDTOResponseDTO {
+    message: string;
+    status: number;
+    data?: ProgrammingLanguageResponseDTO;
+    count?: number | null;
+}
+
+/** DTO pour la mise à jour d'un langage de programmation existant */
+export interface ProgrammingLanguageUpdateDTO {
+    /** Nom du langage de programmation */
+    name: string;
+    /** Couleur associée au langage (code hexadécimal) */
+    color: string;
+    /** Icône associée au langage */
+    icon?: string | null;
+    /** Description du langage de programmation */
+    description?: string | null;
+}
+
 export interface Slot {
     id: string;
     createdAt: Date;
@@ -514,6 +696,20 @@ export interface StringResponseDTO {
     status: number;
     data?: string | null;
     count?: number | null;
+}
+
+/** DTO pour l'enseignant simplifié */
+export interface TeacherDTO {
+    /** Identifiant de l'enseignant */
+    id: string;
+    /** Prénom de l'enseignant */
+    firstName: string;
+    /** Nom de famille de l'enseignant */
+    lastName: string;
+    /** Email de l'enseignant */
+    email: string;
+    /** Titre de l'enseignant */
+    title?: string | null;
 }
 
 export interface TypeSlot {
@@ -563,6 +759,7 @@ export interface UserApp {
     ordersForStudent?: Order[];
     teacherCursuses?: Cursus[];
     languages?: Language[];
+    programmingLanguages?: ProgrammingLanguage[];
 }
 
 export interface UserCreateDTO {
@@ -608,6 +805,14 @@ export interface UserLoginDTO {
     email: string;
     /** Mot de passe (minimum 8 caractères avec majuscules, minuscules, chiffres) */
     password: string;
+}
+
+/** DTO pour associer/dissocier un langage de programmation à un utilisateur */
+export interface UserProgrammingLanguageDTO {
+    /** Identifiant de l'utilisateur */
+    userId: string;
+    /** Identifiant du langage de programmation */
+    programmingLanguageId: string;
 }
 
 export interface UserResponseDTO {

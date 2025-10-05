@@ -10,7 +10,7 @@ import { FormationComponent } from '../formation/formation.component';
     styleUrl: './formations-list.component.scss'
 })
 export class FormationsListComponent {
-    title = model('Listes des formationss');
+    title = model('Listes des formations');
     editMode = model(true);
     buttonIcon = model('pi pi-plus');
 
