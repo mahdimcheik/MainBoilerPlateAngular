@@ -1,5 +1,7 @@
-<div class="flex flex-wrap gap-2">
+<div class="flex flex-wrap gap-2 mt-2">
     @for (chip of chips(); track chip.id) {
-        <p-chip [label]="chip.name" [icon]="chip.icon ?? ''" [style]="{ 'background-color': chip.color }" />
+        <div [pTooltip]="chip.description ?? ''" tooltipPosition="top">
+            <p-chip [label]="chip.name" [icon]="chip.icon ?? ''" [style]="{ 'background-color': chip.color }" />
+        </div>
     }
 </div>

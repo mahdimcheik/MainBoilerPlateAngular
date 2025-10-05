@@ -21,14 +21,14 @@ export class ProfileTeacherComponent {
         {
             id: '1',
             name: 'Francais',
-            icon: 'pi pi-code',
+            icon: 'pi pi-globe',
             color: '#F7DF1E',
             createdAt: new Date()
         },
         {
             id: '2',
             name: 'Anglais',
-            icon: 'pi pi-code',
+            icon: 'pi pi-globe',
             color: '#F7DF1E',
             createdAt: new Date()
         },

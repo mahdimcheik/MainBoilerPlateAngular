@@ -43,7 +43,9 @@ export class PersonnalInfosComponent {
             id: '3',
             name: 'C#',
             icon: 'pi pi-globe',
-            color: '#F7DF1E',
+            description: 'C# is a modern, object-oriented programming language developed by Microsoft for building a variety of applications.',
+            color: '#1ea0f7ff',
+
             createdAt: new Date()
         },
         {
@@ -51,7 +53,7 @@ export class PersonnalInfosComponent {
             name: 'C++',
             icon: 'pi pi-globe',
             description: 'C++ is a powerful programming language used for system/software development and game programming.',
-            color: '#F7DF1E',
+            color: '#2c6cf7ff',
             createdAt: new Date()
         }
     ]);
