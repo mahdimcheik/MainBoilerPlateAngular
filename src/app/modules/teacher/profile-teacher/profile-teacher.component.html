@@ -1,35 +1,12 @@
 <div class="flex flex-col lg:flex-row h-full gap-4 p-4">
     <div class="flex-1 space-y-4">
-        
-        <app-smart-section [title]="'Profil Utilisateur'" [editMode]="true">
-            <ng-template #main>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-4">
-                        <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image"  [preview]="true" class="w-20 h-20 rounded-full" />
-                        <div>
-                            <h4 class="text-xl font-bold">John Doe</h4>
-                            <p class="text-gray-600">Senior Teacher</p>
-                            <p class="text-sm text-gray-500">john.doe@school.edu</p>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-sm font-semibold text-gray-600">Department</label>
-                            <p>Computer Science</p>
-                        </div>
-                        <div>
-                            <label class="text-sm font-semibold text-gray-600">Experience</label>
-                            <p>8 years</p>
-                        </div>
-                    </div>
-                </div>
-            </ng-template>
-        </app-smart-section>
-
-    <app-formations-list></app-formations-list>
-
+        <app-personnal-infos></app-personnal-infos>
+        <app-formations-list></app-formations-list>
+        <div class="mt-2">
+            <app-addresses-list></app-addresses-list>
+        </div>
     </div>
-    
+
     <div class="right-side min-w-[300px] space-y-4">
         <app-smart-section [title]="'Quick Stats'">
             <ng-template #main>

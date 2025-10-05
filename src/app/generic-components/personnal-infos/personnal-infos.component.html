@@ -1,0 +1,24 @@
+<app-smart-section [title]="'Profil Utilisateur'" [editMode]="true">
+    <ng-template #main>
+        <div class="space-y-4">
+            <div class="flex items-center gap-4">
+                <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" [preview]="true" class="w-20 h-20 rounded-full" />
+                <div>
+                    <h4 class="text-xl font-bold !mb-0">{{ user().firstName }} {{ user().lastName }}</h4>
+                    <p class="text-gray-600 !mb-0">{{ user().roles.join(', ') }}</p>
+                    <p class="text-sm text-gray-500 !mb-0">{{ user().email }}</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-sm font-semibold text-gray-600">Description</label>
+                    <p>{{ user().description }}</p>
+                </div>
+                <div>
+                    <label class="text-sm font-semibold text-gray-600">Langues</label>
+                    <app-chips-list [chips]="languages()"></app-chips-list>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</app-smart-section>

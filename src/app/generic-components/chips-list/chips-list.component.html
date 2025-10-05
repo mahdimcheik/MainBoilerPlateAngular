@@ -1,0 +1,5 @@
+<div class="flex flex-wrap gap-2">
+    @for (chip of chips(); track chip.id) {
+        <p-chip [label]="chip.name" [icon]="chip.icon ?? ''" [style]="{ 'background-color': chip.color }" />
+    }
+</div>
