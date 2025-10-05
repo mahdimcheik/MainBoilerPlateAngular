@@ -14,7 +14,7 @@ export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
     const token = authService.token();
 
     // Only add token to API calls (not static assets or other requests)
-    const isApiCall = req.url.includes('/api/') || req.url.includes(environment.BACK_URL);
+    const isApiCall = req.url.includes('/api/') || req.url.includes(environment.API_URL);
 
     // Don't add token to non-API requests or if no token exists
     if (!isApiCall || !token) {

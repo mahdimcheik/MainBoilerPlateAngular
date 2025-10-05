@@ -16,7 +16,7 @@ import { environment } from './environments/environment';
 
 export const appConfig: ApplicationConfig = {
     providers: [
-        provideDefaultClient({ basePath: environment.BACK_URL }),
+        provideDefaultClient({ basePath: environment.API_URL }),
         provideRouter(appRoutes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }), withEnabledBlockingInitialNavigation()),
         provideHttpClient(withInterceptors([TokenInterceptor, cookiesInterceptor, errorHandlerInterceptor, exceptionLoaderInterceptor, loaderInterceptor])), // errorHandlerInterceptor
         MessageService,

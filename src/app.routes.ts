@@ -19,6 +19,8 @@ import { PasswordResetSuccessfullyComponent } from './app/modules/auth/pages/pas
 // Landing components
 import { MainComponent } from './app/pages/landing/sub-pages/main/main.component';
 import { MentionsLegalesComponent } from './app/pages/landing/sub-pages/mentions-legales/mentions-legales.component';
+import { Grid, GridComponent } from '@syncfusion/ej2-angular-grids';
+import { GridTestComponent } from './app/test/grid.component';
 
 // Define path constants
 const DASHBOARD_PATH = 'dashboard';
@@ -26,7 +28,7 @@ const SETTINGS_PATH = 'settings';
 const STUDENTS_LIST_PATH = 'students-list';
 const CONTACT_PATH = 'contact';
 const RESERVATION_PATH = 'reservation';
-const PROFILE_PATH = 'profile';
+const PROFILE_PATH = 'profile/me';
 const SUCCESS_PATH = 'success';
 const CANCEL_PATH = 'cancel';
 
@@ -91,7 +93,8 @@ export const appRoutes: Routes = [
         canActivate: [isConnectedGuard],
         children: [
             // Settings
-            { path: SETTINGS_PATH, component: SettingsComponent }
+            { path: SETTINGS_PATH, component: SettingsComponent },
+            { path: PROFILE_PATH, component: GridTestComponent }
         ]
     },
 

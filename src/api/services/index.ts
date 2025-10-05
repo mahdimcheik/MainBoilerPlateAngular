@@ -9,3 +9,4 @@
 */
 export { AuthService } from "./auth.service";
 export { GendersService } from "./genders.service";
+export { UsersService } from "./users.service";

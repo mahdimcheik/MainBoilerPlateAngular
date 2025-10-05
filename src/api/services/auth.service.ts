@@ -10,7 +10,7 @@
 import { HttpClient, HttpContext, HttpContextToken, HttpEvent, HttpParams, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { ForgotPasswordInput, LoginOutputDTO, LoginOutputDTOResponseDTO, PasswordRecoveryInput, PasswordResetResponseDTOResponseDTO, RequestOptions, StringResponseDTO, UserCreateDTO, UserInfosWithtokenResponseDTO, UserLoginDTO, UserResponseDTOResponseDTO, UserUpdateDTO } from "../models";
+import { ForgotPasswordInput, LoginOutputDTOResponseDTO, PasswordRecoveryInput, PasswordResetResponseDTOResponseDTO, RequestOptions, StringResponseDTO, UserCreateDTO, UserInfosWithtokenResponseDTO, UserLoginDTO, UserResponseDTOResponseDTO, UserUpdateDTO } from "../models";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT } from "../tokens";
 import { HttpParamsBuilder } from "../utils/http-params-builder";
 
@@ -168,9 +168,9 @@ export class AuthService {
         return this.httpClient.post(url, passwordRecoveryInput, requestOptions);
     }
 
-    authRefreshTokenGet(observe?: 'body', options?: RequestOptions<'json'>): Observable<LoginOutputDTO>;
-    authRefreshTokenGet(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<LoginOutputDTO>>;
-    authRefreshTokenGet(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<LoginOutputDTO>>;
+    authRefreshTokenGet(observe?: 'body', options?: RequestOptions<'json'>): Observable<LoginOutputDTOResponseDTO>;
+    authRefreshTokenGet(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<LoginOutputDTOResponseDTO>>;
+    authRefreshTokenGet(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<LoginOutputDTOResponseDTO>>;
     authRefreshTokenGet(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/auth/refresh-token`;
 

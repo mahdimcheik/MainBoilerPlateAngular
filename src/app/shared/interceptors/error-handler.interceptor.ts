@@ -15,7 +15,7 @@ let isRefreshing = false;
 export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(UserMainService);
 
-    const isApiCall = req.url.includes('/api/') || req.url.includes(environment.BACK_URL);
+    const isApiCall = req.url.includes('/api/') || req.url.includes(environment.API_URL);
 
     if (req.url.includes('/refresh-token') || !isApiCall) {
         return next(req);

@@ -13,6 +13,7 @@ import {
     AuthService,
     ForgotPasswordInput,
     LoginOutputDTO,
+    LoginOutputDTOResponseDTO,
     PasswordRecoveryInput,
     PasswordResetResponseDTO,
     PasswordResetResponseDTOResponseDTO,
@@ -37,7 +38,7 @@ import { ResponseDTO } from '../models/response-dto';
     providedIn: 'root'
 })
 export class UserMainService {
-    baseUrl = environment.BACK_URL;
+    baseUrl = environment.API_URL;
     private authService = inject(AuthService);
     private localStorageService = inject(LocalstorageService);
 
@@ -156,6 +157,14 @@ export class UserMainService {
      */
     refreshToken(): Observable<LoginOutputDTO> {
         return this.authService.authRefreshTokenGet().pipe(
+            switchMap((response: LoginOutputDTOResponseDTO) => {
+                const legacyResponse: LoginOutputDTO = {
+                    refreshToken: response.data?.refreshToken ?? '',
+                    user: response.data?.user as UserResponseDTO,
+                    token: response.data?.token ?? ''
+                };
+                return of(legacyResponse);
+            }),
             tap((res) => {
                 this.token.set(res.token ?? '');
                 this.userConnected.set(res.user as UserResponseDTO);

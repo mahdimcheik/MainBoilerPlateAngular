@@ -32,6 +32,8 @@
     "@angular/router": "^20.3.2",
     "@primeng/themes": "^20.2.0",
     "@primeuix/themes": "^1.2.5",
+    "@syncfusion/ej2-angular-buttons": "^31.1.21",
+    "@syncfusion/ej2-angular-dropdowns": "^31.1.22",
     "@syncfusion/ej2-angular-grids": "^31.1.22",
     "chart.js": "4.4.2",
     "primeicons": "^7.0.0",
