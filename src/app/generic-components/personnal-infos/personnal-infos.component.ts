@@ -3,14 +3,18 @@ import { SmartSectionComponent } from '../smart-section/smart-section.component'
 import { Image } from 'primeng/image';
 import { LanguageResponseDTO, ProgrammingLanguageResponseDTO, UserResponseDTO } from '../../../api';
 import { ChipsListComponent } from '../chips-list/chips-list.component';
+import { DialogModule } from 'primeng/dialog';
+import { DrawerModule } from 'primeng/drawer';
 
 @Component({
     selector: 'app-personnal-infos',
-    imports: [SmartSectionComponent, Image, ChipsListComponent],
+    imports: [SmartSectionComponent, Image, ChipsListComponent, DrawerModule, DialogModule],
     templateUrl: './personnal-infos.component.html',
     styleUrl: './personnal-infos.component.scss'
 })
 export class PersonnalInfosComponent {
+    editPersonnalInfosDialogVisible = model<boolean>(false);
+
     user = signal<UserResponseDTO>({
         id: '',
         firstName: 'John',
@@ -57,4 +61,8 @@ export class PersonnalInfosComponent {
             createdAt: new Date()
         }
     ]);
+
+    EditPersonnalInfos() {
+        this.editPersonnalInfosDialogVisible.set(true);
+    }
 }

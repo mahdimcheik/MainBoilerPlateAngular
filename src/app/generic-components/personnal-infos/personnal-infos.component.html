@@ -1,4 +1,4 @@
-<app-smart-section [title]="'Profil Utilisateur'" [editMode]="true">
+<app-smart-section [title]="'Profil Utilisateur'" [editMode]="true" (onAddClick)="EditPersonnalInfos()">
     <ng-template #main>
         <div class="space-y-4">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -22,3 +22,34 @@
         </div>
     </ng-template>
 </app-smart-section>
+@if (editPersonnalInfosDialogVisible()) {
+    <p-drawer
+        header="Editer les informations personnelles"
+        position="right"
+        [visible]="editPersonnalInfosDialogVisible()"
+        [style]="{ width: '50vw' }"
+        [modal]="true"
+        [closable]="true"
+        (closeOnEscape)="(true)"
+        (onHide)="editPersonnalInfosDialogVisible.set(false)"
+    >
+        <div class="p-fluid formgrid grid">
+            <div class="field col-12 md:col-6">
+                <label for="firstName">Prénom</label>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label for="lastName">Nom</label>
+            </div>
+            <div class="field col-12">
+                <label for="email">Email</label>
+            </div>
+            <div class="field col-12">
+                <label for="description">Description</label>
+            </div>
+        </div>
+        <p-footer>
+            <button pButton type="button" label="Annuler" icon="pi pi-times" class="p-button-text" (click)="editPersonnalInfosDialogVisible.set(false)"></button>
+            <button pButton type="button" label="Enregistrer" icon="pi pi-check" (click)="editPersonnalInfosDialogVisible.set(false)"></button>
+        </p-footer>
+    </p-drawer>
+}
