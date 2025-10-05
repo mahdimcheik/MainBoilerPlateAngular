@@ -8,7 +8,7 @@
             </button>
         }
     </header>
-    <main class="p-4 min-h-[200px]">
+    <main class="min-h-[200px] flex flex-col gap-2 pt-2">
         @if (mainContent()) {
             <ng-container [ngTemplateOutlet]="mainContent()"></ng-container>
         } @else if (emptyContent()) {

@@ -1,6 +1,11 @@
 <!-- Experiences -->
 <app-smart-section [title]="title()" [editMode]="editMode()" [buttonIcon]="buttonIcon()">
-    <ng-template #main> </ng-template>
+    <ng-template #main>
+        @for (formation of formations; track formation.id) {
+            <app-formation [formation]="formations[0]"></app-formation>
+        }
+    </ng-template>
+
     <ng-template #empty>
         <div class="text-center">
             <i class="pi pi-calendar-times text-gray-400 text-4xl mb-4"></i>

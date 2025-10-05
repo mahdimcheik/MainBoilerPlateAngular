@@ -1,5 +1,5 @@
 <div class="flex flex-col lg:flex-row h-full gap-4 p-4">
-    <div class="main flex-1 space-y-4">
+    <div class="flex-1 space-y-4">
         
         <app-smart-section [title]="'Profil Utilisateur'" [editMode]="true">
             <ng-template #main>
@@ -26,39 +26,11 @@
             </ng-template>
         </app-smart-section>
 
-        <!-- formations -->
-        <app-smart-section [title]="'Listes des formations'" [editMode]="true" [buttonIcon]="'pi pi-plus'">
-            <ng-template #main>
-
-            </ng-template>
-            <ng-template #empty>
-                <div class="text-center">
-                    <i class="pi pi-calendar-times text-gray-400 text-4xl mb-4"></i>
-                    <p class="text-gray-500">Pas de formations fournies</p>
-                    <button pButton label="Ajouter votre première formation" class="mt-3 p-button-outlined"></button>
-                </div>
-            </ng-template>
-        </app-smart-section>
-
-                <!-- Experiences -->
-        <app-smart-section [title]="'Listes des expériences'" [editMode]="true" [buttonIcon]="'pi pi-plus'">
-            <!-- <ng-template #main>
-
-            </ng-template> -->
-            <ng-template #empty>
-                <div class="text-center">
-                    <i class="pi pi-calendar-times text-gray-400 text-4xl mb-4"></i>
-                    <p class="text-gray-500">Pas d'expériences fournies</p>
-                    <button pButton label="Ajouter votre première expérience" class="mt-3 p-button-outlined"></button>
-                </div>
-            </ng-template>
-        </app-smart-section>
+    <app-formations-list></app-formations-list>
 
     </div>
     
     <div class="right-side min-w-[300px] space-y-4">
-        
-        <!-- test -->
         <app-smart-section [title]="'Quick Stats'">
             <ng-template #main>
                 <div class="grid grid-cols-1 gap-3">

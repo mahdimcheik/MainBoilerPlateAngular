@@ -1,3 +1,12 @@
 <app-smart-element [title]="'Formation'" [editMode]="true" [editButtonIcon]="'pi pi-pencil'" [deleteButtonIcon]="'pi pi-trash'">
-    <ng-template #main> Titre({{ title() }}) </ng-template>
+    <ng-template #main>
+        <div class="flex gap-2 p-2 pl-0">
+            <span class="border border-l-4 border-[var(--primary-color)] w-2"></span>
+            <div class="flex flex-col gap-1">
+                <p class="font-semibold !mb-0">{{ formation().title }}</p>
+                <p class="text-xs !mb-0 text-gray-600">{{ formation().institution }} - {{ formation().dateFrom | date }} à {{ formation().dateTo | date }}</p>
+                <p class="text-xs !mb-0 text-gray-700">{{ formation().description }}</p>
+            </div>
+        </div>
+    </ng-template>
 </app-smart-element>
