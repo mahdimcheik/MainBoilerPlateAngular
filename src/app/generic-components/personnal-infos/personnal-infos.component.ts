@@ -1,7 +1,7 @@
 import { Component, computed, inject, model, OnInit, signal } from '@angular/core';
 import { SmartSectionComponent } from '../smart-section/smart-section.component';
 import { Image } from 'primeng/image';
-import { LanguageResponseDTO, LanguagesService, ProgrammingLanguageResponseDTO, UserResponseDTO } from '../../../api';
+import { LanguageResponseDTO, LanguagesService, ProgrammingLanguageResponseDTO, UserResponseDTO, UserUpdateDTO } from '../../../api';
 import { ChipsListComponent } from '../chips-list/chips-list.component';
 import { DialogModule } from 'primeng/dialog';
 import { DrawerModule } from 'primeng/drawer';
@@ -46,24 +46,24 @@ export class PersonnalInfosComponent implements OnInit {
                 { id: 'dateOfBirth', label: 'Date de naissance', name: 'dateOfBirth', type: 'date', required: true, fullWidth: true },
                 { id: 'title', label: 'Titre', name: 'title', type: 'text', required: true, fullWidth: true },
                 {
-                    id: 'languages',
+                    id: 'languagesIds',
                     label: 'Langues parlées',
-                    name: 'languages',
+                    name: 'languagesIds',
                     type: 'multiselect',
                     compareKey: 'id',
                     displayKey: 'name',
-                    value: this.languages(),
+                    value: this.languages().map((l) => l.id),
                     fullWidth: true,
                     options: languagesOptions
                 },
                 {
-                    id: 'programmingLanguages',
+                    id: 'programmingLanguagesIds',
                     label: 'Langages de programmation',
-                    name: 'programmingLanguages',
+                    name: 'programmingLanguagesIds',
                     type: 'multiselect',
                     compareKey: 'id',
                     displayKey: 'name',
-                    value: this.programmingLanguages(),
+                    value: this.programmingLanguages().map((l) => l.id),
                     fullWidth: true,
                     options: programmingLanguagesOptions
                 },
@@ -92,8 +92,26 @@ export class PersonnalInfosComponent implements OnInit {
         this.editPersonnalInfosDialogVisible.set(true);
     }
 
-    submit(event: FormGroup<any>) {
+    async submit(event: FormGroup<any>) {
         console.log('submit', event.value);
+        try {
+            const updatedUser: UserUpdateDTO = {
+                firstName: event.value.firstName,
+                lastName: event.value.lastName,
+                dateOfBirth: event.value.dateOfBirth,
+                title: event.value.title,
+                languagesIds: event.value.languagesIds,
+                programmingLanguagesIds: event.value.programmingLanguagesIds,
+                description: event.value.description
+            };
+            await firstValueFrom(this.userservice.updatePersonnalInfos(updatedUser));
+
+            // recharger les infos de l'utilisateur
+            await this.languagesService.getLanguageByUserId(this.user().id);
+            await this.languagesService.getProgrammingLanguageByUserId(this.user().id);
+            //fermer le popup
+            this.editPersonnalInfosDialogVisible.set(false);
+        } catch {}
     }
     cancel() {}
 }

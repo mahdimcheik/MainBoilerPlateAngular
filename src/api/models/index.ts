@@ -846,6 +846,11 @@ export interface UserUpdateDTO {
     firstName: string;
     lastName: string;
     dateOfBirth: Date;
+    title?: string | null;
+    description?: string | null;
+    phoneNumber?: string | null;
+    languagesIds?: string[];
+    programmingLanguagesIds?: string[];
 }
 
 /** Request Options for Angular HttpClient requests */
