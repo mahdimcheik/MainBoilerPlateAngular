@@ -1,4 +1,4 @@
-import { Component, computed, inject, model, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, linkedSignal, model, OnInit, signal } from '@angular/core';
 import { SmartSectionComponent } from '../smart-section/smart-section.component';
 import { Image } from 'primeng/image';
 import { LanguageResponseDTO, LanguagesService, ProgrammingLanguageResponseDTO, UserResponseDTO, UserUpdateDTO } from '../../../api';
@@ -11,16 +11,18 @@ import { LanguagesStoreService } from '../../shared/services/languages.store.ser
 import { UserMainService } from '../../shared/services/userMain.service';
 import { firstValueFrom } from 'rxjs';
 import { FormGroup } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-personnal-infos',
-    imports: [SmartSectionComponent, Image, DrawerModule, DialogModule, ConfigurableFormComponent],
+    imports: [SmartSectionComponent, Image, DrawerModule, DialogModule, ConfigurableFormComponent, ChipsListComponent],
     templateUrl: './personnal-infos.component.html',
     styleUrl: './personnal-infos.component.scss'
 })
 export class PersonnalInfosComponent implements OnInit {
     languagesService = inject(LanguagesStoreService);
     userservice = inject(UserMainService);
+    messageService = inject(MessageService);
 
     user = this.userservice.userConnected;
     programmingLanguages = this.languagesService.programmingLanguages;
@@ -30,7 +32,7 @@ export class PersonnalInfosComponent implements OnInit {
     languagesOptions = this.languagesService.allLanguages;
     programmingLanguagesOptions = this.languagesService.allProgrammingLanguages;
 
-    personnalInfosFormConfig = computed<Structure>(() => {
+    personnalInfosFormConfig = linkedSignal<Structure>(() => {
         const languagesOptions = this.languagesOptions();
         const programmingLanguagesOptions = this.programmingLanguagesOptions();
 
@@ -41,10 +43,10 @@ export class PersonnalInfosComponent implements OnInit {
             description: "Formulaire pour éditer les informations personnelles de l'utilisateur",
             icon: 'pi pi-user',
             formFields: [
-                { id: 'firstName', label: 'Prénom', name: 'firstName', type: 'text', required: true },
-                { id: 'lastName', label: 'Nom', name: 'lastName', type: 'text', required: true },
-                { id: 'dateOfBirth', label: 'Date de naissance', name: 'dateOfBirth', type: 'date', required: true, fullWidth: true },
-                { id: 'title', label: 'Titre', name: 'title', type: 'text', required: true, fullWidth: true },
+                { id: 'firstName', label: 'Prénom', name: 'firstName', type: 'text', required: true, value: this.user().firstName },
+                { id: 'lastName', label: 'Nom', name: 'lastName', type: 'text', required: true, value: this.user().lastName },
+                { id: 'dateOfBirth', label: 'Date de naissance', name: 'dateOfBirth', type: 'date', required: true, fullWidth: true, value: new Date(this.user().dateOfBirth ?? '') },
+                { id: 'title', label: 'Titre', name: 'title', type: 'text', required: true, fullWidth: true, value: this.user().title },
                 {
                     id: 'languagesIds',
                     label: 'Langues parlées',
@@ -67,7 +69,7 @@ export class PersonnalInfosComponent implements OnInit {
                     fullWidth: true,
                     options: programmingLanguagesOptions
                 },
-                { id: 'description', label: 'Description', name: 'description', type: 'textarea', required: false }
+                { id: 'description', label: 'Description', name: 'description', type: 'textarea', required: false, value: this.user().description }
             ]
         };
     });
@@ -110,8 +112,13 @@ export class PersonnalInfosComponent implements OnInit {
             await this.languagesService.getLanguageByUserId(this.user().id);
             await this.languagesService.getProgrammingLanguageByUserId(this.user().id);
             //fermer le popup
+        } catch {
+            this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur est survenue lors de la mise à jour des informations personnelles.' });
+        } finally {
             this.editPersonnalInfosDialogVisible.set(false);
-        } catch {}
+        }
     }
-    cancel() {}
+    cancel() {
+        this.editPersonnalInfosDialogVisible.set(false);
+    }
 }

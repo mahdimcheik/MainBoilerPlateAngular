@@ -820,6 +820,7 @@ export interface UserResponseDTO {
     firstName: string;
     lastName: string;
     email: string;
+    dateOfBirth?: Date;
     title?: string | null;
     description?: string | null;
     phoneNumber?: string | null;

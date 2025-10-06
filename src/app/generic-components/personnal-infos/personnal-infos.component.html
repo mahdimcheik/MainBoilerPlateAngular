@@ -10,6 +10,11 @@
                         <p class="text-sm text-gray-500 !mb-0">{{ user().email }}</p>
                     </div>
                 </div>
+
+                <div class="bg-purple-50 p-4 rounded-lg">
+                    <label class="text-sm font-semibold text-gray-600">Langages</label>
+                    <app-chips-list [chips]="programmingLanguages()"></app-chips-list>
+                </div>
             </div>
 
             <div class="grid gap-4">
