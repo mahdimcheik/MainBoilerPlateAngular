@@ -4,8 +4,8 @@
             <span class="border border-l-4 border-[var(--primary-color)] w-2"></span>
             <div class="flex flex-col gap-1">
                 <p class="font-semibold !mb-0">{{ formation().title }}</p>
-                <p class="text-xs !mb-0 text-gray-600">{{ formation().institution }} - {{ formation().dateFrom | date }} à {{ formation().dateTo | date }}</p>
-                <p class="text-xs !mb-0 text-gray-700">{{ formation().description }}</p>
+                <p class="text-xs !mb-0 text-gray-600 dark:text-gray-400">{{ formation().institution }} - {{ formation().dateFrom | date }} à {{ formation().dateTo | date }}</p>
+                <p class="text-xs !mb-0 text-gray-700 dark:text-gray-400">{{ formation().description }}</p>
             </div>
         </div>
     </ng-template>

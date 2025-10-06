@@ -42,6 +42,8 @@ export class PersonnalInfosComponent implements OnInit {
             label: 'Informations personnelles',
             description: "Formulaire pour éditer les informations personnelles de l'utilisateur",
             icon: 'pi pi-user',
+            hideCancelButton: false,
+            hideSubmitButton: false,
             formFields: [
                 { id: 'firstName', label: 'Prénom', name: 'firstName', type: 'text', required: true, value: this.user().firstName },
                 { id: 'lastName', label: 'Nom', name: 'lastName', type: 'text', required: true, value: this.user().lastName },
