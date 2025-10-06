@@ -27,7 +27,7 @@ export class FormationsListComponent {
             userId: 'user1'
         },
         {
-            id: '1',
+            id: '2',
             title: 'Formation Angular',
             description: "Apprenez les bases d'Angular",
             institution: 'OpenAI Academy',
@@ -38,7 +38,7 @@ export class FormationsListComponent {
             userId: 'user1'
         },
         {
-            id: '2',
+            id: '3',
             title: 'Formation React',
             description: 'Apprenez les bases de React',
             institution: 'OpenAI Academy',

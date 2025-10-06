@@ -472,6 +472,8 @@
                                                             }
                                                         </ng-template>
                                                     </p-multiselect>
+
+                                                    <app-chips-list [chips]="form().get(field.name)?.value" class="ml-2"></app-chips-list>
                                                 }
 
                                                 <!-- Checkbox -->

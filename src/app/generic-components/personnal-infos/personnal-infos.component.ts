@@ -1,68 +1,99 @@
-import { Component, model, signal } from '@angular/core';
+import { Component, computed, inject, model, OnInit, signal } from '@angular/core';
 import { SmartSectionComponent } from '../smart-section/smart-section.component';
 import { Image } from 'primeng/image';
-import { LanguageResponseDTO, ProgrammingLanguageResponseDTO, UserResponseDTO } from '../../../api';
+import { LanguageResponseDTO, LanguagesService, ProgrammingLanguageResponseDTO, UserResponseDTO } from '../../../api';
 import { ChipsListComponent } from '../chips-list/chips-list.component';
 import { DialogModule } from 'primeng/dialog';
 import { DrawerModule } from 'primeng/drawer';
+import { ConfigurableFormComponent } from '../configurable-form/configurable-form.component';
+import { Structure } from '../configurable-form/related-models';
+import { LanguagesStoreService } from '../../shared/services/languages.store.service';
+import { UserMainService } from '../../shared/services/userMain.service';
+import { firstValueFrom } from 'rxjs';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-personnal-infos',
-    imports: [SmartSectionComponent, Image, ChipsListComponent, DrawerModule, DialogModule],
+    imports: [SmartSectionComponent, Image, DrawerModule, DialogModule, ConfigurableFormComponent],
     templateUrl: './personnal-infos.component.html',
     styleUrl: './personnal-infos.component.scss'
 })
-export class PersonnalInfosComponent {
-    editPersonnalInfosDialogVisible = model<boolean>(false);
+export class PersonnalInfosComponent implements OnInit {
+    languagesService = inject(LanguagesStoreService);
+    userservice = inject(UserMainService);
 
-    user = signal<UserResponseDTO>({
-        id: '',
-        firstName: 'John',
-        lastName: 'Wick',
-        email: 'john.wick@example.com',
-        description:
-            ' Distinctio nam aspernatur. Sapiente fugiat, tempora iste necessitatibus doloremque rem amet deserunt voluptas error assumenda reprehenderit quidem. Cupiditate porro quibusdam, ea reprehenderit deleniti earum modi minima voluptatibus, non sequi laudantium iste vero ullam aperiam. Nam, error consequatur dolor suscipit beatae repellat deleniti, minus obcaecati possimus quam cum reiciendis iure recusandae. Sed hic vitae assumenda consequuntur et quis illum deleniti neque error. Qui consectetur ut, voluptatem harum nulla tenetur nostrum eveniet sunt eum officiis ipsam quae eos voluptate ipsum numquam quis minima quas consequuntur explicabo est modi atque fuga vero cum. Recusandae maxime laboriosam illum quaerat molestias pariatur, voluptates harum, dicta aspernatur illo exercitationem quisquam suscipit esse perspiciatis aliquam excepturi ab quibusdam, dolorum aut explicabo! Consequuntur rem facilis dolorem distinctio accusamus ipsum consectetur eos necessitatibus nobis maiores commodi tempore incidunt officiis blanditiis, nihil culpa ea quasi magni? Suscipit a, accusantium officiis officia porro ullam alias aspernatur perspiciatis blanditiis provident magnam? Dicta, modi repellendus illo quos magnam consectetur similique quam voluptatum quia eius ipsam consequatur provident hic perspiciatis nesciunt at suscipit neque soluta aspernatur voluptate. Quaerat molestiae consequatur debitis quidem nulla blanditiis recusandae pariatur, dolore illum amet ad at perferendis provident corporis!',
+    user = this.userservice.userConnected;
+    programmingLanguages = this.languagesService.programmingLanguages;
+    languages = this.languagesService.languages;
 
-        roles: ['User']
+    // options pour les multiselects
+    languagesOptions = this.languagesService.allLanguages;
+    programmingLanguagesOptions = this.languagesService.allProgrammingLanguages;
+
+    personnalInfosFormConfig = computed<Structure>(() => {
+        const languagesOptions = this.languagesOptions();
+        const programmingLanguagesOptions = this.programmingLanguagesOptions();
+
+        return {
+            id: 'personnal-infos-form',
+            name: 'personnal-infos-form',
+            label: 'Informations personnelles',
+            description: "Formulaire pour éditer les informations personnelles de l'utilisateur",
+            icon: 'pi pi-user',
+            formFields: [
+                { id: 'firstName', label: 'Prénom', name: 'firstName', type: 'text', required: true },
+                { id: 'lastName', label: 'Nom', name: 'lastName', type: 'text', required: true },
+                { id: 'dateOfBirth', label: 'Date de naissance', name: 'dateOfBirth', type: 'date', required: true, fullWidth: true },
+                { id: 'title', label: 'Titre', name: 'title', type: 'text', required: true, fullWidth: true },
+                {
+                    id: 'languages',
+                    label: 'Langues parlées',
+                    name: 'languages',
+                    type: 'multiselect',
+                    compareKey: 'id',
+                    displayKey: 'name',
+                    value: this.languages(),
+                    fullWidth: true,
+                    options: languagesOptions
+                },
+                {
+                    id: 'programmingLanguages',
+                    label: 'Langages de programmation',
+                    name: 'programmingLanguages',
+                    type: 'multiselect',
+                    compareKey: 'id',
+                    displayKey: 'name',
+                    value: this.programmingLanguages(),
+                    fullWidth: true,
+                    options: programmingLanguagesOptions
+                },
+                { id: 'description', label: 'Description', name: 'description', type: 'textarea', required: false }
+            ]
+        };
     });
 
-    programmingLanguages = signal<ProgrammingLanguageResponseDTO[]>([
-        {
-            id: '1',
-            name: 'JavaScript',
-            icon: 'pi pi-code',
-            color: '#F7DF1E',
-            description: 'JavaScript is a versatile programming language commonly used for web development.',
-            createdAt: new Date()
-        },
-        {
-            id: '2',
-            name: 'Python',
-            icon: 'pi pi-code',
-            color: '#F7DF1E',
-            description: 'Python is a high-level programming language known for its readability and versatility.',
-            createdAt: new Date()
-        },
-        {
-            id: '3',
-            name: 'C#',
-            icon: 'pi pi-globe',
-            description: 'C# is a modern, object-oriented programming language developed by Microsoft for building a variety of applications.',
-            color: '#1ea0f7ff',
+    ngOnInit() {
+        this.loadUserData();
+    }
 
-            createdAt: new Date()
-        },
-        {
-            id: '4',
-            name: 'C++',
-            icon: 'pi pi-globe',
-            description: 'C++ is a powerful programming language used for system/software development and game programming.',
-            color: '#2c6cf7ff',
-            createdAt: new Date()
-        }
-    ]);
+    private async loadUserData() {
+        try {
+            await this.languagesService.loadLanguages();
+            await this.languagesService.loadProgrammingLanguages();
+            // charger les langues et langages de programmation de l'utilisateur
+            await this.languagesService.getLanguageByUserId(this.user().id);
+            await this.languagesService.getProgrammingLanguageByUserId(this.user().id);
+        } catch {}
+    }
+
+    editPersonnalInfosDialogVisible = model<boolean>(false);
 
     EditPersonnalInfos() {
         this.editPersonnalInfosDialogVisible.set(true);
     }
+
+    submit(event: FormGroup<any>) {
+        console.log('submit', event.value);
+    }
+    cancel() {}
 }

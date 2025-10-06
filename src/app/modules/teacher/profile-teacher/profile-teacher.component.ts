@@ -24,10 +24,5 @@ export class ProfileTeacherComponent implements OnInit {
 
     languages = this.languagesStoreService.languages;
     user = this.userMainService.userConnected;
-    ngOnInit(): void {
-        this.loadData();
-    }
-    async loadData() {
-        await this.languagesStoreService.getLanguageByUserId(this.user().id);
-    }
+    ngOnInit(): void {}
 }

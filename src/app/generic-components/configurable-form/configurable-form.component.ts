@@ -16,6 +16,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { CustomUploadFileComponent } from '../custom-upload-file/custom-upload-file.component';
 import { PasswordModule } from 'primeng/password';
+import { ChipsListComponent } from '../chips-list/chips-list.component';
 @Component({
     selector: 'app-configurable-form',
     styleUrls: ['./configurable-form.component.scss'],
@@ -35,7 +36,8 @@ import { PasswordModule } from 'primeng/password';
         ColorPickerModule,
         ButtonModule,
         InputGroupModule,
-        InputGroupAddonModule
+        InputGroupAddonModule,
+        ChipsListComponent
     ],
     templateUrl: './configurable-form.component.html',
     changeDetection: ChangeDetectionStrategy.Default

@@ -1,29 +1,45 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { LanguageResponseDTO, LanguagesService } from '../../../api';
+import { LanguageResponseDTO, LanguagesService, ProgrammingLanguageResponseDTO, ProgrammingLanguagesService } from '../../../api';
 import { firstValueFrom } from 'rxjs';
+import { languagesOptions, programmingLanguagesOptions } from './constants';
 
 @Injectable({
     providedIn: 'root'
 })
 export class LanguagesStoreService {
     languagesService = inject(LanguagesService);
+    programminglanguageService = inject(ProgrammingLanguagesService);
 
-    languagesOptions = signal<LanguageResponseDTO[]>([]);
+    // languages and programming languages signals pour un utilisateur
     languages = signal<LanguageResponseDTO[]>([]);
+    programmingLanguages = signal<LanguageResponseDTO[]>([]);
 
-    constructor() {
-        this.loadLanguages();
-    }
+    allLanguages = signal<LanguageResponseDTO[]>([]);
+    allProgrammingLanguages = signal<ProgrammingLanguageResponseDTO[]>([]);
 
     async loadLanguages() {
-        if (this.languagesOptions().length === 0) {
+        if (this.allLanguages().length === 0) {
             const langs = await firstValueFrom(this.languagesService.languagesAllGet());
-            this.languagesOptions.set(langs.data || []);
+            this.allLanguages.set(langs.data || []);
+        }
+    }
+
+    async loadProgrammingLanguages() {
+        if (this.allProgrammingLanguages().length === 0) {
+            const langs = await firstValueFrom(this.programminglanguageService.programminglanguagesAllGet());
+            this.allProgrammingLanguages.set(langs.data || []);
         }
     }
 
     async getLanguageByUserId(userId: string) {
         const langs = await firstValueFrom(this.languagesService.languagesUserUserIdGet(userId));
+        this.languages.set(langs.data || []);
+        return langs.data || [];
+    }
+
+    async getProgrammingLanguageByUserId(userId: string) {
+        const langs = await firstValueFrom(this.programminglanguageService.programminglanguagesUserUserIdGet(userId));
+        this.programmingLanguages.set(langs.data || []);
         return langs.data || [];
     }
 

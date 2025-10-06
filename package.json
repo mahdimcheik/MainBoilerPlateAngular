@@ -2,7 +2,7 @@
   "name": "inspire",
   "version": "19.0.0",
   "scripts": {
-    "ng": "ng",
+    "ng": "ng serve --ssl true --ssl-key key.pem --ssl-cert cert.pem --port 4201",
     "start": "ng serve",
     "build": "ng build",
     "build:prod": "ng build --configuration production",
