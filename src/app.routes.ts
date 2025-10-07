@@ -95,7 +95,8 @@ export const appRoutes: Routes = [
         children: [
             // Settings
             { path: SETTINGS_PATH, component: SettingsComponent },
-            { path: PROFILE_PATH, component: ProfileTeacherComponent }
+            { path: PROFILE_PATH, component: ProfileTeacherComponent },
+            { path: '', component: GridTestComponent }
         ]
     },
 

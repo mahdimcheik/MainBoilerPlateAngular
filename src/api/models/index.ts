@@ -144,6 +144,16 @@ export interface CategoryCursus {
     cursuses?: Cursus[];
 }
 
+/** DTO pour la création d'une nouvelle catégorie de cursus */
+export interface CategoryCursusCreateDTO {
+    /** Nom de la catégorie de cursus */
+    name: string;
+    /** Couleur associée à la catégorie de cursus (code hexadécimal) */
+    color: string;
+    /** Icône associée à la catégorie de cursus */
+    icon?: string | null;
+}
+
 /** DTO pour la catégorie de cursus */
 export interface CategoryCursusDTO {
     /** Identifiant de la catégorie */
@@ -153,6 +163,46 @@ export interface CategoryCursusDTO {
     /** Couleur de la catégorie */
     color: string;
     /** Icône de la catégorie */
+    icon?: string | null;
+}
+
+/** DTO pour l'affichage des informations d'une catégorie de cursus */
+export interface CategoryCursusResponseDTO {
+    /** Identifiant unique de la catégorie de cursus */
+    id: string;
+    /** Nom de la catégorie de cursus */
+    name: string;
+    /** Couleur associée à la catégorie de cursus (code hexadécimal) */
+    color: string;
+    /** Icône associée à la catégorie de cursus */
+    icon?: string | null;
+    /** Date de création de l'enregistrement */
+    createdAt: Date;
+    /** Date de dernière mise à jour */
+    updatedAt?: Date | null;
+}
+
+export interface CategoryCursusResponseDTOListResponseDTO {
+    message: string;
+    status: number;
+    data?: CategoryCursusResponseDTO[];
+    count?: number | null;
+}
+
+export interface CategoryCursusResponseDTOResponseDTO {
+    message: string;
+    status: number;
+    data?: CategoryCursusResponseDTO;
+    count?: number | null;
+}
+
+/** DTO pour la mise à jour d'une catégorie de cursus existante */
+export interface CategoryCursusUpdateDTO {
+    /** Nom de la catégorie de cursus */
+    name: string;
+    /** Couleur associée à la catégorie de cursus (code hexadécimal) */
+    color: string;
+    /** Icône associée à la catégorie de cursus */
     icon?: string | null;
 }
 
@@ -526,6 +576,16 @@ export interface LevelCursus {
     icon?: string | null;
 }
 
+/** DTO pour la création d'un nouveau niveau de cursus */
+export interface LevelCursusCreateDTO {
+    /** Nom du niveau de cursus */
+    name: string;
+    /** Couleur associée au niveau de cursus (code hexadécimal) */
+    color: string;
+    /** Icône associée au niveau de cursus */
+    icon?: string | null;
+}
+
 /** DTO pour le niveau de cursus */
 export interface LevelCursusDTO {
     /** Identifiant du niveau */
@@ -535,6 +595,46 @@ export interface LevelCursusDTO {
     /** Couleur du niveau */
     color: string;
     /** Icône du niveau */
+    icon?: string | null;
+}
+
+/** DTO pour l'affichage des informations d'un niveau de cursus */
+export interface LevelCursusResponseDTO {
+    /** Identifiant unique du niveau de cursus */
+    id: string;
+    /** Nom du niveau de cursus */
+    name: string;
+    /** Couleur associée au niveau de cursus (code hexadécimal) */
+    color: string;
+    /** Icône associée au niveau de cursus */
+    icon?: string | null;
+    /** Date de création de l'enregistrement */
+    createdAt: Date;
+    /** Date de dernière mise à jour */
+    updatedAt?: Date | null;
+}
+
+export interface LevelCursusResponseDTOListResponseDTO {
+    message: string;
+    status: number;
+    data?: LevelCursusResponseDTO[];
+    count?: number | null;
+}
+
+export interface LevelCursusResponseDTOResponseDTO {
+    message: string;
+    status: number;
+    data?: LevelCursusResponseDTO;
+    count?: number | null;
+}
+
+/** DTO pour la mise à jour d'un niveau de cursus existant */
+export interface LevelCursusUpdateDTO {
+    /** Nom du niveau de cursus */
+    name: string;
+    /** Couleur associée au niveau de cursus (code hexadécimal) */
+    color: string;
+    /** Icône associée au niveau de cursus */
     icon?: string | null;
 }
 
