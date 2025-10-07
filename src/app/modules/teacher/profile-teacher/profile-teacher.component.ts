@@ -11,18 +11,18 @@ import { LanguageResponseDTO } from '../../../../api';
 import { CursusesListComponent } from '../../../generic-components/cursuses-list/cursuses-list.component';
 import { LanguagesStoreService } from '../../../shared/services/languages.store.service';
 import { UserMainService } from '../../../shared/services/userMain.service';
+import { CursusesMainServiceService } from '../../../shared/services/cursuses-main-service.service';
 
 @Component({
     selector: 'app-profile-teacher',
-    imports: [SmartSectionComponent, ButtonModule, Image, FormationsListComponent, AddressesListComponent, PersonnalInfosComponent, ChipsListComponent, CursusesListComponent],
+    imports: [SmartSectionComponent, ButtonModule, FormationsListComponent, AddressesListComponent, PersonnalInfosComponent, ChipsListComponent, CursusesListComponent],
     templateUrl: './profile-teacher.component.html',
     styleUrl: './profile-teacher.component.scss'
 })
-export class ProfileTeacherComponent implements OnInit {
+export class ProfileTeacherComponent {
     languagesStoreService = inject(LanguagesStoreService);
     userMainService = inject(UserMainService);
 
     languages = this.languagesStoreService.languages;
     user = this.userMainService.userConnected;
-    ngOnInit(): void {}
 }

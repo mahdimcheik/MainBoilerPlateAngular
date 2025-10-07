@@ -81,4 +81,10 @@ export class CursusesMainServiceService {
         this.allLevels.update((current) => [...current, newLevel.data!]);
         return newLevel.data;
     }
+
+    async getCursusByTeacher(teacherId: string) {
+        const cursuses = await firstValueFrom(this.cursusService.cursusTeacherTeacherIdGet(teacherId));
+        this.cursuses.set(cursuses.data || []);
+        return cursuses.data || [];
+    }
 }

@@ -1,4 +1,4 @@
-<app-smart-element [title]="'Formation'" [editMode]="true" [editButtonIcon]="'pi pi-pencil'" [deleteButtonIcon]="'pi pi-trash'">
+<app-smart-element [title]="'Formation'" [editMode]="true" [editButtonIcon]="'pi pi-pencil'" [deleteButtonIcon]="'pi pi-trash'" (onEditClick)="openEditModal()" (onDeleteClick)="deleteCursus()">
     <ng-template #main>
         <div class="flex gap-2 p-2 pl-0">
             <span class="border border-l-4 w-2" [style]="{borderLeft: `4px solid ${cursus().color ?? 'var(--primary-color)'}`}"></span>
@@ -9,3 +9,7 @@
         </div>
     </ng-template>
 </app-smart-element>
+
+@if (showEditModal()) {
+    <app-modal-cursus [(showEditModal)]="showEditModal" (onClose)="cancel()" [cursusInput]="cursus()"></app-modal-cursus>
+}

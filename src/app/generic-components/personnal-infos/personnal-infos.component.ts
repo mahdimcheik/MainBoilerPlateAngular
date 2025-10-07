@@ -12,6 +12,7 @@ import { UserMainService } from '../../shared/services/userMain.service';
 import { firstValueFrom } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { CursusesMainServiceService } from '../../shared/services/cursuses-main-service.service';
 
 @Component({
     selector: 'app-personnal-infos',
@@ -23,6 +24,7 @@ export class PersonnalInfosComponent implements OnInit {
     languagesService = inject(LanguagesStoreService);
     userservice = inject(UserMainService);
     messageService = inject(MessageService);
+    cursusService = inject(CursusesMainServiceService);
 
     user = this.userservice.userConnected;
     programmingLanguages = this.languagesService.programmingLanguages;
@@ -87,6 +89,10 @@ export class PersonnalInfosComponent implements OnInit {
             // charger les langues et langages de programmation de l'utilisateur
             await this.languagesService.getLanguageByUserId(this.user().id);
             await this.languagesService.getProgrammingLanguageByUserId(this.user().id);
+
+            // charger les categories et les niveaux de cursus
+            await this.cursusService.loadAllCategories();
+            await this.cursusService.loadAllLevels();
         } catch {}
     }
 

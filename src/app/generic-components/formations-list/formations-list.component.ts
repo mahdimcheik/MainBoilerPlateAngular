@@ -1,7 +1,8 @@
-import { Component, model } from '@angular/core';
+import { Component, inject, model } from '@angular/core';
 import { SmartSectionComponent } from '../smart-section/smart-section.component';
 import { Formation, FormationResponseDTO } from '../../../api';
 import { FormationComponent } from '../formation/formation.component';
+import { CursusesMainServiceService } from '../../shared/services/cursuses-main-service.service';
 
 @Component({
     selector: 'app-formations-list',
