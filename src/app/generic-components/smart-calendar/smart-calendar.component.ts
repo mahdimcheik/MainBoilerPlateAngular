@@ -1,4 +1,4 @@
-import { Component, ViewChild, signal, inject, computed, viewChild } from '@angular/core';
+import { Component, ViewChild, signal, inject, computed, viewChild, model, output, input } from '@angular/core';
 
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -28,32 +28,34 @@ import interactionPlugin from '@fullcalendar/interaction';
 export class SmartCalendarComponent {
     private fb = inject(FormBuilder);
     calendarRef = viewChild(FullCalendarComponent);
-    events = signal<EventInput[]>([]);
+    events = model<EventInput[]>([]);
+    canDrop = input<(dropInfo: any, draggedEvent: any) => boolean>();
+    canStartDrag = input<(selectInfo: any) => boolean>();
     initialView = computed(() => (window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek'));
 
+    // outputs
+    onEventClickOutput = output();
+    onResizeOutput = output<any>();
+    onDateSelectOutput = output();
+    onDragStartOutput = output();
+    onDropOutput = output();
+
     onResize = (event: any) => {
-        console.log('Event resized:', event);
+        this.onResizeOutput.emit(event);
     };
     onDateSelect = (selectInfo: any) => {
-        console.log('Date selected:', selectInfo);
+        this.onDateSelectOutput.emit(selectInfo);
     };
     onEventClick = (clickInfo: any) => {
-        console.log('Event clicked:', clickInfo);
+        this.onEventClickOutput.emit(clickInfo);
     };
 
     onDragStart = (dragInfo: any) => {
-        console.log('Drag started:', dragInfo);
+        this.onDragStartOutput.emit(dragInfo);
     };
-    canStartDrag = (selectInfo: any) => {
-        console.log('Can start drag:', selectInfo);
-        return true; // or some condition
-    };
-    canDrop = (dropInfo: any) => {
-        console.log('Can drop:', dropInfo);
-        return true; // or some condition
-    };
+
     onDrop = (dropInfo: any) => {
-        console.log('Event dropped:', dropInfo);
+        this.onDropOutput.emit(dropInfo);
     };
 
     // Method to get calendar API when needed
@@ -61,7 +63,17 @@ export class SmartCalendarComponent {
         return this.calendarRef()?.getApi();
     }
 
-    calendarOptions: CalendarOptions = {
+    // condition to start drag
+    //  canStartDrag = (selectInfo: any) => {
+    //     console.log('Can start drag:', selectInfo);
+    //     return true; // or some condition
+    // };
+    // canDrop = (dropInfo: any) => {
+    //     console.log('Can drop:', dropInfo);
+    //     return true; // or some condition
+    // };
+
+    calendarOptions = computed<CalendarOptions>(() => ({
         initialView: this.initialView(),
         plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
         locale: frLocale,
@@ -110,11 +122,11 @@ export class SmartCalendarComponent {
         select: this.onDateSelect,
         eventClick: this.onEventClick,
         // drag and drop
-        selectAllow: this.canStartDrag, // can start drag event ?
-        eventAllow: this.canDrop, // can drop ?
+        selectAllow: this.canStartDrag(), // can start drag event ?
+        eventAllow: this.canDrop(), // can drop ?
         eventDrop: this.onDrop, // drop
 
         events: this.events(),
         eventColor: '#0000'
-    };
+    }));
 }

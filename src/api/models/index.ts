@@ -774,6 +774,66 @@ export interface Slot {
     type?: TypeSlot;
 }
 
+/** DTO pour la création d'un nouveau créneau */
+export interface SlotCreateDTO {
+    /** Date et heure de début du créneau */
+    dateFrom: Date;
+    /** Date et heure de fin du créneau */
+    dateTo: Date;
+    /** Identifiant de l'enseignant */
+    teacherId: string;
+    /** Identifiant du type de créneau */
+    typeId: string;
+}
+
+/** DTO pour l'affichage des informations d'un créneau */
+export interface SlotResponseDTO {
+    /** Identifiant unique du créneau */
+    id: string;
+    /** Date et heure de début du créneau */
+    dateFrom: Date;
+    /** Date et heure de fin du créneau */
+    dateTo: Date;
+    /** Identifiant de l'enseignant */
+    teacherId: string;
+    teacher?: UserResponseDTO;
+    /** Identifiant du type de créneau */
+    typeId: string;
+    type?: TypeSlotResponseDTO;
+    /** Date de création de l'enregistrement */
+    createdAt: Date;
+    /** Date de dernière mise à jour */
+    updatedAt?: Date | null;
+    /** Indique si le créneau est disponible (non réservé) */
+    isAvailable?: boolean;
+}
+
+export interface SlotResponseDTOListResponseDTO {
+    message: string;
+    status: number;
+    data?: SlotResponseDTO[];
+    count?: number | null;
+}
+
+export interface SlotResponseDTOResponseDTO {
+    message: string;
+    status: number;
+    data?: SlotResponseDTO;
+    count?: number | null;
+}
+
+/** DTO pour la mise à jour d'un créneau existant */
+export interface SlotUpdateDTO {
+    /** Date et heure de début du créneau */
+    dateFrom: Date;
+    /** Date et heure de fin du créneau */
+    dateTo: Date;
+    /** Identifiant de l'enseignant */
+    teacherId: string;
+    /** Identifiant du type de créneau */
+    typeId: string;
+}
+
 export interface StatusAccount {
     id: string;
     createdAt: Date;
@@ -820,6 +880,22 @@ export interface TypeSlot {
     name?: string | null;
     color?: string | null;
     icon?: string | null;
+}
+
+/** DTO pour l'affichage des informations d'un type de créneau */
+export interface TypeSlotResponseDTO {
+    /** Identifiant unique du type de créneau */
+    id: string;
+    /** Nom du type de créneau */
+    name: string;
+    /** Couleur associée au type de créneau (code hexadécimal) */
+    color: string;
+    /** Icône associée au type de créneau */
+    icon?: string | null;
+    /** Date de création de l'enregistrement */
+    createdAt: Date;
+    /** Date de dernière mise à jour */
+    updatedAt?: Date | null;
 }
 
 export interface UserApp {

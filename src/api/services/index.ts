@@ -17,4 +17,5 @@ export { GendersService } from "./genders.service";
 export { LanguagesService } from "./languages.service";
 export { LevelCursusService } from "./levelCursus.service";
 export { ProgrammingLanguagesService } from "./programmingLanguages.service";
+export { SlotsService } from "./slots.service";
 export { UsersService } from "./users.service";
