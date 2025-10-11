@@ -1,6 +1,6 @@
-import { Component, model, viewChild } from '@angular/core';
+import { Component, computed, model, viewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
-import type { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
+import type { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { JsonPipe } from '@angular/common';
 
 @Component({
@@ -16,6 +16,18 @@ export class SmartGridComponent {
     data = model.required<any[]>();
     private gridApi!: GridApi;
     colDefsSignal = model.required<ColDef[]>();
+    alwaysPassFilter = model(true);
+    editMode = model(false);
+
+    gridOptions = computed((): GridOptions => {
+        return {
+            defaultColDef: {
+                filter: true,
+                editable: this.editMode()
+            },
+            alwaysPassFilter: () => this.alwaysPassFilter()
+        };
+    });
 
     onGridReady(params: GridReadyEvent) {
         this.gridApi = params.api;

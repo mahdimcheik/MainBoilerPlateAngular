@@ -1,5 +1,5 @@
 <div class="h-[500px] w-full">
-    <ag-grid-angular [rowData]="data()" [columnDefs]="colDefsSignal()" [class]="'h-[500px] w-full'" (gridReady)="onGridReady($event)" (filterChanged)="onFilterChanged()" #agGrid />
+    <ag-grid-angular [rowData]="data()" [columnDefs]="colDefsSignal()" [class]="'h-[500px] w-full'" (gridReady)="onGridReady($event)" (filterChanged)="onFilterChanged()" #agGrid [gridOptions]="gridOptions()" />
 </div>
 
 <!-- Debug: Display current filter params -->
