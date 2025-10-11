@@ -19,8 +19,6 @@ import { PasswordResetSuccessfullyComponent } from './app/modules/auth/pages/pas
 // Landing components
 import { MainComponent } from './app/pages/landing/sub-pages/main/main.component';
 import { MentionsLegalesComponent } from './app/pages/landing/sub-pages/mentions-legales/mentions-legales.component';
-import { Grid, GridComponent } from '@syncfusion/ej2-angular-grids';
-import { GridTestComponent } from './app/test/grid.component';
 import { ProfileTeacherComponent } from './app/modules/teacher/profile-teacher/profile-teacher.component';
 import { SmartCalendarComponent } from './app/generic-components/smart-calendar/smart-calendar.component';
 

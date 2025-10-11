@@ -3,12 +3,9 @@ import { appConfig } from './app.config';
 import { AppComponent } from './app.component';
 import { registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
-import { registerLicense } from '@syncfusion/ej2-base';
-import { environment } from './environments/environment';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
-// Registering Syncfusion license key
-registerLicense(environment.SYNCFUSION_LICENSE);
-
+ModuleRegistry.registerModules([AllCommunityModule]);
 registerLocaleData(fr.default);
 
 bootstrapApplication(AppComponent, appConfig).catch((err) => console.error(err));

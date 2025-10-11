@@ -18,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     providers: [
         provideDefaultClient({ basePath: environment.API_URL }),
         provideRouter(appRoutes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }), withEnabledBlockingInitialNavigation()),
-        provideHttpClient(withInterceptors([TokenInterceptor, cookiesInterceptor, errorHandlerInterceptor, exceptionLoaderInterceptor, loaderInterceptor])), // errorHandlerInterceptor
+        provideHttpClient(withInterceptors([TokenInterceptor, cookiesInterceptor, errorHandlerInterceptor, exceptionLoaderInterceptor, loaderInterceptor])),
         MessageService,
         { provide: LOCALE_ID, useValue: 'fr-FR' },
         provideAnimationsAsync(),
