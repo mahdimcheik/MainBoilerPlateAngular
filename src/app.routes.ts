@@ -22,6 +22,7 @@ import { MentionsLegalesComponent } from './app/pages/landing/sub-pages/mentions
 import { Grid, GridComponent } from '@syncfusion/ej2-angular-grids';
 import { GridTestComponent } from './app/test/grid.component';
 import { ProfileTeacherComponent } from './app/modules/teacher/profile-teacher/profile-teacher.component';
+import { SmartCalendarComponent } from './app/generic-components/smart-calendar/smart-calendar.component';
 
 // Define path constants
 const DASHBOARD_PATH = 'dashboard';
@@ -96,7 +97,7 @@ export const appRoutes: Routes = [
             // Settings
             { path: SETTINGS_PATH, component: SettingsComponent },
             { path: PROFILE_PATH, component: ProfileTeacherComponent },
-            { path: '', component: GridTestComponent }
+            { path: '', component: SmartCalendarComponent }
         ]
     },
 
