@@ -11,6 +11,7 @@ import { ButtonModule } from 'primeng/button';
 export class SmartElementComponent {
     title = model.required();
     editMode = model(false);
+    innerColor = model('blue');
 
     editButtonIcon = model('pi pi-pencil');
     onEditClick = output<void>();
