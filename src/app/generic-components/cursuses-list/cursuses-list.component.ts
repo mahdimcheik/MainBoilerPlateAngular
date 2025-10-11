@@ -1,8 +1,7 @@
 import { Component, computed, inject, model, OnInit, signal } from '@angular/core';
 import { SmartSectionComponent } from '../smart-section/smart-section.component';
 import { CursusComponent } from '../cursus/cursus.component';
-import { Cursus, CursusCreateDTO, CursusResponseDTO } from '../../../api';
-import { CursusesMainServiceService } from '../../shared/services/cursuses-main-service.service';
+import { CursusesMainService } from '../../shared/services/cursuses-main.service';
 import { Structure } from '../configurable-form/related-models';
 import { Drawer } from 'primeng/drawer';
 import { Footer, MessageService } from 'primeng/api';
@@ -20,7 +19,7 @@ import { ModalCursusComponent } from '../modal-cursus/modal-cursus.component';
     styleUrl: './cursuses-list.component.scss'
 })
 export class CursusesListComponent implements OnInit {
-    cursusService = inject(CursusesMainServiceService);
+    cursusService = inject(CursusesMainService);
     user = inject(UserMainService).userConnected;
     messageService = inject(MessageService);
 

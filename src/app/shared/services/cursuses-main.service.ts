@@ -5,7 +5,7 @@ import { firstValueFrom } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
-export class CursusesMainServiceService {
+export class CursusesMainService {
     cursusService = inject(CursusService);
     cursusCategoriesService = inject(CategoryCursusService);
     cursusLevelsService = inject(LevelCursusService);

@@ -13,3 +13,20 @@
 @if (showEditModal()) {
     <app-modal-cursus [(showEditModal)]="showEditModal" (onClose)="cancel()" [cursusInput]="cursus()"></app-modal-cursus>
 }
+
+@if (showDeleteConfirm()) {
+    <app-confirm-modal
+        [(visible)]="showDeleteConfirm"
+        [title]="'Confirmer la suppression'"
+        [question]="'Êtes-vous sûr de vouloir supprimer cette expérience ? Cette action est irréversible.'"
+        [confirmText]="'Supprimer'"
+        [cancelText]="'Annuler'"
+        (onConfirm)="confirmDelete(true)"
+        (onCancel)="confirmDelete(false)"
+        (onClose)="showDeleteConfirm.set(false)"
+    >
+        <div slot="info" class="mt-4 text-sm text-gray-600">
+            <p>Cette action supprimera définitivement l'expérience sélectionnée de votre profil.</p>
+        </div>
+    </app-confirm-modal>
+}

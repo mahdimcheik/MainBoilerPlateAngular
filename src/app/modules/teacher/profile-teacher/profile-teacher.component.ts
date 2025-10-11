@@ -11,7 +11,6 @@ import { LanguageResponseDTO } from '../../../../api';
 import { CursusesListComponent } from '../../../generic-components/cursuses-list/cursuses-list.component';
 import { LanguagesStoreService } from '../../../shared/services/languages.store.service';
 import { UserMainService } from '../../../shared/services/userMain.service';
-import { CursusesMainServiceService } from '../../../shared/services/cursuses-main-service.service';
 
 @Component({
     selector: 'app-profile-teacher',

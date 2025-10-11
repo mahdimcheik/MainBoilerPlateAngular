@@ -4,7 +4,7 @@ import { Drawer } from 'primeng/drawer';
 import { DialogModule } from 'primeng/dialog';
 import { FormGroup } from '@angular/forms';
 import { Structure } from '../configurable-form/related-models';
-import { CursusesMainServiceService } from '../../shared/services/cursuses-main-service.service';
+import { CursusesMainService } from '../../shared/services/cursuses-main.service';
 import { UserMainService } from '../../shared/services/userMain.service';
 import { MessageService } from 'primeng/api';
 import { CursusCreateDTO, CursusResponseDTO } from '../../../api';
@@ -16,7 +16,7 @@ import { CursusCreateDTO, CursusResponseDTO } from '../../../api';
     styleUrl: './modal-cursus.component.scss'
 })
 export class ModalCursusComponent {
-    cursusService = inject(CursusesMainServiceService);
+    cursusService = inject(CursusesMainService);
     user = inject(UserMainService).userConnected;
     messageService = inject(MessageService);
 
@@ -71,17 +71,18 @@ export class ModalCursusComponent {
     }
 
     async submit(cursus: FormGroup) {
-        console.log(cursus.value);
-
         try {
             if (this.cursusInput() && this.cursusInput()?.id) {
                 await this.cursusService.updateCursus(this.cursusInput()?.id as string, { ...cursus.value?.informations, teacherId: this.user().id } as CursusCreateDTO);
+                this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Cursus mis à jour avec succès' });
             } else {
                 await this.cursusService.createCursus({ ...cursus.value?.informations, teacherId: this.user().id } as CursusCreateDTO);
-                this.showEditModal.set(false);
+                this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Cursus créé avec succès' });
             }
         } catch (err) {
             this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur est survenue lors de la création du cursus.' });
+        } finally {
+            this.showEditModal.set(false);
         }
     }
 }
