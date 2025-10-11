@@ -21,6 +21,8 @@ import { MainComponent } from './app/pages/landing/sub-pages/main/main.component
 import { MentionsLegalesComponent } from './app/pages/landing/sub-pages/mentions-legales/mentions-legales.component';
 import { ProfileTeacherComponent } from './app/modules/teacher/profile-teacher/profile-teacher.component';
 import { SmartCalendarComponent } from './app/generic-components/smart-calendar/smart-calendar.component';
+import { SmartGridComponent } from './app/generic-components/smart-grid/smart-grid.component';
+import { UsersListComponent } from './app/modules/admin/pages/users-list/users-list.component';
 
 // Define path constants
 const DASHBOARD_PATH = 'dashboard';
@@ -95,7 +97,8 @@ export const appRoutes: Routes = [
             // Settings
             { path: SETTINGS_PATH, component: SettingsComponent },
             { path: PROFILE_PATH, component: ProfileTeacherComponent },
-            { path: '', component: SmartCalendarComponent }
+            { path: '', component: SmartCalendarComponent },
+            { path: RESERVATION_PATH + '/list', component: UsersListComponent }
         ]
     },
 
