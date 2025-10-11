@@ -1,52 +1,41 @@
-import { Component, inject, model } from '@angular/core';
+import { Component, inject, model, OnInit, signal } from '@angular/core';
 import { SmartSectionComponent } from '../smart-section/smart-section.component';
-import { Formation, FormationResponseDTO } from '../../../api';
+import { FormationResponseDTO } from '../../../api';
 import { FormationComponent } from '../formation/formation.component';
+import { FormationsMainService } from '../../shared/services/formations-main.service';
+import { UserMainService } from '../../shared/services/userMain.service';
+import { MessageService } from 'primeng/api';
+import { ModalFormationComponent } from '../modal-formation/modal-formation.component';
 
 @Component({
     selector: 'app-formations-list',
-    imports: [SmartSectionComponent, FormationComponent],
+    imports: [SmartSectionComponent, FormationComponent, ModalFormationComponent],
     templateUrl: './formations-list.component.html',
     styleUrl: './formations-list.component.scss'
 })
-export class FormationsListComponent {
-    title = model('Listes des formations');
+export class FormationsListComponent implements OnInit {
+    formationService = inject(FormationsMainService);
+    user = inject(UserMainService).userConnected;
+    messageService = inject(MessageService);
+
+    title = 'Liste des Formations';
+
     editMode = model(true);
     buttonIcon = model('pi pi-plus');
+    showEditModal = signal(false);
 
-    formations: FormationResponseDTO[] = [
-        {
-            id: '1',
-            title: 'Formation Angular',
-            description: "Apprenez les bases d'Angular",
-            institution: 'OpenAI Academy',
-            dateFrom: new Date('2023-01-01'),
-            dateTo: new Date('2023-06-01'),
-            // updatedAt: new Date(),
-            createdAt: new Date(),
-            userId: 'user1'
-        },
-        {
-            id: '2',
-            title: 'Formation Angular',
-            description: "Apprenez les bases d'Angular",
-            institution: 'OpenAI Academy',
-            dateFrom: new Date('2023-01-01'),
-            dateTo: new Date('2023-06-01'),
-            // updatedAt: new Date(),
-            createdAt: new Date(),
-            userId: 'user1'
-        },
-        {
-            id: '3',
-            title: 'Formation React',
-            description: 'Apprenez les bases de React',
-            institution: 'OpenAI Academy',
-            dateFrom: new Date('2023-02-01'),
-            dateTo: new Date('2023-07-01'),
-            // updatedAt: new Date(),
-            createdAt: new Date(),
-            userId: 'user2'
-        }
-    ];
+    formations = this.formationService.formations;
+
+    async ngOnInit() {
+        await this.formationService.getAllFormationsByUser(this.user().id);
+        console.log(this.formations());
+    }
+
+    async openModal() {
+        this.showEditModal.set(true);
+    }
+
+    cancel() {
+        this.showEditModal.set(false);
+    }
 }
