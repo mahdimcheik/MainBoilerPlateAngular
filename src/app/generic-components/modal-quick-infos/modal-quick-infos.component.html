@@ -1,9 +1,9 @@
-<p-dialog [visible]="visible()" [modal]="true" [dismissableMask]="true" (closeOnEscape)="(true)" [closable]="true" [draggable]="false" [resizable]="false" styleClass="confirm-modal" [style]="{ width: '90vw', maxWidth: '500px' }" (onHide)="close()">
+<p-dialog [(visible)]="visible" [modal]="true" [dismissableMask]="true" [closeOnEscape]="true" [closable]="true" [draggable]="false" [resizable]="false" styleClass="confirm-modal" [style]="{ width: '90vw', maxWidth: '500px' }" (onHide)="onHide()">
     <!-- Header -->
     <ng-template pTemplate="header">
         <div class="flex items-center gap-3">
             <i class="pi pi-info-circle text-2xl"></i>
-            <h3 class="text-xl font-semibold text-gray-800 m-0">{{ title }}</h3>
+            <h3 class="text-xl font-semibold text-gray-800 m-0">{{ title() }}</h3>
         </div>
     </ng-template>
 

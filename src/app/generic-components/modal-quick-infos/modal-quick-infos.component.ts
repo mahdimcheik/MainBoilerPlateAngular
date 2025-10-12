@@ -21,7 +21,11 @@ export class ModalQuickInfosComponent {
     });
     title = computed(() => (this.slot() ? `Détails du créneau - ${this.slot()?.dateTo}` : "Détails de l'événement"));
 
-    close() {
+    close = () => {
         this.visible.set(false);
-    }
+    };
+
+    onHide = () => {
+        this.visible.set(false);
+    };
 }
