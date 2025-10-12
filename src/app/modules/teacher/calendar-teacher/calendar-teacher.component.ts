@@ -10,10 +10,11 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { FormBuilder } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { ModalQuickInfosComponent } from '../../../generic-components/modal-quick-infos/modal-quick-infos.component';
+import { Button } from 'primeng/button';
 
 @Component({
     selector: 'app-calendar-teacher',
-    imports: [FullCalendarModule, ModalQuickInfosComponent],
+    imports: [FullCalendarModule, ModalQuickInfosComponent, Button],
     templateUrl: './calendar-teacher.component.html',
     styleUrl: './calendar-teacher.component.scss'
 })

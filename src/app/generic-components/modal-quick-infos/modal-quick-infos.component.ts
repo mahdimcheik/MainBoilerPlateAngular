@@ -3,10 +3,11 @@ import { EventInput } from '@fullcalendar/core/index.js';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { Slot } from '../../../api';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-modal-quick-infos',
-    imports: [DialogModule, ButtonModule],
+    imports: [DialogModule, ButtonModule, DatePipe],
     templateUrl: './modal-quick-infos.component.html',
     styleUrl: './modal-quick-infos.component.scss'
 })
