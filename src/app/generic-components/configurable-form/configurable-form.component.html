@@ -105,6 +105,7 @@
                                         @if (element.type === 'date') {
                                             <p-datepicker
                                                 [timeOnly]="element.timeOnly || false"
+                                                [showTime]="element.showTime || false"
                                                 [id]="element.id"
                                                 [formControlName]="element.name"
                                                 class="w-full configurable-form-input configurable-form-date-input"
@@ -411,6 +412,7 @@
                                                 @if (field.type === 'date') {
                                                     <p-datepicker
                                                         [timeOnly]="field.timeOnly || false"
+                                                        [showTime]="field.showTime || false"
                                                         [id]="field.id"
                                                         [formControlName]="field.name"
                                                         class="w-full configurable-form-input configurable-form-date-input"

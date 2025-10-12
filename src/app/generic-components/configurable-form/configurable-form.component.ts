@@ -128,9 +128,10 @@ export class ConfigurableFormComponent implements OnInit {
             // Add all fields from this group to the group's FormGroup
             group.fields.forEach((field: FormField<any>) => {
                 const validators = this.createFieldValidators(field);
+                const initialValue = field.value !== undefined && field.value !== null ? field.value : this.getDefaultValue(field.type);
                 const control = this.fb.control(
                     {
-                        value: field.value || this.getDefaultValue(field.type),
+                        value: initialValue,
                         disabled: field.disabled || false
                     },
                     validators
@@ -147,9 +148,10 @@ export class ConfigurableFormComponent implements OnInit {
         // Create FormControls for direct formFields
         structure.formFields?.forEach((field: FormField<any>) => {
             const validators = this.createFieldValidators(field);
+            const initialValue = field.value !== undefined && field.value !== null ? field.value : this.getDefaultValue(field.type);
             const control = this.fb.control(
                 {
-                    value: field.value || this.getDefaultValue(field.type),
+                    value: initialValue,
                     disabled: field.disabled || false
                 },
                 validators

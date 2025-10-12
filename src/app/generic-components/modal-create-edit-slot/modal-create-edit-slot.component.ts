@@ -26,8 +26,18 @@ export class ModalCreateEditSlotComponent implements OnInit {
         }
         return null;
     });
-    start = computed(() => this.event()?.start as Date);
-    end = computed(() => this.event()?.end as Date);
+    start = computed(() => {
+        const event = this.event();
+        if (!event?.start) return null;
+        return event.start instanceof Date ? event.start : new Date(event?.start as string);
+    });
+    end = computed(() => {
+        const event = this.event();
+        if (!event?.end) return null;
+        console.log('end', new Date(event?.end as string));
+
+        return event.end instanceof Date ? event.end : new Date(event?.end as string);
+    });
 
     form = computed<Structure>(() => {
         return {
@@ -40,9 +50,9 @@ export class ModalCreateEditSlotComponent implements OnInit {
                     name: 'Informations',
                     label: 'Informations',
                     fields: [
-                        { id: 'start', label: 'Date de début', name: 'start', type: 'date', value: this.start() ?? null, timeOnly: true, fullWidth: true },
-                        { id: 'end', label: 'Date de fin', name: 'end', type: 'date', value: this.end() ?? null, timeOnly: true, required: true, fullWidth: true },
-                        { id: 'typeId', label: 'Type', name: 'typeId', type: 'select', options: this.getTypes(), required: true, compareKey: 'id', displayKey: 'name', value: this.slot()?.typeId ?? null, fullWidth: true }
+                        { id: 'start', label: 'Date de début', name: 'start', type: 'date', value: this.start(), showTime: true, fullWidth: true, timeOnly: true },
+                        { id: 'end', label: 'Date de fin', name: 'end', type: 'date', value: this.end(), showTime: true, required: true, fullWidth: true, timeOnly: true },
+                        { id: 'typeId', label: 'Type', name: 'typeId', type: 'select', options: this.getTypes(), required: true, compareKey: 'id', displayKey: 'name', value: this.slot()?.typeId, fullWidth: true }
                     ]
                 }
             ]
@@ -50,7 +60,12 @@ export class ModalCreateEditSlotComponent implements OnInit {
     });
 
     ngOnInit(): void {
-        console.log(this.event());
+        console.log('Event:', this.event());
+        console.log('Start Date:', this.start());
+        console.log('End Date:', this.end());
+        console.log('Start type:', typeof this.start());
+        console.log('End type:', typeof this.end());
+        console.log('Form structure:', this.form());
     }
 
     getTypes() {

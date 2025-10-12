@@ -1,17 +1,18 @@
 import { Component, computed, inject, input, model, output, signal, viewChild } from '@angular/core';
-import { CalendarOptions, EventInput } from '@fullcalendar/core/index.js';
+import { CalendarOptions, DateSelectArg, DateSpanApi, EventClickArg, EventDropArg, EventInput } from '@fullcalendar/core/index.js';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
 import { TooltipModule } from 'primeng/tooltip';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import frLocale from '@fullcalendar/core/locales/fr';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import interactionPlugin, { EventResizeDoneArg } from '@fullcalendar/interaction';
 import { FormBuilder } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { ModalQuickInfosComponent } from '../../../generic-components/modal-quick-infos/modal-quick-infos.component';
 import { Button } from 'primeng/button';
 import { ModalCreateEditSlotComponent } from '../../../generic-components/modal-create-edit-slot/modal-create-edit-slot.component';
+import { EventImpl } from '@fullcalendar/core/internal';
 
 @Component({
     selector: 'app-calendar-teacher',
@@ -42,25 +43,27 @@ export class CalendarTeacherComponent {
 
     initialView = computed(() => (window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek'));
 
-    onResize = (event: any) => {
+    onResize = (event: EventResizeDoneArg) => {
         console.log(event);
     };
-    onDateSelect = (selectInfo: any) => {
-        console.log('onDateSelect', selectInfo);
-        this.selectedEvent.set(selectInfo.event);
+    onDateSelect = (selectInfo: DateSelectArg) => {
+        this.selectedEvent.set(selectInfo);
         this.createEventVisible.set(true);
     };
-    onEventClick = (clickInfo: any) => {
-        console.log(clickInfo);
-        this.selectedEvent.set(clickInfo.event);
+    onEventClick = (clickInfo: EventClickArg) => {
+        this.selectedEvent.set(clickInfo.event as EventInput);
         this.quickInfosVisible.set(true);
     };
 
-    onDragStart = (dragInfo: any) => {
+    onStartDrag = (dragInfo: any) => {
         console.log(dragInfo);
+        return true;
+    };
+    canDrop = (dropInfo: DateSpanApi, draggedEvent: EventImpl | null) => {
+        return false;
     };
 
-    onDrop = (dropInfo: any) => {
+    onDrop = (dropInfo: EventDropArg) => {
         console.log(dropInfo);
     };
 
@@ -118,8 +121,8 @@ export class CalendarTeacherComponent {
             eventResize: this.onResize,
             select: this.onDateSelect,
             eventClick: this.onEventClick,
-            selectAllow: () => true,
-            eventAllow: () => true,
+            selectAllow: this.onStartDrag,
+            eventAllow: this.canDrop,
             eventDrop: this.onDrop,
             events: this.sourceEvents(),
             eventColor: '#378006',
