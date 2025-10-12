@@ -103,7 +103,13 @@
                                         }
 
                                         @if (element.type === 'date') {
-                                            <p-datepicker [id]="element.id" [formControlName]="element.name" class="w-full configurable-form-input configurable-form-date-input" [class.p-invalid]="isDirectFieldInvalid(element.name)" />
+                                            <p-datepicker
+                                                [timeOnly]="element.timeOnly || false"
+                                                [id]="element.id"
+                                                [formControlName]="element.name"
+                                                class="w-full configurable-form-input configurable-form-date-input"
+                                                [class.p-invalid]="isDirectFieldInvalid(element.name)"
+                                            />
                                         }
 
                                         @if (element.type === 'color') {
@@ -403,7 +409,13 @@
 
                                                 <!-- Date Input -->
                                                 @if (field.type === 'date') {
-                                                    <p-datepicker [id]="field.id" [formControlName]="field.name" class="w-full configurable-form-input configurable-form-date-input" [class.p-invalid]="isFieldInvalid(element.id, field.name)" />
+                                                    <p-datepicker
+                                                        [timeOnly]="field.timeOnly || false"
+                                                        [id]="field.id"
+                                                        [formControlName]="field.name"
+                                                        class="w-full configurable-form-input configurable-form-date-input"
+                                                        [class.p-invalid]="isFieldInvalid(element.id, field.name)"
+                                                    />
                                                 }
 
                                                 <!-- Color Input -->

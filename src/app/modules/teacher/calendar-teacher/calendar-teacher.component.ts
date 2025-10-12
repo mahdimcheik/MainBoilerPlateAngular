@@ -11,10 +11,11 @@ import { FormBuilder } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { ModalQuickInfosComponent } from '../../../generic-components/modal-quick-infos/modal-quick-infos.component';
 import { Button } from 'primeng/button';
+import { ModalCreateEditSlotComponent } from '../../../generic-components/modal-create-edit-slot/modal-create-edit-slot.component';
 
 @Component({
     selector: 'app-calendar-teacher',
-    imports: [FullCalendarModule, ModalQuickInfosComponent, Button],
+    imports: [FullCalendarModule, ModalQuickInfosComponent, Button, ModalCreateEditSlotComponent],
     templateUrl: './calendar-teacher.component.html',
     styleUrl: './calendar-teacher.component.scss'
 })
@@ -45,7 +46,7 @@ export class CalendarTeacherComponent {
         console.log(event);
     };
     onDateSelect = (selectInfo: any) => {
-        console.log(selectInfo);
+        console.log('onDateSelect', selectInfo);
         this.selectedEvent.set(selectInfo.event);
         this.createEventVisible.set(true);
     };

@@ -5,6 +5,7 @@ export interface FormField<T> {
     label: string;
     name: string;
     type: 'text' | 'number' | 'email' | 'password' | 'date' | 'checkbox' | 'radio' | 'select' | 'textarea' | 'color' | 'multiselect' | 'file';
+    timeOnly?: boolean;
     placeholder?: string;
     value?: T | T[];
     compareKey?: string;
