@@ -1,5 +1,5 @@
 {
-  "name": "inspire",
+  "name": "SimplonHub",
   "version": "19.0.0",
   "scripts": {
     "ng": "ng serve --ssl true --ssl-key key.pem --ssl-cert cert.pem --port 4201",
