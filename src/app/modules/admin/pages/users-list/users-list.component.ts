@@ -37,8 +37,8 @@ export class UsersListComponent {
         }
     ]);
     columns = signal<DynamicColDef[]>([
-        { field: 'firstName', header: 'Name', type: 'text' },
-        { field: 'email', header: 'Email', cellRenderer: 'default', type: 'text' },
+        { field: 'firstName', header: 'Name', type: 'text', sortable: true, sortField: 'firstName' },
+        { field: 'email', header: 'Email', cellRenderer: 'default', type: 'text', sortable: true, sortField: 'email' },
         // { field: 'roles', header: 'Role' },
         { field: 'status', header: 'Status', type: 'custom', valueFormatter: (status) => (status as StatusAccountDTO).name },
         { field: 'dateOfBirth', header: 'Created At', type: 'date' }

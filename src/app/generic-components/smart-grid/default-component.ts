@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, input } from '@angular/core';
 import { ButtonModule } from 'primeng/button'; // Exemple avec PrimeNG
 import { ICellRendererAngularComp } from '../../shared/models/TableColumn ';
 
@@ -12,19 +12,19 @@ import { ICellRendererAngularComp } from '../../shared/models/TableColumn ';
     `
 })
 export class ActionButtonRendererComponent implements ICellRendererAngularComp {
-    @Input() data: any; // Reçoit toute la ligne de données (rowData)
-    @Input() params: any; // Reçoit les cellRendererParams
+    data = input<any>(); // Reçoit toute la ligne de données (rowData)
+    params = input<any>(); // Reçoit les cellRendererParams
 
     // Exemple d'interaction vers le composant parent
     // @Output() action = new EventEmitter<any>();
 
     onEditClick() {
-        console.log('Edit clicked for row:', this.data);
+        console.log('Edit clicked for row:', this.data());
         // this.action.emit({ type: 'edit', row: this.data });
     }
 
     onDeleteClick() {
-        console.log('Delete clicked for row:', this.params);
+        console.log('Delete clicked for row:', this.params());
         // this.action.emit({ type: 'delete', row: this.data });
     }
 }

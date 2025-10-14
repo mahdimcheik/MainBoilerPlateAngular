@@ -9,10 +9,12 @@ import { InputIconModule } from 'primeng/inputicon';
 import { TableModule } from 'primeng/table';
 import { DynamicColDef, ICellRendererAngularComp } from '../../shared/models/TableColumn ';
 import { ActionButtonRendererComponent } from './default-component';
+import { SortEvent } from 'primeng/api';
+import { CustomSortComponent } from './custom-sort/custom-sort.component';
 
 @Component({
     selector: 'app-smart-grid',
-    imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule],
+    imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, CustomSortComponent],
 
     templateUrl: './smart-grid.component.html',
     styleUrl: './smart-grid.component.scss'
@@ -36,5 +38,9 @@ export class SmartGridComponent<T> implements OnInit {
             return this.componentMap()[templateName];
         }
         return templateName;
+    }
+
+    customSort($event: number, column: DynamicColDef) {
+        console.log($event);
     }
 }

@@ -1,4 +1,16 @@
-<p-table #dt2 [value]="data()" dataKey="id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" [loading]="false" [paginator]="true" [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']" [tableStyle]="{ 'min-width': '75rem' }">
+<p-table
+    #dt2
+    [value]="data()"
+    [sortField]="'multiple'"
+    dataKey="id"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [loading]="false"
+    [paginator]="true"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+>
+    <!-- (sortFunction)="customSort($event)" -->
     <ng-template #caption>
         <div class="flex">
             <p-iconfield iconPosition="left" class="ml-auto">
@@ -13,7 +25,13 @@
         <tr>
             @for (column of columns(); track column.field) {
                 <th>
-                    {{ column.header }}
+                    <div class="flex items-center gap-2">
+                        <span>{{ column.header }}</span>
+                        @if (column.sortable) {
+                            <!-- <p-sortIcon [field]="column.sortField" /> -->
+                            <app-custom-sort [sortValue]="column.sortValue ?? 0" (sortChange)="customSort($event, column)"></app-custom-sort>
+                        }
+                    </div>
                 </th>
             }
         </tr>

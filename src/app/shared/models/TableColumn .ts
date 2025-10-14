@@ -8,6 +8,9 @@ export interface ICellRendererAngularComp {
 export interface DynamicColDef {
     field: string;
     header: string;
+    sortable?: boolean;
+    sortField?: string;
+    sortValue?: number;
     type?: 'text' | 'date' | 'number' | 'boolean' | 'custom';
     valueFormatter?: (data: any) => string;
     cellRenderer?: Type<ICellRendererAngularComp> | string;
