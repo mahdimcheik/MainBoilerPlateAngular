@@ -1,14 +1,15 @@
-import { TemplateRef } from '@angular/core';
-/**
- * Interface représentant une colonne de tableau.
- * @obsolete Utiliser PrimeNG Table à la place
- */
-export interface TableColumn {
+import { Type } from '@angular/core';
+
+export interface ICellRendererAngularComp {
+    data: any;
+    params?: any;
+}
+
+export interface DynamicColDef {
     field: string;
     header: string;
     type?: 'text' | 'date' | 'number' | 'boolean' | 'custom';
-    filter?: boolean;
-    sortable?: boolean;
-    width?: string;
-    templateName?: string;
+    valueFormatter?: (data: any) => string;
+    cellRenderer?: Type<ICellRendererAngularComp> | string;
+    cellRendererParams?: any;
 }
