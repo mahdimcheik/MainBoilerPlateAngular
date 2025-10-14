@@ -29,7 +29,7 @@
                         <span>{{ column.header }}</span>
                         @if (column.sortable) {
                             <!-- <p-sortIcon [field]="column.sortField" /> -->
-                            <app-custom-sort [sortValue]="column.sortValue ?? 0" (sortChange)="customSort($event, column)"></app-custom-sort>
+                            <app-custom-sort [sortValue]="getSortOrderForField(column.sortField ?? '')" (sortChange)="sortChange($event, column)"></app-custom-sort>
                         }
                     </div>
                 </th>

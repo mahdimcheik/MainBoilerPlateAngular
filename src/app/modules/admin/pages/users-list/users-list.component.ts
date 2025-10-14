@@ -1,7 +1,7 @@
 import { Component, signal, Type } from '@angular/core';
 import { SmartGridComponent } from '../../../../generic-components/smart-grid/smart-grid.component';
 import { StatusAccountDTO, UserResponseDTO } from '../../../../../api';
-import { DynamicColDef, ICellRendererAngularComp } from '../../../../shared/models/TableColumn ';
+import { CustomTableState, DynamicColDef, ICellRendererAngularComp, INITIAL_STATE } from '../../../../shared/models/TableColumn ';
 import { ActionButtonRendererComponent } from '../../../../generic-components/smart-grid/default-component';
 
 @Component({
@@ -11,7 +11,7 @@ import { ActionButtonRendererComponent } from '../../../../generic-components/sm
     styleUrl: './users-list.component.scss'
 })
 export class UsersListComponent {
-    filterParams = signal<any>({});
+    filterParams = signal<CustomTableState>(INITIAL_STATE);
     customComponents = signal<{ [key: string]: Type<ICellRendererAngularComp> }>({
         default: ActionButtonRendererComponent
     });

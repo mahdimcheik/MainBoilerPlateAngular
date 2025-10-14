@@ -1,5 +1,6 @@
 import { Component, input, model, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SortOrder } from '../../../shared/models/TableColumn ';
 
 @Component({
     selector: 'app-custom-sort',
@@ -12,7 +13,7 @@ export class CustomSortComponent {
     sortValue = model<number>(0);
 
     // Output: emits new sort value when clicked
-    sortChange = output<number>();
+    sortChange = output<SortOrder>();
 
     /**
      * Handle click event to cycle through sort states
@@ -30,7 +31,7 @@ export class CustomSortComponent {
             newValue = 0; // descending -> unsorted
         }
 
-        this.sortChange.emit(newValue);
+        this.sortChange.emit(newValue as SortOrder);
         this.sortValue.set(newValue);
     }
 
