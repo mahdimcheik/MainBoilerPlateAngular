@@ -36,11 +36,28 @@ export class UsersListComponent {
             roles: ['User']
         }
     ]);
+    statuses: StatusAccountDTO[] = [
+        {
+            id: '1',
+            name: 'Active',
+            color: '#000'
+        },
+        {
+            id: '2',
+            name: 'Inactive',
+            color: '#000'
+        },
+        {
+            id: '3',
+            name: 'Pending',
+            color: '#000'
+        }
+    ];
     columns = signal<DynamicColDef[]>([
-        { field: 'firstName', header: 'Name', type: 'text', sortable: true, sortField: 'firstName' },
+        { field: 'firstName', header: 'Name', type: 'text', sortable: true, sortField: 'firstName', filterable: true },
         { field: 'email', header: 'Email', cellRenderer: 'default', type: 'text', sortable: true, sortField: 'email' },
         // { field: 'roles', header: 'Role' },
-        { field: 'status', header: 'Status', type: 'custom', valueFormatter: (status) => (status as StatusAccountDTO).name },
-        { field: 'dateOfBirth', header: 'Created At', type: 'date' }
+        { field: 'status', header: 'Status', type: 'array', valueFormatter: (status) => (status as StatusAccountDTO).name, options: this.statuses, optionLabel: 'name', optionValue: 'id', filterable: true },
+        { field: 'dateOfBirth', header: 'Created At', type: 'date', filterable: true }
     ]);
 }

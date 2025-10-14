@@ -1,13 +1,13 @@
 <p-table
     #dt2
     [value]="data()"
+    style="max-height: 500px"
     [sortField]="'multiple'"
     dataKey="id"
     [rows]="10"
     [rowsPerPageOptions]="[10, 25, 50]"
     [loading]="false"
     [paginator]="true"
-    [tableStyle]="{ 'min-width': '75rem' }"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
 >
     <!-- (sortFunction)="customSort($event)" -->
@@ -30,6 +30,48 @@
                         @if (column.sortable) {
                             <!-- <p-sortIcon [field]="column.sortField" /> -->
                             <app-custom-sort [sortValue]="getSortOrderForField(column.sortField ?? '')" (sortChange)="sortChange($event, column)"></app-custom-sort>
+                        }
+                    </div>
+                </th>
+            }
+        </tr>
+        <tr>
+            @for (column of columns(); track column.field) {
+                <th>
+                    <div class="flex items-center gap-2">
+                        @if (column.type === 'text' && column.filterable) {
+                            <input pInputText type="text" placeholder="Type to search" [value]="getFilterValue(column.field)" (input)="onInputchange($event, column)" />
+                        }
+                        @if (column.type === 'select' && column.filterable) {
+                            <p-select [options]="column.options" [optionLabel]="column.optionLabel" [optionValue]="column.optionValue" placeholder="Select One" [showClear]="true" style="min-width: 12rem" (onChange)="onSelectchange($event, column)">
+                                <ng-template pTemplate="selectedItem" let-option>
+                                    {{ option[column?.optionLabel ?? ''] }}
+                                </ng-template>
+                                <ng-template pTemplate="item" let-option>
+                                    {{ option[column?.optionLabel ?? ''] }}
+                                </ng-template>
+                            </p-select>
+                        }
+                        @if (column.type === 'array' && column.filterable) {
+                            <p-multiselect
+                                [options]="column.options"
+                                [optionLabel]="column.optionLabel"
+                                [optionValue]="column.optionValue"
+                                placeholder="Select One"
+                                [showClear]="true"
+                                style="min-width: 12rem"
+                                (onChange)="onSelectchange($event, column)"
+                            >
+                                <ng-template pTemplate="selectedItem" let-option>
+                                    {{ option[column?.optionLabel ?? ''] }}
+                                </ng-template>
+                                <ng-template pTemplate="item" let-option>
+                                    {{ option[column?.optionLabel ?? ''] }}
+                                </ng-template>
+                            </p-multiselect>
+                        }
+                        @if (column.type === 'date' && column.filterable) {
+                            <p-datepicker selectionMode="range" [showTime]="true" (onChange)="onDatechange($event, column)" />
                         }
                     </div>
                 </th>
@@ -104,6 +146,15 @@
                         }
                     }
                     @case ('boolean') {
+                        @if (column.cellRenderer) {
+                            <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
+                        } @else {
+                            <td>
+                                {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : item[column.field] }}
+                            </td>
+                        }
+                    }
+                    @case ('select') {
                         @if (column.cellRenderer) {
                             <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
                         } @else {

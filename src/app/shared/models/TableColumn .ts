@@ -1,4 +1,5 @@
 import { Type } from '@angular/core';
+import { Observable } from 'rxjs';
 
 export interface ICellRendererAngularComp {
     data: any;
@@ -11,10 +12,16 @@ export interface DynamicColDef {
     sortable?: boolean;
     sortField?: string;
     sortValue?: number;
-    type?: 'text' | 'date' | 'number' | 'boolean' | 'custom';
+    filterable?: boolean;
+    type?: 'text' | 'date' | 'number' | 'boolean' | 'select' | 'custom' | 'array';
     valueFormatter?: (data: any) => string;
     cellRenderer?: Type<ICellRendererAngularComp> | string;
     cellRendererParams?: any;
+    // select options
+    options?: any[];
+    fetchOptions?: () => Observable<any[]>;
+    optionLabel?: string;
+    optionValue?: string;
 }
 
 export type SortOrder = -1 | 0 | 1; // type de tri
