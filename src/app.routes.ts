@@ -22,6 +22,7 @@ import { MentionsLegalesComponent } from './app/pages/landing/sub-pages/mentions
 import { ProfileTeacherComponent } from './app/modules/teacher/profile-teacher/profile-teacher.component';
 import { UsersListComponent } from './app/modules/admin/pages/users-list/users-list.component';
 import { CalendarTeacherComponent } from './app/modules/teacher/calendar-teacher/calendar-teacher.component';
+import { SlotsComponent } from './app/modules/teacher/pages/slots/slots.component';
 
 // Define path constants
 const DASHBOARD_PATH = 'dashboard';
@@ -97,7 +98,8 @@ export const appRoutes: Routes = [
             { path: SETTINGS_PATH, component: SettingsComponent },
             { path: PROFILE_PATH, component: ProfileTeacherComponent },
             { path: '', component: CalendarTeacherComponent },
-            { path: RESERVATION_PATH + '/list', component: UsersListComponent }
+            { path: RESERVATION_PATH + '/list', component: UsersListComponent },
+            { path: CONTACT_PATH, component: SlotsComponent }
         ]
     },
 
