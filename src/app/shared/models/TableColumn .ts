@@ -17,6 +17,7 @@ export interface DynamicColDef {
     valueFormatter?: (data: any) => string;
     cellRenderer?: Type<ICellRendererAngularComp> | string;
     cellRendererParams?: any;
+    width?: string; // Column width (e.g., '150px', '20%')
     // select options
     options?: any[];
     fetchOptions?: () => Observable<any[]>;
