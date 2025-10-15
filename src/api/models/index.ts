@@ -313,6 +313,14 @@ export interface CursusUpdateDTO {
     categoryIds?: string[];
 }
 
+export interface DynamicFilters {
+    first?: number;
+    rows?: number;
+    globalSearch?: string | null;
+    sorts?: Sort[];
+    filters?: Record<string, FilterItem>;
+}
+
 export interface Experience {
     id: string;
     createdAt: Date;
@@ -393,6 +401,11 @@ export interface ExperienceUpdateDTO {
     dateTo?: Date | null;
     /** Identifiant de l'utilisateur associé */
     userId: string;
+}
+
+export interface FilterItem {
+    value: string | null;
+    matchMode: string | null;
 }
 
 export interface ForgotPasswordInput {
@@ -832,6 +845,11 @@ export interface SlotUpdateDTO {
     teacherId: string;
     /** Identifiant du type de créneau */
     typeId: string;
+}
+
+export interface Sort {
+    field?: string | null;
+    order?: number;
 }
 
 export interface StatusAccount {

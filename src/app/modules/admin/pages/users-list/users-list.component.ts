@@ -73,7 +73,7 @@ export class UsersListComponent {
             // Filtering/Sorting uses OData path: status/name
             field: 'status', // JavaScript path for display
             header: 'Status',
-            type: 'select',
+            type: 'array',
             valueFormatter: (status) => (status as StatusAccountDTO)?.name,
             options: this.statuses,
             optionLabel: 'name',

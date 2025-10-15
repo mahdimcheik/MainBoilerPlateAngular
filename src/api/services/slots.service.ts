@@ -10,7 +10,7 @@
 import { HttpClient, HttpContext, HttpContextToken, HttpEvent, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { ObjectResponseDTO, RequestOptions, SlotCreateDTO, SlotResponseDTOListResponseDTO, SlotResponseDTOResponseDTO, SlotUpdateDTO } from "../models";
+import { DynamicFilters, ObjectResponseDTO, RequestOptions, SlotCreateDTO, SlotResponseDTOListResponseDTO, SlotResponseDTOResponseDTO, SlotUpdateDTO } from "../models";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT } from "../tokens";
 
 @Injectable({ providedIn: "root" })
@@ -70,6 +70,22 @@ export class SlotsService {
         };
 
         return this.httpClient.get(url, requestOptions);
+    }
+
+    slotsTeacherTeacherIdPost(teacherId: string, dynamicFilters?: DynamicFilters, observe?: 'body', options?: RequestOptions<'json'>): Observable<SlotResponseDTOListResponseDTO>;
+    slotsTeacherTeacherIdPost(teacherId: string, dynamicFilters?: DynamicFilters, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<SlotResponseDTOListResponseDTO>>;
+    slotsTeacherTeacherIdPost(teacherId: string, dynamicFilters?: DynamicFilters, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<SlotResponseDTOListResponseDTO>>;
+    slotsTeacherTeacherIdPost(teacherId: string, dynamicFilters?: DynamicFilters, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+        const url = `${this.basePath}/slots/teacher/${teacherId}`;
+
+        const requestOptions: any = {
+            observe: observe as any,
+            reportProgress: options?.reportProgress,
+            withCredentials: options?.withCredentials,
+            context: this.createContextWithClientId(options?.context)
+        };
+
+        return this.httpClient.post(url, dynamicFilters, requestOptions);
     }
 
     slotsAvailableGet(observe?: 'body', options?: RequestOptions<'json'>): Observable<SlotResponseDTOListResponseDTO>;
