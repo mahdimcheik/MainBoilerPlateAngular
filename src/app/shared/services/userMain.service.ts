@@ -27,6 +27,7 @@ import {
     UserUpdateDTO
 } from '../../../api';
 import { ResponseDTO } from '../models/response-dto';
+import { BrowserModule } from '@angular/platform-browser';
 
 /**
  * service pour gérer les utilisateurs.
