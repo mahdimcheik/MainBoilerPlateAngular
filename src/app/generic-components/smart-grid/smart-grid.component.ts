@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, model, OnInit, signal, Type } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
@@ -14,7 +15,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 
 @Component({
     selector: 'app-smart-grid',
-    imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, CustomSortComponent, InputTextModule, DatePickerModule],
+    imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, CustomSortComponent, InputTextModule, DatePickerModule, FormsModule],
 
     templateUrl: './smart-grid.component.html',
     styleUrl: './smart-grid.component.scss'
@@ -28,6 +29,12 @@ export class SmartGridComponent<T> implements OnInit {
     data = model<T[]>([]);
     loading = model(false);
     columns = model.required<DynamicColDef[]>();
+
+    dateFilterMatchModes = [
+        { label: 'Equal', value: 'dateIs' },
+        { label: 'Before', value: 'dateBefore' },
+        { label: 'After', value: 'dateAfter' }
+    ];
 
     constructor() {
         effect(() => {
@@ -69,7 +76,8 @@ export class SmartGridComponent<T> implements OnInit {
     }
 
     getFilterValue(field: string): any {
-        return this.tableState().filters?.[field]?.value ?? '';
+        const filterValue = this.tableState().filters?.[field]?.value;
+        return filterValue ?? '';
     }
     onInputchange($event: any, column: DynamicColDef) {
         console.log('onInputchange', $event);
@@ -91,13 +99,29 @@ export class SmartGridComponent<T> implements OnInit {
     }
 
     // date time
-    onDatechange($event: any, column: DynamicColDef) {
-        console.log('onDatechange', $event);
+    onDatechange($event: any, column: DynamicColDef, matchMode: string = 'dateIs') {
+        console.log('onDatechange', $event, 'matchMode:', matchMode);
         const newFilters = { ...this.tableState().filters };
-        newFilters[column.field] = { value: $event.value, matchMode: 'between' };
+        newFilters[column.field] = { value: $event, matchMode: matchMode };
         this.tableState.update((state) => ({
             ...state,
             filters: newFilters
         }));
+    }
+
+    getDateFilterMatchMode(field: string): string {
+        return this.tableState().filters?.[field]?.matchMode ?? 'dateIs';
+    }
+
+    onDateFilterMatchModeChange(matchMode: string, column: DynamicColDef) {
+        const currentFilter = this.tableState().filters?.[column.field];
+        if (currentFilter?.value) {
+            const newFilters = { ...this.tableState().filters };
+            newFilters[column.field] = { value: currentFilter.value, matchMode: matchMode };
+            this.tableState.update((state) => ({
+                ...state,
+                filters: newFilters
+            }));
+        }
     }
 }

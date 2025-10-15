@@ -76,6 +76,25 @@
                                     </ng-template>
                                 </p-columnFilter>
                             }
+                            @if (column.filterable && column.type === 'date') {
+                                <p-columnFilter field="column.field" matchMode="dateIs" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                    <ng-template #filter let-value let-filter="filterCallback">
+                                        <div class="flex flex-col gap-3">
+                                            <p-select
+                                                [options]="dateFilterMatchModes"
+                                                optionLabel="label"
+                                                optionValue="value"
+                                                [ngModel]="getDateFilterMatchMode(column.field)"
+                                                (onChange)="onDateFilterMatchModeChange($event.value, column)"
+                                                placeholder="Select Mode"
+                                                style="min-width: 12rem"
+                                            >
+                                            </p-select>
+                                            <p-datepicker [ngModel]="getFilterValue(column.field)" (onSelect)="onDatechange($event, column, getDateFilterMatchMode(column.field))" [showTime]="true" [showButtonBar]="true" dateFormat="dd/mm/yy" />
+                                        </div>
+                                    </ng-template>
+                                </p-columnFilter>
+                            }
                         </div>
                     </th>
                 }
