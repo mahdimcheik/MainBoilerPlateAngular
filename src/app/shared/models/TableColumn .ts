@@ -10,9 +10,10 @@ export interface DynamicColDef {
     field: string;
     header: string;
     sortable?: boolean;
-    sortField?: string;
+    sortField?: string; // OData path for sorting (e.g., 'gender/name')
     sortValue?: number;
     filterable?: boolean;
+    filterField?: string; // OData path for filtering (e.g., 'gender/name'), defaults to field if not provided
     type?: 'text' | 'date' | 'number' | 'boolean' | 'select' | 'custom' | 'array';
     valueFormatter?: (data: any) => string;
     cellRenderer?: Type<ICellRendererAngularComp> | string;
