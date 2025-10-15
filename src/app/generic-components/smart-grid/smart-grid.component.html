@@ -9,8 +9,9 @@
     [loading]="false"
     [paginator]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [scrollable]="true"
+    [scrollHeight]="'800px'"
 >
-    <!-- (sortFunction)="customSort($event)" -->
     <ng-template #caption>
         <div class="flex">
             <p-iconfield iconPosition="left" class="ml-auto">
@@ -28,7 +29,6 @@
                     <div class="flex items-center gap-2">
                         <span>{{ column.header }}</span>
                         @if (column.sortable) {
-                            <!-- <p-sortIcon [field]="column.sortField" /> -->
                             <app-custom-sort [sortValue]="getSortOrderForField(column.sortField ?? '')" (sortChange)="sortChange($event, column)"></app-custom-sort>
                         }
                     </div>
