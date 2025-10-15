@@ -1,14 +1,15 @@
 <div class="table-container">
     <p-table
         #dt
-        [value]="processedData()"
+        [value]="data()"
+        [totalRecords]="totalRecords()"
         dataKey="id"
         [rows]="tableState().rows"
         [first]="tableState().first"
         [rowsPerPageOptions]="[10, 25, 50, 100]"
         [loading]="loading()"
         [paginator]="true"
-        [lazy]="false"
+        [lazy]="true"
         [scrollable]="true"
         scrollHeight="flex"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"

@@ -16,19 +16,21 @@ import { ButtonModule } from 'primeng/button';
 import { PopoverModule } from 'primeng/popover';
 
 /**
- * SmartGridComponent - A powerful, ag-grid-like data table component
+ * SmartGridComponent - A powerful, ag-grid-like data table component with OData support
  *
  * This component provides a customizable data grid with:
  * - Programmatic column definitions
  * - Custom state management for filters and sorting
- * - Client-side filtering and sorting (PrimeNG defaults disabled)
+ * - OData-ready (server-side filtering and sorting)
  * - Multiple filter types: text, select, array, date
  * - Custom cell renderers
- * - Pagination
+ * - Pagination with total count support
  *
  * @example
  * ```typescript
  * // In your component:
+ * import { ODataQueryBuilder } from '@generic-components/smart-grid/odata-query-builder';
+ *
  * columns = signal<DynamicColDef[]>([
  *   {
  *     field: 'name',
@@ -54,17 +56,37 @@ import { PopoverModule } from 'primeng/popover';
  *   }
  * ]);
  *
+ * // Subscribe to state changes and load data
+ * effect(() => {
+ *   const state = this.tableState();
+ *   const odataQuery = ODataQueryBuilder.buildQuery(state);
+ *   const queryString = ODataQueryBuilder.toQueryString(odataQuery);
+ *   this.loadData(queryString);
+ * });
+ *
+ * async loadData(queryString: string) {
+ *   this.loading.set(true);
+ *   const response = await this.api.getUsers(queryString);
+ *   const { data, totalCount } = parseODataResponse(response);
+ *   this.users.set(data);
+ *   this.totalRecords.set(totalCount);
+ *   this.loading.set(false);
+ * }
+ *
  * // In your template:
  * <app-smart-grid
- *   [(rawData)]="users"
+ *   [(data)]="users"
  *   [(columns)]="columns"
  *   [(tableState)]="tableState"
+ *   [(totalRecords)]="totalRecords"
+ *   [(loading)]="loading"
  * />
  * ```
  *
- * @property {T[]} rawData - The raw unfiltered data array
+ * @property {T[]} data - The data array from server
  * @property {DynamicColDef[]} columns - Column definitions
  * @property {CustomTableState} tableState - Current state (filters, sorts, pagination)
+ * @property {number} totalRecords - Total count from OData @odata.count
  * @property {boolean} loading - Loading indicator
  * @property {Object} customComponents - Custom cell renderer components
  */
@@ -78,7 +100,8 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
     // Input models
     tableState = model<CustomTableState>(INITIAL_STATE);
     customComponents = model<{ [key: string]: Type<ICellRendererAngularComp> }>({});
-    rawData = model<T[]>([]);
+    data = model<T[]>([]);
+    totalRecords = model<number>(0);
     loading = model(false);
     columns = model.required<DynamicColDef[]>();
 
@@ -94,31 +117,20 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
         { label: 'After', value: 'dateAfter' }
     ];
 
-    // Computed processed data (filtered and sorted)
-    processedData = computed(() => {
-        let data = [...this.rawData()];
-        const state = this.tableState();
-
-        // Apply filters
-        data = this.applyFilters(data, state);
-
-        // Apply sorting
-        data = this.applySorting(data, state);
-
-        return data;
-    });
-
     constructor() {
         // Debug effect to monitor state changes
-        effect(() => {
-            const state = this.tableState();
-            console.log('Table State Changed:', {
-                filters: state.filters,
-                sorts: state.sorts,
-                first: state.first,
-                rows: state.rows
-            });
-        });
+        effect(
+            () => {
+                const state = this.tableState();
+                console.log('Table State Changed:', {
+                    filters: state.filters,
+                    sorts: state.sorts,
+                    first: state.first,
+                    rows: state.rows
+                });
+            },
+            { allowSignalWrites: true }
+        );
     }
 
     ngOnInit(): void {
@@ -162,25 +174,6 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
     getSortOrderForField(field: string): SortOrder {
         const sortCriterion = this.tableState().sorts.find((s) => s.field === field);
         return sortCriterion?.order ?? 0;
-    }
-
-    private applySorting(data: T[], state: CustomTableState): T[] {
-        if (!state.sorts || state.sorts.length === 0) {
-            return data;
-        }
-
-        return data.sort((a, b) => {
-            for (const sort of state.sorts) {
-                const aValue = this.getNestedValue(a, sort.field);
-                const bValue = this.getNestedValue(b, sort.field);
-
-                const comparison = this.compareValues(aValue, bValue);
-                if (comparison !== 0) {
-                    return comparison * sort.order;
-                }
-            }
-            return 0;
-        });
     }
 
     // ========== Filtering Methods ==========
@@ -242,82 +235,6 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
             filters,
             first: 0 // Reset to first page when filters change
         }));
-    }
-
-    private applyFilters(data: T[], state: CustomTableState): T[] {
-        if (!state.filters || Object.keys(state.filters).length === 0) {
-            return data;
-        }
-
-        return data.filter((row) => {
-            return Object.entries(state.filters!).every(([field, filter]) => {
-                const value = this.getNestedValue(row, field);
-                return this.matchesFilter(value, filter.value, filter.matchMode);
-            });
-        });
-    }
-
-    private matchesFilter(value: any, filterValue: any, matchMode: string): boolean {
-        if (filterValue === null || filterValue === undefined) {
-            return true;
-        }
-
-        switch (matchMode) {
-            case 'contains':
-                return String(value ?? '')
-                    .toLowerCase()
-                    .includes(String(filterValue).toLowerCase());
-
-            case 'equals':
-                return value === filterValue;
-
-            case 'in':
-                return Array.isArray(filterValue) && filterValue.includes(value);
-
-            case 'dateIs':
-                return this.isSameDay(value, filterValue);
-
-            case 'dateBefore':
-                return new Date(value) < new Date(filterValue);
-
-            case 'dateAfter':
-                return new Date(value) > new Date(filterValue);
-
-            default:
-                return true;
-        }
-    }
-
-    // ========== Utility Methods ==========
-    private getNestedValue(obj: any, path: string): any {
-        return path.split('.').reduce((acc, part) => acc?.[part], obj);
-    }
-
-    private compareValues(a: any, b: any): number {
-        // Handle null/undefined
-        if (a == null && b == null) return 0;
-        if (a == null) return -1;
-        if (b == null) return 1;
-
-        // Handle dates
-        if (a instanceof Date && b instanceof Date) {
-            return a.getTime() - b.getTime();
-        }
-
-        // Handle numbers
-        if (typeof a === 'number' && typeof b === 'number') {
-            return a - b;
-        }
-
-        // Handle strings (case-insensitive)
-        return String(a).toLowerCase().localeCompare(String(b).toLowerCase());
-    }
-
-    private isSameDay(date1: any, date2: any): boolean {
-        if (!date1 || !date2) return false;
-        const d1 = new Date(date1);
-        const d2 = new Date(date2);
-        return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
     }
 
     // ========== Pagination Methods ==========
