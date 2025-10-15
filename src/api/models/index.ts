@@ -882,6 +882,16 @@ export interface TypeSlot {
     icon?: string | null;
 }
 
+/** DTO pour la création d'un nouveau type de créneau */
+export interface TypeSlotCreateDTO {
+    /** Nom du type de créneau */
+    name: string;
+    /** Couleur associée au type de créneau (code hexadécimal) */
+    color: string;
+    /** Icône associée au type de créneau */
+    icon?: string | null;
+}
+
 /** DTO pour l'affichage des informations d'un type de créneau */
 export interface TypeSlotResponseDTO {
     /** Identifiant unique du type de créneau */
@@ -896,6 +906,30 @@ export interface TypeSlotResponseDTO {
     createdAt: Date;
     /** Date de dernière mise à jour */
     updatedAt?: Date | null;
+}
+
+export interface TypeSlotResponseDTOListResponseDTO {
+    message: string;
+    status: number;
+    data?: TypeSlotResponseDTO[];
+    count?: number | null;
+}
+
+export interface TypeSlotResponseDTOResponseDTO {
+    message: string;
+    status: number;
+    data?: TypeSlotResponseDTO;
+    count?: number | null;
+}
+
+/** DTO pour la mise à jour d'un type de créneau existant */
+export interface TypeSlotUpdateDTO {
+    /** Nom du type de créneau */
+    name: string;
+    /** Couleur associée au type de créneau (code hexadécimal) */
+    color: string;
+    /** Icône associée au type de créneau */
+    icon?: string | null;
 }
 
 export interface UserApp {
