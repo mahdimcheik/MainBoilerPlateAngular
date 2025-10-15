@@ -68,7 +68,10 @@ export class UsersListComponent {
             filterable: true
         },
         {
-            field: 'status',
+            // Example of nested object filtering
+            // Display uses JavaScript path: status.name
+            // Filtering/Sorting uses OData path: status/name
+            field: 'status', // JavaScript path for display
             header: 'Status',
             type: 'select',
             valueFormatter: (status) => (status as StatusAccountDTO)?.name,
@@ -76,8 +79,9 @@ export class UsersListComponent {
             optionLabel: 'name',
             optionValue: 'id',
             filterable: true,
+            filterField: 'status/name', // OData path for filtering
             sortable: true,
-            sortField: 'status/name' // OData navigation property
+            sortField: 'status/name' // OData path for sorting
         },
         {
             field: 'dateOfBirth',

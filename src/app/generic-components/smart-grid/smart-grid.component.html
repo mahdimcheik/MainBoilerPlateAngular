@@ -45,8 +45,8 @@
                                     type="button"
                                     pButton
                                     icon="pi pi-filter"
-                                    [class.p-button-outlined]="!getFilterValue(column.field)"
-                                    [class.p-button-info]="getFilterValue(column.field)"
+                                    [class.p-button-outlined]="!getFilterValue(column.filterField ?? column.field)"
+                                    [class.p-button-info]="getFilterValue(column.filterField ?? column.field)"
                                     class="p-button-sm p-button-text"
                                     (click)="filterMenu.toggle($event)"
                                     [attr.aria-label]="'Filter ' + column.header"
@@ -60,7 +60,7 @@
                                             @if (column.type === 'text') {
                                                 <div class="flex flex-col gap-2">
                                                     <label class="text-sm font-semibold">Filter by {{ column.header }}</label>
-                                                    <input pInputText type="text" placeholder="Type to search..." [value]="getFilterValue(column.field) || ''" (input)="onTextFilterChange($any($event.target).value, column)" />
+                                                    <input pInputText type="text" placeholder="Type to search..." [value]="getFilterValue(column.filterField ?? column.field) || ''" (input)="onTextFilterChange($any($event.target).value, column)" />
                                                 </div>
                                             }
 
@@ -72,7 +72,7 @@
                                                         [options]="column.options || []"
                                                         [optionLabel]="column.optionLabel || 'label'"
                                                         [optionValue]="column.optionValue || 'value'"
-                                                        [ngModel]="getFilterValue(column.field)"
+                                                        [ngModel]="getFilterValue(column.filterField ?? column.field)"
                                                         (ngModelChange)="onSelectFilterChange($event, column)"
                                                         placeholder="Select One"
                                                         [showClear]="true"
@@ -89,7 +89,7 @@
                                                         [options]="column.options || []"
                                                         [optionLabel]="column.optionLabel || 'label'"
                                                         [optionValue]="column.optionValue || 'value'"
-                                                        [ngModel]="getFilterValue(column.field)"
+                                                        [ngModel]="getFilterValue(column.filterField ?? column.field)"
                                                         (ngModelChange)="onArrayFilterChange($event, column)"
                                                         placeholder="Select Multiple"
                                                         [showClear]="true"
@@ -107,12 +107,19 @@
                                                         [options]="dateFilterMatchModes"
                                                         optionLabel="label"
                                                         optionValue="value"
-                                                        [ngModel]="getDateFilterMatchMode(column.field)"
+                                                        [ngModel]="getDateFilterMatchMode(column.filterField ?? column.field)"
                                                         (ngModelChange)="onDateFilterMatchModeChange($event, column)"
                                                         placeholder="Select Mode"
                                                         styleClass="w-full"
                                                     />
-                                                    <p-datepicker [ngModel]="getFilterValue(column.field)" (ngModelChange)="onDateFilterChange($event, column)" [showTime]="true" [showButtonBar]="true" dateFormat="dd/mm/yy" styleClass="w-full" />
+                                                    <p-datepicker
+                                                        [ngModel]="getFilterValue(column.filterField ?? column.field)"
+                                                        (ngModelChange)="onDateFilterChange($event, column)"
+                                                        [showTime]="true"
+                                                        [showButtonBar]="true"
+                                                        dateFormat="dd/mm/yy"
+                                                        styleClass="w-full"
+                                                    />
                                                 </div>
                                             }
 
