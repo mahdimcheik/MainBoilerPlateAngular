@@ -57,7 +57,7 @@ export class UsersListComponent {
         { field: 'firstName', header: 'Name', type: 'text', sortable: true, sortField: 'firstName', filterable: true },
         { field: 'email', header: 'Email', cellRenderer: 'default', type: 'text', sortable: true, sortField: 'email' },
         // { field: 'roles', header: 'Role' },
-        { field: 'status', header: 'Status', type: 'array', valueFormatter: (status) => (status as StatusAccountDTO).name, options: this.statuses, optionLabel: 'name', optionValue: 'id', filterable: true },
+        { field: 'status', header: 'Status', type: 'select', valueFormatter: (status) => (status as StatusAccountDTO).name, options: this.statuses, optionLabel: 'name', optionValue: 'id', filterable: true },
         { field: 'dateOfBirth', header: 'Created At', type: 'date', filterable: true }
     ]);
 }

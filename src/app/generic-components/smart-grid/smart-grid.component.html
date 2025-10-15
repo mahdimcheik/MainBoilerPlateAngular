@@ -1,83 +1,136 @@
-<p-table
-    #dt2
-    [value]="data()"
-    style="max-height: 500px"
-    [sortField]="'multiple'"
-    dataKey="id"
-    [rows]="10"
-    [rowsPerPageOptions]="[10, 25, 50]"
-    [loading]="false"
-    [paginator]="true"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [scrollable]="true"
-    [scrollHeight]="'800px'"
->
-    <ng-template #caption>
-        <div class="flex">
-            <p-iconfield iconPosition="left" class="ml-auto">
-                <p-inputicon>
-                    <i class="pi pi-search"></i>
-                </p-inputicon>
-                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
-            </p-iconfield>
-        </div>
-    </ng-template>
-    <ng-template #header>
-        <tr>
-            @for (column of columns(); track column.field) {
-                <th>
-                    <div class="flex items-center gap-2">
-                        <span>{{ column.header }}</span>
-                        @if (column.sortable) {
-                            <app-custom-sort [sortValue]="getSortOrderForField(column.sortField ?? '')" (sortChange)="sortChange($event, column)"></app-custom-sort>
-                        }
-                    </div>
-                </th>
-            }
-        </tr>
-        <tr>
-            @for (column of columns(); track column.field) {
-                <th>
-                    <div class="flex items-center gap-2">
-                        @if (column.type === 'text' && column.filterable) {
-                            <input pInputText type="text" placeholder="Type to search" [value]="getFilterValue(column.field)" (input)="onInputchange($event, column)" />
-                        }
-                        @if (column.type === 'select' && column.filterable) {
-                            <p-select [options]="column.options" [optionLabel]="column.optionLabel" [optionValue]="column.optionValue" placeholder="Select One" [showClear]="true" style="min-width: 12rem" (onChange)="onSelectchange($event, column)">
-                                <ng-template pTemplate="selectedItem" let-option>
-                                    {{ option[column?.optionLabel ?? ''] }}
-                                </ng-template>
-                                <ng-template pTemplate="item" let-option>
-                                    {{ option[column?.optionLabel ?? ''] }}
-                                </ng-template>
-                            </p-select>
-                        }
-                        @if (column.type === 'array' && column.filterable) {
-                            <p-multiselect
-                                [options]="column.options"
-                                [optionLabel]="column.optionLabel"
-                                [optionValue]="column.optionValue"
-                                placeholder="Select One"
-                                [showClear]="true"
-                                style="min-width: 12rem"
-                                (onChange)="onSelectchange($event, column)"
-                            >
-                                <ng-template pTemplate="selectedItem" let-option>
-                                    {{ option[column?.optionLabel ?? ''] }}
-                                </ng-template>
-                                <ng-template pTemplate="item" let-option>
-                                    {{ option[column?.optionLabel ?? ''] }}
-                                </ng-template>
-                            </p-multiselect>
-                        }
-                        @if (column.type === 'date' && column.filterable) {
-                            <p-datepicker selectionMode="range" [showTime]="true" (onChange)="onDatechange($event, column)" />
-                        }
-                    </div>
-                </th>
-            }
-        </tr>
-        <!-- <tr>
+<div class="table-container">
+    <p-table
+        #dt2
+        [value]="data()"
+        [sortField]="'multiple'"
+        dataKey="id"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [loading]="false"
+        [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [scrollable]="true"
+        scrollHeight="flex"
+    >
+        <ng-template #caption>
+            <div class="flex">
+                <p-iconfield iconPosition="left" class="ml-auto">
+                    <p-inputicon>
+                        <i class="pi pi-search"></i>
+                    </p-inputicon>
+                    <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                </p-iconfield>
+            </div>
+        </ng-template>
+        <ng-template #header>
+            <tr>
+                @for (column of columns(); track column.field) {
+                    <th>
+                        <div class="flex items-center gap-2 justify-between">
+                            <div>
+                                <span>{{ column.header }}</span>
+                                @if (column.sortable) {
+                                    <app-custom-sort [sortValue]="getSortOrderForField(column.sortField ?? '')" (sortChange)="sortChange($event, column)"></app-custom-sort>
+                                }
+                            </div>
+                            @if (column.filterable && column.type === 'text') {
+                                <p-columnFilter field="column.field" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" debounce="500">
+                                    <ng-template #filter let-value let-filter="filterCallback">
+                                        <input pInputText type="text" placeholder="Type to search" [value]="getFilterValue(column.field)" (input)="onInputchange($event, column)" />
+                                    </ng-template>
+                                </p-columnFilter>
+                            }
+                            @if (column.filterable && column.type === 'select') {
+                                <p-columnFilter field="column.field" matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                    <ng-template #filter let-value let-filter="filterCallback">
+                                        <p-select
+                                            [options]="column.options"
+                                            [showClear]="false"
+                                            [optionLabel]="column.optionLabel"
+                                            [optionValue]="column.optionValue"
+                                            placeholder="Select One"
+                                            style="min-width: 12rem"
+                                            (onChange)="onSelectchange($event, column)"
+                                        >
+                                            <ng-template pTemplate="selectedItem" let-option>
+                                                {{ option[column?.optionLabel ?? ''] }}
+                                            </ng-template>
+                                            <ng-template pTemplate="item" let-option>
+                                                {{ option[column?.optionLabel ?? ''] }}
+                                            </ng-template>
+                                        </p-select>
+                                    </ng-template>
+                                </p-columnFilter>
+                            }
+                            @if (column.filterable && column.type === 'array') {
+                                <p-columnFilter field="column.field" matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                    <ng-template #filter let-value let-filter="filterCallback">
+                                        <p-multiselect [options]="column.options" [optionLabel]="column.optionLabel" [optionValue]="column.optionValue" placeholder="Select One" style="min-width: 12rem" (onChange)="onSelectchange($event, column)">
+                                            <ng-template pTemplate="selectedItem" let-option>
+                                                {{ option[column?.optionLabel ?? ''] }}
+                                            </ng-template>
+                                            <ng-template pTemplate="item" let-option>
+                                                {{ option[column?.optionLabel ?? ''] }}
+                                            </ng-template>
+                                        </p-multiselect>
+                                    </ng-template>
+                                </p-columnFilter>
+                            }
+                        </div>
+                    </th>
+                }
+            </tr>
+            <!-- <tr>
+                @for (column of columns(); track column.field) {
+                    <th>
+                        <div class="flex items-center gap-2">
+                            @if (column.type === 'text' && column.filterable) {
+                                <input pInputText type="text" placeholder="Type to search" [value]="getFilterValue(column.field)" (input)="onInputchange($event, column)" />
+                            }
+                            @if (column.type === 'select' && column.filterable) {
+                                <p-select
+                                    [options]="column.options"
+                                    [optionLabel]="column.optionLabel"
+                                    [optionValue]="column.optionValue"
+                                    placeholder="Select One"
+                                    [showClear]="true"
+                                    style="min-width: 12rem"
+                                    (onChange)="onSelectchange($event, column)"
+                                >
+                                    <ng-template pTemplate="selectedItem" let-option>
+                                        {{ option[column?.optionLabel ?? ''] }}
+                                    </ng-template>
+                                    <ng-template pTemplate="item" let-option>
+                                        {{ option[column?.optionLabel ?? ''] }}
+                                    </ng-template>
+                                </p-select>
+                            }
+                            @if (column.type === 'array' && column.filterable) {
+                                <p-multiselect
+                                    [options]="column.options"
+                                    [optionLabel]="column.optionLabel"
+                                    [optionValue]="column.optionValue"
+                                    placeholder="Select One"
+                                    [showClear]="true"
+                                    style="min-width: 12rem"
+                                    (onChange)="onSelectchange($event, column)"
+                                >
+                                    <ng-template pTemplate="selectedItem" let-option>
+                                        {{ option[column?.optionLabel ?? ''] }}
+                                    </ng-template>
+                                    <ng-template pTemplate="item" let-option>
+                                        {{ option[column?.optionLabel ?? ''] }}
+                                    </ng-template>
+                                </p-multiselect>
+                            }
+                            @if (column.type === 'date' && column.filterable) {
+                                <p-datepicker selectionMode="range" [showTime]="true" (onChange)="onDatechange($event, column)" (onSelect)="onDatechange($event, column)" />
+                            }
+                        </div>
+                    </th>
+                }
+            </tr> -->
+            <!-- <tr>
             <th>
                 <p-columnFilter type="text" field="name" placeholder="Type to search" ariaLabel="Filter Name" filterOn="input"></p-columnFilter>
             </th>
@@ -113,78 +166,78 @@
                 <p-columnFilter type="boolean" field="verified"></p-columnFilter>
             </th>
         </tr> -->
-    </ng-template>
-    <ng-template #body let-item>
-        <tr>
-            @for (column of columns(); track column.field) {
-                @switch (column.type) {
-                    @case ('text') {
-                        <td>
+        </ng-template>
+        <ng-template #body let-item>
+            <tr>
+                @for (column of columns(); track column.field) {
+                    @switch (column.type) {
+                        @case ('text') {
+                            <td>
+                                @if (column.cellRenderer) {
+                                    <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
+                                } @else {
+                                    {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : item[column.field] }}
+                                }
+                            </td>
+                        }
+                        @case ('date') {
                             @if (column.cellRenderer) {
                                 <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
                             } @else {
-                                {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : item[column.field] }}
+                                <td>
+                                    {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : (item[column.field] | date: 'dd/MM/yyyy') }}
+                                </td>
                             }
-                        </td>
-                    }
-                    @case ('date') {
-                        @if (column.cellRenderer) {
-                            <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
-                        } @else {
-                            <td>
-                                {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : (item[column.field] | date: 'dd/MM/yyyy') }}
-                            </td>
                         }
-                    }
-                    @case ('number') {
-                        @if (column.cellRenderer) {
-                            <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
-                        } @else {
-                            <td>
-                                {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : item[column.field] }}
-                            </td>
+                        @case ('number') {
+                            @if (column.cellRenderer) {
+                                <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
+                            } @else {
+                                <td>
+                                    {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : item[column.field] }}
+                                </td>
+                            }
                         }
-                    }
-                    @case ('boolean') {
-                        @if (column.cellRenderer) {
-                            <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
-                        } @else {
-                            <td>
-                                {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : item[column.field] }}
-                            </td>
+                        @case ('boolean') {
+                            @if (column.cellRenderer) {
+                                <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
+                            } @else {
+                                <td>
+                                    {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : item[column.field] }}
+                                </td>
+                            }
                         }
-                    }
-                    @case ('select') {
-                        @if (column.cellRenderer) {
-                            <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
-                        } @else {
-                            <td>
-                                {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : item[column.field] }}
-                            </td>
+                        @case ('select') {
+                            @if (column.cellRenderer) {
+                                <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
+                            } @else {
+                                <td>
+                                    {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : item[column.field] }}
+                                </td>
+                            }
                         }
-                    }
-                    @case ('custom') {
-                        @if (column.cellRenderer) {
-                            <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
-                        } @else {
-                            <td>
-                                {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : item[column.field] }}
-                            </td>
+                        @case ('custom') {
+                            @if (column.cellRenderer) {
+                                <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
+                            } @else {
+                                <td>
+                                    {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : item[column.field] }}
+                                </td>
+                            }
                         }
-                    }
-                    @default {
-                        @if (column.cellRenderer) {
-                            <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
-                        } @else {
-                            <td>
-                                {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : item[column.field] }}
-                            </td>
+                        @default {
+                            @if (column.cellRenderer) {
+                                <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }"></ng-container>
+                            } @else {
+                                <td>
+                                    {{ column.valueFormatter ? column.valueFormatter(item[column.field]) : item[column.field] }}
+                                </td>
+                            }
                         }
                     }
                 }
-            }
 
-            <!-- <td>
+                <!-- <td>
                 <div class="flex items-center gap-2">
                     <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + customer.country.code" style="width: 20px" />
                     <span>{{ customer.country.name }}</span>
@@ -208,11 +261,12 @@
                     }"
                 ></i>
             </td> -->
-        </tr>
-    </ng-template>
-    <ng-template #emptymessage>
-        <tr>
-            <td colspan="5">No customers found.</td>
-        </tr>
-    </ng-template>
-</p-table>
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="5">No customers found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

@@ -72,6 +72,7 @@ export class SmartGridComponent<T> implements OnInit {
         return this.tableState().filters?.[field]?.value ?? '';
     }
     onInputchange($event: any, column: DynamicColDef) {
+        console.log('onInputchange', $event);
         const newFilters = { ...this.tableState().filters };
         newFilters[column.field] = { value: $event.target.value, matchMode: 'contains' };
         this.tableState.update((state) => ({
@@ -91,6 +92,7 @@ export class SmartGridComponent<T> implements OnInit {
 
     // date time
     onDatechange($event: any, column: DynamicColDef) {
+        console.log('onDatechange', $event);
         const newFilters = { ...this.tableState().filters };
         newFilters[column.field] = { value: $event.value, matchMode: 'between' };
         this.tableState.update((state) => ({
