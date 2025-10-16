@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, model, OnInit, signal, Type } from '@angular/core';
+import { Component, computed, effect, input, model, OnInit, signal, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -101,9 +101,11 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
     tableState = model<CustomTableState>(INITIAL_STATE);
     customComponents = model<{ [key: string]: Type<ICellRendererAngularComp> }>({});
     data = model<T[]>([]);
+    title = input<string>('');
     totalRecords = model<number>(0);
     loading = model(false);
     columns = model.required<DynamicColDef[]>();
+    searchValue = signal<string>('');
 
     // Internal signals
     private componentMap = signal<{ [key: string]: Type<ICellRendererAngularComp> }>({
@@ -112,9 +114,9 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
 
     // Date filter configuration
     dateFilterMatchModes = [
-        { label: 'Equal', value: 'dateIs' },
-        { label: 'Before', value: 'dateBefore' },
-        { label: 'After', value: 'dateAfter' }
+        { label: 'égal à', value: 'equals' },
+        { label: 'avant', value: 'before' },
+        { label: 'après', value: 'after' }
     ];
 
     constructor() {
@@ -250,6 +252,16 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
             ...state,
             first: event.first,
             rows: event.rows
+        }));
+    }
+
+    // global search
+    onSearchChange($event: Event): void {
+        const value = ($event.target as HTMLInputElement).value;
+        this.searchValue.set(value);
+        this.tableState.update((state) => ({
+            ...state,
+            search: value
         }));
     }
 }

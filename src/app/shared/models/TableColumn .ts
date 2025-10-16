@@ -45,6 +45,7 @@ export interface CustomTableState {
             matchMode: string;
         };
     };
+    search?: string;
 }
 
 // L'état initial est aussi mis à jour
