@@ -10,7 +10,7 @@
 import { HttpClient, HttpContext, HttpContextToken, HttpEvent, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { CursusCategoryDTO, CursusCreateDTO, CursusResponseDTOListResponseDTO, CursusResponseDTOResponseDTO, CursusUpdateDTO, ObjectResponseDTO, RequestOptions } from "../models";
+import { CursusCategoryDTO, CursusCreateDTO, CursusDynamicFilters, CursusResponseDTOListResponseDTO, CursusResponseDTOResponseDTO, CursusUpdateDTO, ObjectResponseDTO, RequestOptions } from "../models";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT } from "../tokens";
 
 @Injectable({ providedIn: "root" })
@@ -38,6 +38,22 @@ export class CursusService {
         };
 
         return this.httpClient.get(url, requestOptions);
+    }
+
+    cursusAllPaginatedPost(cursusDynamicFilters?: CursusDynamicFilters, observe?: 'body', options?: RequestOptions<'json'>): Observable<CursusResponseDTOListResponseDTO>;
+    cursusAllPaginatedPost(cursusDynamicFilters?: CursusDynamicFilters, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<CursusResponseDTOListResponseDTO>>;
+    cursusAllPaginatedPost(cursusDynamicFilters?: CursusDynamicFilters, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<CursusResponseDTOListResponseDTO>>;
+    cursusAllPaginatedPost(cursusDynamicFilters?: CursusDynamicFilters, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+        const url = `${this.basePath}/cursus/all-paginated`;
+
+        const requestOptions: any = {
+            observe: observe as any,
+            reportProgress: options?.reportProgress,
+            withCredentials: options?.withCredentials,
+            context: this.createContextWithClientId(options?.context)
+        };
+
+        return this.httpClient.post(url, cursusDynamicFilters, requestOptions);
     }
 
     cursusIdGet(id: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<CursusResponseDTOResponseDTO>;

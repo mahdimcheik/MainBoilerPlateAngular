@@ -79,9 +79,9 @@ export class UsersListComponent {
             optionLabel: 'name',
             optionValue: 'id',
             filterable: true,
-            filterField: 'status/name', // OData path for filtering
+            filterField: 'statusId',
             sortable: true,
-            sortField: 'status/name' // OData path for sorting
+            sortField: 'status'
         },
         {
             field: 'dateOfBirth',

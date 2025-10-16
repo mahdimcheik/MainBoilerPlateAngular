@@ -251,6 +251,14 @@ export interface CursusCreateDTO {
     categoryIds?: string[];
 }
 
+export interface CursusDynamicFilters {
+    first?: number;
+    rows?: number;
+    globalSearch?: string | null;
+    sorts?: Sort[];
+    filters?: Record<string, FilterItem>;
+}
+
 /** DTO pour l'affichage des informations d'un cursus */
 export interface CursusResponseDTO {
     /** Identifiant unique du cursus */
@@ -311,14 +319,6 @@ export interface CursusUpdateDTO {
     teacherId: string;
     /** Liste des identifiants des catégories à associer au cursus */
     categoryIds?: string[];
-}
-
-export interface DynamicFilters {
-    first?: number;
-    rows?: number;
-    globalSearch?: string | null;
-    sorts?: Sort[];
-    filters?: Record<string, FilterItem>;
 }
 
 export interface Experience {
@@ -404,7 +404,7 @@ export interface ExperienceUpdateDTO {
 }
 
 export interface FilterItem {
-    value: string | null;
+    value: any | null;
     matchMode: string | null;
 }
 

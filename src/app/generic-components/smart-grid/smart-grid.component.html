@@ -41,96 +41,103 @@
 
                             <!-- Filter button -->
                             @if (column.filterable) {
-                                <button
-                                    type="button"
-                                    pButton
-                                    icon="pi pi-filter"
-                                    [class.p-button-outlined]="!getFilterValue(column.filterField ?? column.field)"
-                                    [class.p-button-info]="getFilterValue(column.filterField ?? column.field)"
-                                    class="p-button-sm p-button-text"
-                                    (click)="filterMenu.toggle($event)"
-                                    [attr.aria-label]="'Filter ' + column.header"
-                                ></button>
+                                <div>
+                                    <button
+                                        type="button"
+                                        pButton
+                                        icon="pi pi-filter"
+                                        [class.p-button-outlined]="!getFilterValue(column.filterField ?? column.field)"
+                                        [class.p-button-info]="getFilterValue(column.filterField ?? column.field)"
+                                        class="p-button-sm p-button-text"
+                                        (click)="filterMenu.toggle($event)"
+                                        [attr.aria-label]="'Filter ' + column.header"
+                                    ></button>
+                                    <!-- Filter menu overlay -->
+                                    <p-popover #filterMenu>
+                                        <ng-template pTemplate="content">
+                                            <div class="flex flex-col gap-3 p-3" style="min-width: 250px">
+                                                <!-- Text Filter -->
+                                                @if (column.type === 'text') {
+                                                    <div class="flex flex-col gap-2">
+                                                        <label class="text-sm font-semibold">Filter by {{ column.header }}</label>
+                                                        <input
+                                                            pInputText
+                                                            type="text"
+                                                            placeholder="Type to search..."
+                                                            [value]="getFilterValue(column.filterField ?? column.field) || ''"
+                                                            (input)="onTextFilterChange($any($event.target).value, column)"
+                                                        />
+                                                    </div>
+                                                }
 
-                                <!-- Filter menu overlay -->
-                                <p-popover #filterMenu>
-                                    <ng-template pTemplate="content">
-                                        <div class="flex flex-col gap-3 p-3" style="min-width: 250px">
-                                            <!-- Text Filter -->
-                                            @if (column.type === 'text') {
-                                                <div class="flex flex-col gap-2">
-                                                    <label class="text-sm font-semibold">Filter by {{ column.header }}</label>
-                                                    <input pInputText type="text" placeholder="Type to search..." [value]="getFilterValue(column.filterField ?? column.field) || ''" (input)="onTextFilterChange($any($event.target).value, column)" />
+                                                <!-- Select Filter -->
+                                                @if (column.type === 'select') {
+                                                    <div class="flex flex-col gap-2">
+                                                        <label class="text-sm font-semibold">Filter by {{ column.header }}</label>
+                                                        <p-select
+                                                            [options]="column.options || []"
+                                                            [optionLabel]="column.optionLabel || 'label'"
+                                                            [optionValue]="column.optionValue || 'value'"
+                                                            [ngModel]="getFilterValue(column.filterField ?? column.field)"
+                                                            (ngModelChange)="onSelectFilterChange($event, column)"
+                                                            placeholder="Select One"
+                                                            [showClear]="true"
+                                                            styleClass="w-full"
+                                                        />
+                                                    </div>
+                                                }
+
+                                                <!-- Array/Multi-select Filter -->
+                                                @if (column.type === 'array') {
+                                                    <div class="flex flex-col gap-2">
+                                                        <label class="text-sm font-semibold">Filter by {{ column.header }}</label>
+                                                        <p-multiselect
+                                                            [options]="column.options || []"
+                                                            [optionLabel]="column.optionLabel || 'label'"
+                                                            [optionValue]="column.optionValue || 'value'"
+                                                            [ngModel]="getFilterValue(column.filterField ?? column.field)"
+                                                            (ngModelChange)="onArrayFilterChange($event, column)"
+                                                            placeholder="Select Multiple"
+                                                            [showClear]="true"
+                                                            display="chip"
+                                                            styleClass="w-full"
+                                                        />
+                                                    </div>
+                                                }
+
+                                                <!-- Date Filter -->
+                                                @if (column.type === 'date') {
+                                                    <div class="flex flex-col gap-2">
+                                                        <label class="text-sm font-semibold">Filter by {{ column.header }}</label>
+                                                        <p-select
+                                                            [options]="dateFilterMatchModes"
+                                                            optionLabel="label"
+                                                            optionValue="value"
+                                                            [ngModel]="getDateFilterMatchMode(column.filterField ?? column.field)"
+                                                            (ngModelChange)="onDateFilterMatchModeChange($event, column)"
+                                                            placeholder="Select Mode"
+                                                            styleClass="w-full"
+                                                        />
+                                                        <p-datepicker
+                                                            [ngModel]="getFilterValue(column.filterField ?? column.field)"
+                                                            (ngModelChange)="onDateFilterChange($event, column)"
+                                                            [showTime]="true"
+                                                            [showButtonBar]="true"
+                                                            dateFormat="dd/mm/yy"
+                                                            styleClass="w-full"
+                                                        />
+                                                    </div>
+                                                }
+
+                                                <!-- Filter Actions -->
+                                                <div class="flex justify-between gap-2 pt-2 border-t">
+                                                    <button pButton label="Clear" icon="pi pi-filter-slash" class="p-button-sm p-button-outlined" (click)="clearFilter(column); filterMenu.hide()"></button>
+                                                    <button pButton label="Apply" icon="pi pi-check" class="p-button-sm" (click)="filterMenu.hide()"></button>
                                                 </div>
-                                            }
-
-                                            <!-- Select Filter -->
-                                            @if (column.type === 'select') {
-                                                <div class="flex flex-col gap-2">
-                                                    <label class="text-sm font-semibold">Filter by {{ column.header }}</label>
-                                                    <p-select
-                                                        [options]="column.options || []"
-                                                        [optionLabel]="column.optionLabel || 'label'"
-                                                        [optionValue]="column.optionValue || 'value'"
-                                                        [ngModel]="getFilterValue(column.filterField ?? column.field)"
-                                                        (ngModelChange)="onSelectFilterChange($event, column)"
-                                                        placeholder="Select One"
-                                                        [showClear]="true"
-                                                        styleClass="w-full"
-                                                    />
-                                                </div>
-                                            }
-
-                                            <!-- Array/Multi-select Filter -->
-                                            @if (column.type === 'array') {
-                                                <div class="flex flex-col gap-2">
-                                                    <label class="text-sm font-semibold">Filter by {{ column.header }}</label>
-                                                    <p-multiselect
-                                                        [options]="column.options || []"
-                                                        [optionLabel]="column.optionLabel || 'label'"
-                                                        [optionValue]="column.optionValue || 'value'"
-                                                        [ngModel]="getFilterValue(column.filterField ?? column.field)"
-                                                        (ngModelChange)="onArrayFilterChange($event, column)"
-                                                        placeholder="Select Multiple"
-                                                        [showClear]="true"
-                                                        display="chip"
-                                                        styleClass="w-full"
-                                                    />
-                                                </div>
-                                            }
-
-                                            <!-- Date Filter -->
-                                            @if (column.type === 'date') {
-                                                <div class="flex flex-col gap-2">
-                                                    <label class="text-sm font-semibold">Filter by {{ column.header }}</label>
-                                                    <p-select
-                                                        [options]="dateFilterMatchModes"
-                                                        optionLabel="label"
-                                                        optionValue="value"
-                                                        [ngModel]="getDateFilterMatchMode(column.filterField ?? column.field)"
-                                                        (ngModelChange)="onDateFilterMatchModeChange($event, column)"
-                                                        placeholder="Select Mode"
-                                                        styleClass="w-full"
-                                                    />
-                                                    <p-datepicker
-                                                        [ngModel]="getFilterValue(column.filterField ?? column.field)"
-                                                        (ngModelChange)="onDateFilterChange($event, column)"
-                                                        [showTime]="true"
-                                                        [showButtonBar]="true"
-                                                        dateFormat="dd/mm/yy"
-                                                        styleClass="w-full"
-                                                    />
-                                                </div>
-                                            }
-
-                                            <!-- Filter Actions -->
-                                            <div class="flex justify-between gap-2 pt-2 border-t">
-                                                <button pButton label="Clear" icon="pi pi-filter-slash" class="p-button-sm p-button-outlined" (click)="clearFilter(column); filterMenu.hide()"></button>
-                                                <button pButton label="Apply" icon="pi pi-check" class="p-button-sm" (click)="filterMenu.hide()"></button>
                                             </div>
-                                        </div>
-                                    </ng-template>
-                                </p-popover>
+                                        </ng-template>
+                                    </p-popover>
+                                </div>
                             }
                         </div>
                     </th>

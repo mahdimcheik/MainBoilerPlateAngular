@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { DynamicFilters, SlotCreateDTO, SlotResponseDTO, SlotsService, SlotUpdateDTO, TypeSlotResponseDTO, TypeSlotService } from '../../../api';
+import { SlotCreateDTO, SlotResponseDTO, SlotsService, SlotUpdateDTO, TypeSlotResponseDTO, TypeSlotService } from '../../../api';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({
@@ -17,13 +17,6 @@ export class SlotMainService {
     async getAllSlotsByUser(userId: string) {
         const slots = await firstValueFrom(this.slotsService.slotsTeacherTeacherIdGet(userId));
         this.slots.set(slots.data || []);
-        return slots.data || [];
-    }
-
-    async getAllSlotsByUserPaginated(userId: string, filters: DynamicFilters) {
-        const slots = await firstValueFrom(this.slotsService.slotsTeacherTeacherIdPost(userId, filters));
-        this.slots.set(slots.data || []);
-        this.totalRecords.set(slots.count || 0);
         return slots.data || [];
     }
 

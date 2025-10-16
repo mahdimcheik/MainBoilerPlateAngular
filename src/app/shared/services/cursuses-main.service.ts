@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { CategoryCursusResponseDTO, CategoryCursusService, Cursus, CursusCategoryDTO, CursusCreateDTO, CursusResponseDTO, CursusService, CursusUpdateDTO, LevelCursusCreateDTO, LevelCursusDTO, LevelCursusService } from '../../../api';
 import { firstValueFrom } from 'rxjs';
+import { CustomTableState } from '../models/TableColumn ';
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +12,7 @@ export class CursusesMainService {
     cursusLevelsService = inject(LevelCursusService);
 
     cursuses = signal<CursusResponseDTO[]>([]);
+    totalRecords = signal(0);
     allCategories = signal<CategoryCursusResponseDTO[]>([]);
     allLevels = signal<LevelCursusDTO[]>([]);
 
@@ -18,6 +20,14 @@ export class CursusesMainService {
     async getAllCursusesByUser(teacherId: string) {
         const cursuses = await firstValueFrom(this.cursusService.cursusTeacherTeacherIdGet(teacherId));
         this.cursuses.set(cursuses.data || []);
+        this.totalRecords.set(cursuses.count || 0);
+        return cursuses.data || [];
+    }
+
+    async getAllCursusesByUserPaginated(filters: CustomTableState) {
+        const cursuses = await firstValueFrom(this.cursusService.cursusAllPaginatedPost(filters));
+        this.cursuses.set(cursuses.data || []);
+        this.totalRecords.set(cursuses.count || 0);
         return cursuses.data || [];
     }
 
