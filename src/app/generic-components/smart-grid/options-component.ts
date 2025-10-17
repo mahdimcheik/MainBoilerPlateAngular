@@ -10,8 +10,10 @@ import { TooltipModule } from 'primeng/tooltip';
     imports: [Chip, TooltipModule],
     template: `
         <div class="flex gap-1">
-            @if (displayValue(); as value) {
-                <p-chip [label]="value.name" [style]="{ 'background-color': value?.color ?? '#000' }" [pTooltip]="value?.description ?? ''"> </p-chip>
+            @for (value of displayValue(); track value) {
+                <p-chip [label]="value.name ?? value" [style]="{ 'background-color': value?.color ?? 'transparent' }" [pTooltip]="value?.description ?? ''"> </p-chip>
+            } @empty {
+                <p-chip [label]="'Aucun'" [style]="{ 'background-color': '#000' }" [pTooltip]="'Aucun'"> </p-chip>
             }
         </div>
     `
@@ -26,34 +28,36 @@ export class OptionsRendererComponent implements ICellRendererAngularComp {
         const cellParams = this.params();
 
         if (!rowData || !cellParams) {
-            return null;
+            return [];
         }
 
         // Get the field name from params (should be passed via column definition)
         const field = cellParams.field;
         const options = cellParams.options || [];
         const optionValue = cellParams.optionValue || 'id';
-
+        const optionLabel = cellParams.optionLabel || 'name';
         // Get the field value from the row
         const fieldValue = rowData[field];
 
         if (!fieldValue) {
-            return null;
+            return [];
         }
 
         // If fieldValue is already an object with the display properties, return it
         if (typeof fieldValue === 'object' && fieldValue.name !== undefined) {
-            return fieldValue;
+            return [fieldValue];
         }
-
+        if (typeof fieldValue === 'string') {
+            const matchedOption = options.find((opt: any) => opt[optionValue] === fieldValue);
+            return [matchedOption];
+        }
+        if (Array.isArray(fieldValue) && fieldValue.length > 0) {
+            return fieldValue.map((item: any) => {
+                const matchedOption = options.filter((opt: any) => opt[optionValue] === item[optionValue]).map((opt: any) => opt[optionLabel]);
+                return [...matchedOption];
+            });
+        }
+        return [];
         // Otherwise, find the matching option from the options array
-        const matchedOption = options.find((opt: any) => opt[optionValue] === fieldValue);
-        return matchedOption || null;
     });
-
-    ngOnInit(): void {
-        console.log('OptionsRenderer - Row Data:', this.data());
-        console.log('OptionsRenderer - Params:', this.params());
-        console.log('OptionsRenderer - Display Value:', this.displayValue());
-    }
 }

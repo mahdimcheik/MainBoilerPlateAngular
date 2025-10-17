@@ -17,6 +17,9 @@ import {
     PasswordRecoveryInput,
     PasswordResetResponseDTO,
     PasswordResetResponseDTOResponseDTO,
+    RoleAppResponseDTO,
+    RoleAppResponseDTOListResponseDTO,
+    RoleAppService,
     StatusAccountDTO,
     StatusAccountResponseDTO,
     StatusAccountResponseDTOListResponseDTO,
@@ -51,13 +54,14 @@ export class UserMainService {
     messageService = inject(MessageService);
     cookieConsentService = inject(CookieConsentService);
     statusAccountService = inject(StatusAccountService);
+    roleAppService = inject(RoleAppService);
     // pour la page profile
     userConnected = signal({} as UserResponseDTO);
 
-    isAdmin = computed(() => this.userConnected()?.roles?.includes('Admin'));
-    isSuperAdmin = computed(() => this.userConnected()?.roles?.includes('SuperAdmin'));
-    isTeacher = computed(() => this.userConnected()?.roles?.includes('Teacher'));
-    isStudent = computed(() => this.userConnected()?.roles?.includes('Student'));
+    isAdmin = computed(() => this.userConnected()?.roles?.some((role) => role.name === 'Admin'));
+    isSuperAdmin = computed(() => this.userConnected()?.roles?.some((role) => role.name === 'SuperAdmin'));
+    isTeacher = computed(() => this.userConnected()?.roles?.some((role) => role.name === 'Teacher'));
+    isStudent = computed(() => this.userConnected()?.roles?.some((role) => role.name === 'Student'));
 
     // lien de side navbar
     sideNavItems = signal<MenuItem[]>([]);
@@ -334,6 +338,20 @@ export class UserMainService {
                     message: response.message || '',
                     status: response.status || 200,
                     data: response.data as StatusAccountDTO[]
+                };
+                return of(legacyResponse);
+            })
+        );
+    }
+
+    // users roles
+    getRoles(): Observable<ResponseDTO<RoleAppResponseDTO[]>> {
+        return this.roleAppService.roleappAllGet().pipe(
+            switchMap((response: RoleAppResponseDTOListResponseDTO) => {
+                const legacyResponse: ResponseDTO<RoleAppResponseDTO[]> = {
+                    message: response.message || '',
+                    status: response.status || 200,
+                    data: response.data ?? []
                 };
                 return of(legacyResponse);
             })

@@ -25,7 +25,7 @@
                     <i class="pi pi-calendar" style="font-size: 1.5rem"></i>
                     <span class="pl-2">Réservations</span>
                 </a>
-                @if (user().email && !isAdmin()) {
+                @if (user().email && !isAdmin) {
                 <a type="button" class="layout-topbar-action h-[50px] flex items-start" [routerLink]="['/dashboard/reservation/orders-student']">
                     <div class="relative min-w-[32px]">
                         <svg width="32" height="32" class="">

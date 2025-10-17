@@ -26,7 +26,10 @@ export class AppTopbar {
     router = inject(Router);
 
     user = this.authService.userConnected;
-    isAdmin = computed(() => this.user().roles?.includes('Admin') ?? false);
+    isAdmin = this.authService.isAdmin();
+    isSuperAdmin = this.authService.isSuperAdmin();
+    isTeacher = this.authService.isTeacher();
+    isStudent = this.authService.isStudent();
 
     userItems = computed(() => {
         if (this.user().email) {
@@ -61,7 +64,7 @@ export class AppTopbar {
     calendarLink = computed(() => {
         if (this.user().email) {
             if (this.user()?.roles) {
-                if (this.user()?.roles?.includes('Admin')) {
+                if (this.isAdmin) {
                     return '/dashboard/reservation/calendar-for-teacher';
                 } else {
                     return '/dashboard/reservation/calendar-for-student';

@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, signal, Type } from '@angular/core';
 import { SmartGridComponent } from '../../../../generic-components/smart-grid/smart-grid.component';
-import { StatusAccountDTO, UserResponseDTO } from '../../../../../api';
+import { RoleAppResponseDTO, StatusAccountDTO, UserResponseDTO } from '../../../../../api';
 import { CustomTableState, DynamicColDef, ICellRendererAngularComp, INITIAL_STATE } from '../../../../shared/models/TableColumn ';
 import { ActionButtonRendererComponent } from '../../../../generic-components/smart-grid/default-component';
 import { OptionsRendererComponent } from '../../../../generic-components/smart-grid/options-component';
@@ -38,10 +38,11 @@ export class UsersListComponent {
 
     // Options for filters
     statuses = signal<StatusAccountDTO[]>([]);
-
+    roles = signal<RoleAppResponseDTO[]>([]);
     // Column definitions
     columns = computed<DynamicColDef[]>(() => {
         const statuses = this.statuses();
+        const roles = this.roles();
         return [
             {
                 field: 'firstName',
@@ -51,6 +52,24 @@ export class UsersListComponent {
                 sortField: 'firstName',
                 filterable: true,
                 width: '200px'
+            },
+            {
+                field: 'roles',
+                header: 'Rôles',
+                type: 'array',
+                // valueFormatter: (roles) => (roles as string[])?.map((role) => role).join(', '),
+                options: this.roles(),
+                optionLabel: 'name',
+                optionValue: 'id',
+                filterable: true,
+                filterField: 'userRoles/roleId',
+                cellRenderer: 'options',
+                cellRendererParams: {
+                    field: 'roles',
+                    options: this.roles(),
+                    optionLabel: 'name',
+                    optionValue: 'id'
+                }
             },
             {
                 field: 'lastName',
@@ -73,7 +92,7 @@ export class UsersListComponent {
                 field: 'status',
                 header: 'Statut',
                 type: 'array',
-                valueFormatter: (status) => (status as StatusAccountDTO)?.name,
+                // valueFormatter: (status) => (status as StatusAccountDTO)?.name,
                 options: this.statuses(),
                 optionLabel: 'name',
                 optionValue: 'id',
@@ -81,8 +100,8 @@ export class UsersListComponent {
                 filterField: 'statusId',
                 cellRenderer: 'options',
                 cellRendererParams: {
-                    field: 'status', // Tell the renderer which field to extract
-                    options: this.statuses,
+                    field: 'status',
+                    options: this.statuses(),
                     optionLabel: 'name',
                     optionValue: 'id'
                 }
@@ -99,6 +118,7 @@ export class UsersListComponent {
 
     constructor() {
         this.getStatuses();
+        this.getRoles();
         effect(
             () => {
                 const state = this.filterParams();
@@ -128,6 +148,12 @@ export class UsersListComponent {
         this.statuses.set([]);
         const response = await firstValueFrom(this.userService.getStatusAccount());
         this.statuses.set(response.data ?? []);
+        return response.data ?? [];
+    }
+
+    async getRoles() {
+        const response = await firstValueFrom(this.userService.getRoles());
+        this.roles.set(response.data ?? []);
         return response.data ?? [];
     }
 }

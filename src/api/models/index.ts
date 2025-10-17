@@ -524,6 +524,13 @@ export interface GuidIdentityUserRole {
     roleId?: string;
 }
 
+export interface Int32ResponseDTO {
+    message: string;
+    status: number;
+    data?: number;
+    count?: number | null;
+}
+
 export interface Language {
     id: string;
     createdAt: Date;
@@ -778,6 +785,46 @@ export interface ProgrammingLanguageUpdateDTO {
     icon?: string | null;
     /** Description du langage de programmation */
     description?: string | null;
+}
+
+/** DTO pour la création d'un nouveau rôle */
+export interface RoleAppCreateDTO {
+    /** Nom du rôle */
+    name: string;
+}
+
+/** DTO pour l'affichage détaillé d'un rôle */
+export interface RoleAppResponseDTO {
+    /** Identifiant unique du rôle */
+    id: string;
+    /** Nom du rôle */
+    name: string;
+    /** Nom normalisé du rôle (en majuscules) */
+    normalizedName?: string | null;
+    /** Date de création de l'enregistrement */
+    createdAt: Date;
+    /** Date de dernière mise à jour */
+    updatedAt?: Date | null;
+}
+
+export interface RoleAppResponseDTOListResponseDTO {
+    message: string;
+    status: number;
+    data?: RoleAppResponseDTO[];
+    count?: number | null;
+}
+
+export interface RoleAppResponseDTOResponseDTO {
+    message: string;
+    status: number;
+    data?: RoleAppResponseDTO;
+    count?: number | null;
+}
+
+/** DTO pour la mise à jour d'un rôle existant */
+export interface RoleAppUpdateDTO {
+    /** Nom du rôle */
+    name: string;
 }
 
 export interface Slot {
@@ -1125,7 +1172,7 @@ export interface UserResponseDTO {
     phoneNumber?: string | null;
     status?: StatusAccountDTO;
     gender?: GenderDTO;
-    roles: string[];
+    roles: RoleAppResponseDTO[];
 }
 
 export interface UserResponseDTOListResponseDTO {

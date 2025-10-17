@@ -16,7 +16,11 @@ export class AppMenu {
     authService = inject(UserMainService);
     sideNavItems = this.authService.sideNavItems;
     layoutService = inject(LayoutService);
-    isAdmin = computed(() => this.authService.userConnected()?.roles?.includes('Admin'));
+
+    isAdmin = this.authService.isAdmin();
+    isSuperAdmin = this.authService.isSuperAdmin();
+    isTeacher = this.authService.isTeacher();
+    isStudent = this.authService.isStudent();
 
     deconnecionItem = {
         label: 'Déconnexion',
