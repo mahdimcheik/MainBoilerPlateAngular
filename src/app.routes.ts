@@ -4,7 +4,6 @@ import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
 import { SettingsComponent } from './app/pages/settings/settings.component';
 import { canNotLoginGuard, isConnectedGuard, isNotConnectedGuard } from './app/shared/guards/can-login.guard';
-import { isAdminOnlyGuard, isStudentOnlyGuard } from './app/shared/guards/is-admin-only.guard';
 
 // Auth components
 import { AuthLayoutComponent } from './app/modules/auth/pages/auth-layout/auth-layout.component';
@@ -25,14 +24,13 @@ import { CalendarTeacherComponent } from './app/modules/teacher/calendar-teacher
 import { GestionCursusesComponent } from './app/modules/teacher/pages/gestion-cursuses/gestion-cursuses.component';
 
 // Define path constants
-const DASHBOARD_PATH = 'dashboard';
+const TEACHER_PATH = 'teacher';
+const ADMIN_PATH = 'admin';
+const STUDENT_PATH = 'student';
 const SETTINGS_PATH = 'settings';
-const STUDENTS_LIST_PATH = 'students-list';
 const CONTACT_PATH = 'contact';
 const RESERVATION_PATH = 'reservation';
-const PROFILE_PATH = 'profile/me';
-const SUCCESS_PATH = 'success';
-const CANCEL_PATH = 'cancel';
+const PROFILE_PATH = 'profile';
 
 export const appRoutes: Routes = [
     // Landing routes
@@ -90,25 +88,23 @@ export const appRoutes: Routes = [
 
     // Dashboard routes (protected)
     {
-        path: DASHBOARD_PATH,
+        path: TEACHER_PATH,
         component: AppLayout,
         canActivate: [isConnectedGuard],
         children: [
             // Settings
-            { path: SETTINGS_PATH, component: SettingsComponent },
-            { path: PROFILE_PATH, component: ProfileTeacherComponent },
             { path: '', component: CalendarTeacherComponent },
+            { path: SETTINGS_PATH, component: SettingsComponent },
+            { path: PROFILE_PATH + '/:id', component: ProfileTeacherComponent },
             { path: RESERVATION_PATH + '/list', component: UsersListComponent },
             { path: CONTACT_PATH, component: GestionCursusesComponent }
         ]
     },
 
-    // Not found route
     {
         path: 'notfound',
         component: Notfound
     },
 
-    // Catch all route
     { path: '**', redirectTo: '/notfound' }
 ];

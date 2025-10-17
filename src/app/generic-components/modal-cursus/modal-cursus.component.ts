@@ -24,7 +24,7 @@ export class ModalCursusComponent {
     showEditModal = model(false);
     cursusInput = model<CursusResponseDTO>({} as CursusResponseDTO);
 
-    cursuses = this.cursusService.cursuses;
+    // cursuses = this.cursusService.cursuses;
     allCategories = this.cursusService.allCategories;
     allLevels = this.cursusService.allLevels;
 

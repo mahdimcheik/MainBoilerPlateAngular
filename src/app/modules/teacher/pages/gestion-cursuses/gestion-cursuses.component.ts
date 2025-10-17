@@ -12,8 +12,8 @@ import { TableState } from 'primeng/api';
 })
 export class GestionCursusesComponent {
     cursusService = inject(CursusesMainService);
-    cursuses = this.cursusService.cursuses;
-    totalRecords = this.cursusService.totalRecords;
+    // cursuses = this.cursusService.cursuses;
+    // totalRecords = this.cursusService.totalRecords;
     loading = signal(false);
     filterParams = signal<CustomTableState>(INITIAL_STATE);
     customComponents = signal<{ [key: string]: Type<ICellRendererAngularComp> }>({

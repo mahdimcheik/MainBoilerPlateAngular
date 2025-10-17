@@ -1,7 +1,7 @@
 <app-smart-section [title]="title" [editMode]="editMode()" [buttonIcon]="buttonIcon()" (onAddClick)="openModal()">
     <ng-template #main>
         @for (cursus of cursuses(); track cursus.id) {
-            <app-cursus [cursus]="cursus"></app-cursus>
+            <app-cursus [cursus]="cursus" [editMode]="editMode()"></app-cursus>
         }
     </ng-template>
 

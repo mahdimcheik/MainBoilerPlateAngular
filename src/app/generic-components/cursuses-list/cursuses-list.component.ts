@@ -1,4 +1,4 @@
-import { Component, computed, inject, model, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, model, OnInit, signal } from '@angular/core';
 import { SmartSectionComponent } from '../smart-section/smart-section.component';
 import { CursusComponent } from '../cursus/cursus.component';
 import { CursusesMainService } from '../../shared/services/cursuses-main.service';
@@ -11,6 +11,9 @@ import { FormGroup } from '@angular/forms';
 import { UserMainService } from '../../shared/services/userMain.service';
 import { Message } from 'primeng/message';
 import { ModalCursusComponent } from '../modal-cursus/modal-cursus.component';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CursusResponseDTO } from '../../../api';
 
 @Component({
     selector: 'app-cursuses-list',
@@ -22,6 +25,8 @@ export class CursusesListComponent implements OnInit {
     cursusService = inject(CursusesMainService);
     user = inject(UserMainService).userConnected;
     messageService = inject(MessageService);
+    activatedRoute = inject(ActivatedRoute);
+    destroyRef = inject(DestroyRef);
 
     title = 'Listes des Coursus';
 
@@ -29,11 +34,26 @@ export class CursusesListComponent implements OnInit {
     buttonIcon = model('pi pi-plus');
     showEditModal = signal(false);
 
-    cursuses = this.cursusService.cursuses;
+    // cursuses = this.cursusService.cursuses;
+    cursuses = signal<CursusResponseDTO[]>([]);
 
     async ngOnInit() {
-        await this.cursusService.getCursusByTeacher(this.user().id);
-        console.log(this.cursuses());
+        this.activatedRoute.params.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
+            const teacherId = params['id'];
+            if (teacherId && teacherId === 'me') {
+                this.editMode.set(true);
+                this.cursusService.getCursusByTeacher(this.user().id).then((cursuses) => {
+                    this.cursuses.set(cursuses);
+                    return cursuses;
+                });
+            } else {
+                this.editMode.set(false);
+                this.cursusService.getCursusByTeacher(teacherId).then((cursuses) => {
+                    this.cursuses.set(cursuses);
+                    return cursuses;
+                });
+            }
+        });
     }
 
     async openModal() {

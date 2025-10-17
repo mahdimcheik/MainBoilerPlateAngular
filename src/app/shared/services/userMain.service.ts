@@ -51,6 +51,8 @@ export class UserMainService {
     userToDisplay = signal({} as UserResponseDTO);
 
     isAdmin = computed(() => this.userConnected()?.roles?.includes('Admin'));
+    isTeacher = computed(() => this.userConnected()?.roles?.includes('Teacher'));
+    isStudent = computed(() => this.userConnected()?.roles?.includes('Student'));
 
     // lien de side navbar
     sideNavItems = signal<MenuItem[]>([]);
@@ -86,22 +88,33 @@ export class UserMainService {
 
     constructor() {
         effect(() => {
-            this.isAdmin()
-                ? this.sideNavItems.set([
-                      { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
-                      { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/list'] },
-                      { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-teacher'] },
-                      { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/dashboard/students-list'] },
-                      { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/profile/me'] }
-                  ])
-                : this.sideNavItems.set([
-                      { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
-                      { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/list'] },
-                      { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
-                      { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
-                      { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] },
-                      { label: 'Contact', icon: 'pi pi-fw pi-at', routerLink: ['/dashboard/contact'] }
-                  ]);
+            if (this.isAdmin()) {
+                this.sideNavItems.set([
+                    { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/admin'] },
+                    { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/list'] },
+                    { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-teacher'] },
+                    { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/dashboard/students-list'] },
+                    { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/profile/me'] }
+                ]);
+            } else if (this.isTeacher()) {
+                this.sideNavItems.set([
+                    { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/teacher'] },
+                    { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/teacher/reservation/list'] },
+                    { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/teacher/reservation/calendar-for-student'] },
+                    { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/teacher/reservation/orders-student'] },
+                    { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/teacher/profile/me'] },
+                    { label: 'Contact', icon: 'pi pi-fw pi-at', routerLink: ['/teacher/contact'] }
+                ]);
+            } else if (this.isStudent()) {
+                this.sideNavItems.set([
+                    { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/student'] },
+                    { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/list'] },
+                    { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
+                    { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
+                    { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] },
+                    { label: 'Contact', icon: 'pi pi-fw pi-at', routerLink: ['/dashboard/contact'] }
+                ]);
+            }
         });
     }
     /**

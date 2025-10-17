@@ -16,6 +16,7 @@ export class CursusComponent {
     cursusMainService = inject(CursusesMainService);
     messageService = inject(MessageService);
 
+    editMode = model(false);
     cursus = model.required<CursusResponseDTO>();
     showEditModal = signal(false);
     showDeleteConfirm = signal(false);
