@@ -50,11 +50,13 @@ export class UserMainService {
     userConnected = signal({} as UserResponseDTO);
 
     isAdmin = computed(() => this.userConnected()?.roles?.includes('Admin'));
+    isSuperAdmin = computed(() => this.userConnected()?.roles?.includes('SuperAdmin'));
     isTeacher = computed(() => this.userConnected()?.roles?.includes('Teacher'));
     isStudent = computed(() => this.userConnected()?.roles?.includes('Student'));
 
     // lien de side navbar
     sideNavItems = signal<MenuItem[]>([]);
+    landingNavItems = signal<MenuItem[]>([]);
 
     // pour la page qui je suis ?
     teacherDetails = signal({} as UserResponseDTO);
@@ -87,13 +89,24 @@ export class UserMainService {
 
     constructor() {
         effect(() => {
+            const user = this.userConnected();
             if (this.isAdmin()) {
                 this.sideNavItems.set([
                     { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/admin'] },
+                    { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/admin/users-list'] },
                     { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/list'] },
                     { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-teacher'] },
                     { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/dashboard/students-list'] },
                     { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/profile/me'] }
+                ]);
+                this.landingNavItems.set([
+                    { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/admin'] },
+                    { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/admin/users-list'] }
+                ]);
+            } else if (this.isSuperAdmin()) {
+                this.sideNavItems.set([
+                    { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/admin'] },
+                    { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/admin/users-list'] }
                 ]);
             } else if (this.isTeacher()) {
                 this.sideNavItems.set([
@@ -273,9 +286,15 @@ export class UserMainService {
         this.userConnected.set({} as UserResponseDTO);
         this.token.set('');
     }
-    logout(): void {
+    async logout(): Promise<void> {
         this.reset();
-        this.router.navigate(['/auth/login']);
+        await firstValueFrom(
+            this.authService.authLogoutGet().pipe(
+                tap(() => {
+                    this.router.navigate(['/auth/login']);
+                })
+            )
+        );
     }
 
     /**

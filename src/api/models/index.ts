@@ -991,6 +991,15 @@ export interface UserApp {
     programmingLanguages?: ProgrammingLanguage[];
 }
 
+export interface UserAppDynamicFilters {
+    first?: number;
+    rows?: number;
+    search?: string | null;
+    globalSearch?: string | null;
+    sorts?: Sort[];
+    filters?: Record<string, FilterItem>;
+}
+
 export interface UserCreateDTO {
     email: string;
     password: string;

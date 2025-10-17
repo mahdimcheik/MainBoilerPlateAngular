@@ -10,7 +10,7 @@
 import { HttpClient, HttpContext, HttpContextToken, HttpEvent, HttpParams, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { ForgotPasswordInput, LoginOutputDTOResponseDTO, PasswordRecoveryInput, PasswordResetResponseDTOResponseDTO, RequestOptions, StringResponseDTO, UserCreateDTO, UserInfosWithtokenResponseDTO, UserLoginDTO, UserResponseDTOResponseDTO, UserUpdateDTO } from "../models";
+import { ForgotPasswordInput, LoginOutputDTOResponseDTO, ObjectResponseDTO, PasswordRecoveryInput, PasswordResetResponseDTOResponseDTO, RequestOptions, StringResponseDTO, UserCreateDTO, UserInfosWithtokenResponseDTO, UserLoginDTO, UserResponseDTOResponseDTO, UserUpdateDTO } from "../models";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT } from "../tokens";
 import { HttpParamsBuilder } from "../utils/http-params-builder";
 
@@ -195,6 +195,22 @@ export class AuthService {
     authRefreshTokenGet(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<LoginOutputDTOResponseDTO>>;
     authRefreshTokenGet(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/auth/refresh-token`;
+
+        const requestOptions: any = {
+            observe: observe as any,
+            reportProgress: options?.reportProgress,
+            withCredentials: options?.withCredentials,
+            context: this.createContextWithClientId(options?.context)
+        };
+
+        return this.httpClient.get(url, requestOptions);
+    }
+
+    authLogoutGet(observe?: 'body', options?: RequestOptions<'json'>): Observable<ObjectResponseDTO>;
+    authLogoutGet(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<ObjectResponseDTO>>;
+    authLogoutGet(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<ObjectResponseDTO>>;
+    authLogoutGet(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+        const url = `${this.basePath}/auth/logout`;
 
         const requestOptions: any = {
             observe: observe as any,

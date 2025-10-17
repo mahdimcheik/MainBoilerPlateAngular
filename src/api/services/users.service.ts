@@ -10,7 +10,7 @@
 import { HttpClient, HttpContext, HttpContextToken, HttpEvent, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { RequestOptions, UserResponseDTOListResponseDTO } from "../models";
+import { RequestOptions, UserAppDynamicFilters, UserResponseDTOListResponseDTO } from "../models";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT } from "../tokens";
 
 @Injectable({ providedIn: "root" })
@@ -24,10 +24,10 @@ export class UsersService {
         return context.set(this.clientContextToken, 'default');
     }
 
-    usersListGet(observe?: 'body', options?: RequestOptions<'json'>): Observable<UserResponseDTOListResponseDTO>;
-    usersListGet(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<UserResponseDTOListResponseDTO>>;
-    usersListGet(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<UserResponseDTOListResponseDTO>>;
-    usersListGet(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    usersListGet(userAppDynamicFilters?: UserAppDynamicFilters, observe?: 'body', options?: RequestOptions<'json'>): Observable<UserResponseDTOListResponseDTO>;
+    usersListGet(userAppDynamicFilters?: UserAppDynamicFilters, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<UserResponseDTOListResponseDTO>>;
+    usersListGet(userAppDynamicFilters?: UserAppDynamicFilters, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<UserResponseDTOListResponseDTO>>;
+    usersListGet(userAppDynamicFilters?: UserAppDynamicFilters, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/users/list`;
 
         const requestOptions: any = {
