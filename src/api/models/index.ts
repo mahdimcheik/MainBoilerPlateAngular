@@ -552,6 +552,15 @@ export interface LanguageCreateDTO {
     icon?: string | null;
 }
 
+export interface LanguageDynamicFilters {
+    first?: number;
+    rows?: number;
+    search?: string | null;
+    globalSearch?: string | null;
+    sorts?: Sort[];
+    filters?: Record<string, FilterItem>;
+}
+
 /** DTO pour l'affichage des informations d'une langue */
 export interface LanguageResponseDTO {
     /** Identifiant unique de la langue */
@@ -944,6 +953,15 @@ export interface StatusAccountDTO {
     readonly color: string;
     /** Icône associée au statut */
     readonly icon?: string | null;
+}
+
+export interface StatusAccountDynamicFilters {
+    first?: number;
+    rows?: number;
+    search?: string | null;
+    globalSearch?: string | null;
+    sorts?: Sort[];
+    filters?: Record<string, FilterItem>;
 }
 
 /** DTO pour l'affichage détaillé d'un statut de compte */

@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { LanguageResponseDTO, LanguagesService, ProgrammingLanguageResponseDTO, ProgrammingLanguagesService } from '../../../api';
 import { firstValueFrom } from 'rxjs';
 import { languagesOptions, programmingLanguagesOptions } from './constants';
+import { CustomTableState } from '../models/TableColumn ';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +20,14 @@ export class LanguagesStoreService {
 
     async loadLanguages() {
         if (this.allLanguages().length === 0) {
-            const langs = await firstValueFrom(this.languagesService.languagesAllGet());
+            const langs = await firstValueFrom(
+                this.languagesService.languagesAllPost({
+                    first: 0,
+                    rows: 10,
+                    sorts: [],
+                    filters: {}
+                } as CustomTableState)
+            );
             this.allLanguages.set(langs.data || []);
         }
     }

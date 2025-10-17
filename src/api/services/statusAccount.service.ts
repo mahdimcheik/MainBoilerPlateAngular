@@ -10,7 +10,7 @@
 import { HttpClient, HttpContext, HttpContextToken, HttpEvent, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { ObjectResponseDTO, RequestOptions, StatusAccountCreateDTO, StatusAccountResponseDTOListResponseDTO, StatusAccountResponseDTOResponseDTO, StatusAccountUpdateDTO } from "../models";
+import { ObjectResponseDTO, RequestOptions, StatusAccountCreateDTO, StatusAccountDynamicFilters, StatusAccountResponseDTOListResponseDTO, StatusAccountResponseDTOResponseDTO, StatusAccountUpdateDTO } from "../models";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT } from "../tokens";
 
 @Injectable({ providedIn: "root" })
@@ -24,10 +24,10 @@ export class StatusAccountService {
         return context.set(this.clientContextToken, 'default');
     }
 
-    statusaccountAllGet(observe?: 'body', options?: RequestOptions<'json'>): Observable<StatusAccountResponseDTOListResponseDTO>;
-    statusaccountAllGet(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<StatusAccountResponseDTOListResponseDTO>>;
-    statusaccountAllGet(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<StatusAccountResponseDTOListResponseDTO>>;
-    statusaccountAllGet(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    statusaccountAllPost(statusAccountDynamicFilters?: StatusAccountDynamicFilters, observe?: 'body', options?: RequestOptions<'json'>): Observable<StatusAccountResponseDTOListResponseDTO>;
+    statusaccountAllPost(statusAccountDynamicFilters?: StatusAccountDynamicFilters, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<StatusAccountResponseDTOListResponseDTO>>;
+    statusaccountAllPost(statusAccountDynamicFilters?: StatusAccountDynamicFilters, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<StatusAccountResponseDTOListResponseDTO>>;
+    statusaccountAllPost(statusAccountDynamicFilters?: StatusAccountDynamicFilters, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/statusaccount/all`;
 
         const requestOptions: any = {
@@ -37,7 +37,7 @@ export class StatusAccountService {
             context: this.createContextWithClientId(options?.context)
         };
 
-        return this.httpClient.get(url, requestOptions);
+        return this.httpClient.post(url, statusAccountDynamicFilters, requestOptions);
     }
 
     statusaccountIdGet(id: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<StatusAccountResponseDTOResponseDTO>;

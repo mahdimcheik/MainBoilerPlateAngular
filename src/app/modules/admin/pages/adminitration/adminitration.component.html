@@ -9,13 +9,32 @@
             </button>
         </ng-template>
         <ng-template #main>
-            <app-smart-grid [(data)]="roles" [columns]="colDefsRoles()" [(tableState)]="tableStateRoles" [(totalRecords)]="totalRecordsRoles" [(loading)]="loadingRoles"></app-smart-grid>
+            <app-smart-grid [(data)]="roles" [columns]="colDefsRoles()" [(tableState)]="tableStateRoles" [(totalRecords)]="totalRecordsRoles" [(loading)]="loadingRoles" [(customComponents)]="customComponents"></app-smart-grid>
         </ng-template>
     </app-smart-section>
     <app-smart-section [editMode]="editMode()" title="Paramètres des statuts">
-        <ng-template #main> </ng-template>
+        <ng-template #main>
+            <app-smart-grid
+                [(data)]="statusesAccount"
+                [columns]="colDefsStatusesAccount()"
+                [(tableState)]="tableStateStatusesAccount"
+                [(totalRecords)]="totalRecordsStatusesAccount"
+                [(loading)]="loadingStatusesAccount"
+                [(customComponents)]="customComponents"
+            ></app-smart-grid>
+        </ng-template>
     </app-smart-section>
-    <app-smart-section [editMode]="editMode()" title="Paramètres des langues">
-        <ng-template #main> </ng-template>
+    <app-smart-section [editMode]="editMode()" title="Paramètres des langues" (onAddClick)="onEditClickLanguage()">
+        <ng-template #main>
+            <app-smart-grid
+                [(data)]="languages"
+                [columns]="colDefsLanguages()"
+                [(tableState)]="tableStateLanguages"
+                [(totalRecords)]="totalRecordsLanguages"
+                [(loading)]="loadingLanguages"
+                [(customComponents)]="customComponents"
+                [editMode]="editModeLanguages()"
+            ></app-smart-grid>
+        </ng-template>
     </app-smart-section>
 </div>

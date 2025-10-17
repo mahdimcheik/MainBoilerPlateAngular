@@ -12,6 +12,9 @@ import { EnumGender, GenderDropDown } from '../../shared/models/user';
 import {
     AuthService,
     ForgotPasswordInput,
+    LanguageResponseDTO,
+    LanguageResponseDTOListResponseDTO,
+    LanguagesService,
     LoginOutputDTO,
     LoginOutputDTOResponseDTO,
     PasswordRecoveryInput,
@@ -56,6 +59,7 @@ export class UserMainService {
     cookieConsentService = inject(CookieConsentService);
     statusAccountService = inject(StatusAccountService);
     roleAppService = inject(RoleAppService);
+    languageService = inject(LanguagesService);
     // pour la page profile
     userConnected = signal({} as UserResponseDTO);
 
@@ -333,8 +337,8 @@ export class UserMainService {
     }
 
     // status account
-    getStatusAccount(): Observable<ResponseDTO<StatusAccountDTO[]>> {
-        return this.statusAccountService.statusaccountAllGet().pipe(
+    getStatusAccount(CustomTableState: CustomTableState): Observable<ResponseDTO<StatusAccountDTO[]>> {
+        return this.statusAccountService.statusaccountAllPost(CustomTableState).pipe(
             switchMap((response: StatusAccountResponseDTOListResponseDTO) => {
                 const legacyResponse: ResponseDTO<StatusAccountDTO[]> = {
                     message: response.message || '',
@@ -354,6 +358,18 @@ export class UserMainService {
                     message: response.message || '',
                     status: response.status || 200,
                     data: response.data ?? []
+                };
+                return of(legacyResponse);
+            })
+        );
+    }
+    getLanguages(CustomTableState: CustomTableState): Observable<ResponseDTO<LanguageResponseDTO[]>> {
+        return this.languageService.languagesAllPost(CustomTableState).pipe(
+            switchMap((response: LanguageResponseDTOListResponseDTO) => {
+                const legacyResponse: ResponseDTO<LanguageResponseDTO[]> = {
+                    message: response.message || '',
+                    status: response.status || 200,
+                    data: response.data as LanguageResponseDTO[]
                 };
                 return of(legacyResponse);
             })

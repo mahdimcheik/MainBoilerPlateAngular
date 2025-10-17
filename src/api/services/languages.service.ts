@@ -10,7 +10,7 @@
 import { HttpClient, HttpContext, HttpContextToken, HttpEvent, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { LanguageCreateDTO, LanguageResponseDTOListResponseDTO, LanguageResponseDTOResponseDTO, LanguageUpdateDTO, ObjectResponseDTO, RequestOptions, UserLanguageDTO } from "../models";
+import { LanguageCreateDTO, LanguageDynamicFilters, LanguageResponseDTOListResponseDTO, LanguageResponseDTOResponseDTO, LanguageUpdateDTO, ObjectResponseDTO, RequestOptions, UserLanguageDTO } from "../models";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT } from "../tokens";
 
 @Injectable({ providedIn: "root" })
@@ -24,10 +24,10 @@ export class LanguagesService {
         return context.set(this.clientContextToken, 'default');
     }
 
-    languagesAllGet(observe?: 'body', options?: RequestOptions<'json'>): Observable<LanguageResponseDTOListResponseDTO>;
-    languagesAllGet(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<LanguageResponseDTOListResponseDTO>>;
-    languagesAllGet(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<LanguageResponseDTOListResponseDTO>>;
-    languagesAllGet(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    languagesAllPost(languageDynamicFilters?: LanguageDynamicFilters, observe?: 'body', options?: RequestOptions<'json'>): Observable<LanguageResponseDTOListResponseDTO>;
+    languagesAllPost(languageDynamicFilters?: LanguageDynamicFilters, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<LanguageResponseDTOListResponseDTO>>;
+    languagesAllPost(languageDynamicFilters?: LanguageDynamicFilters, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<LanguageResponseDTOListResponseDTO>>;
+    languagesAllPost(languageDynamicFilters?: LanguageDynamicFilters, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/languages/all`;
 
         const requestOptions: any = {
@@ -37,7 +37,7 @@ export class LanguagesService {
             context: this.createContextWithClientId(options?.context)
         };
 
-        return this.httpClient.get(url, requestOptions);
+        return this.httpClient.post(url, languageDynamicFilters, requestOptions);
     }
 
     languagesIdGet(id: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<LanguageResponseDTOResponseDTO>;

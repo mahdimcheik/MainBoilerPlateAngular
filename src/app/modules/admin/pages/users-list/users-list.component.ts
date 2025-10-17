@@ -146,13 +146,27 @@ export class UsersListComponent {
 
     async getStatuses() {
         this.statuses.set([]);
-        const response = await firstValueFrom(this.userService.getStatusAccount());
+        const response = await firstValueFrom(
+            this.userService.getStatusAccount({
+                first: 0,
+                rows: 10,
+                sorts: [],
+                filters: {}
+            } as CustomTableState)
+        );
         this.statuses.set(response.data ?? []);
         return response.data ?? [];
     }
 
     async getRoles() {
-        const response = await firstValueFrom(this.userService.getRoles(this.filterParams()));
+        const response = await firstValueFrom(
+            this.userService.getRoles({
+                first: 0,
+                rows: 10,
+                sorts: [],
+                filters: {}
+            } as CustomTableState)
+        );
         this.roles.set(response.data ?? []);
         return response.data ?? [];
     }
