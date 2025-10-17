@@ -122,7 +122,6 @@ export class PersonnalInfosComponent implements OnInit {
     }
 
     async submit(event: FormGroup<any>) {
-        console.log('submit', event.value);
         try {
             const updatedUser: UserUpdateDTO = {
                 firstName: event.value.firstName,
