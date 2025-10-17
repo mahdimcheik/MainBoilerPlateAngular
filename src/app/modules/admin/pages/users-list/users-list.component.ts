@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal, Type } from '@angular/core';
+import { Component, computed, effect, inject, signal, Type } from '@angular/core';
 import { SmartGridComponent } from '../../../../generic-components/smart-grid/smart-grid.component';
 import { StatusAccountDTO, UserResponseDTO } from '../../../../../api';
 import { CustomTableState, DynamicColDef, ICellRendererAngularComp, INITIAL_STATE } from '../../../../shared/models/TableColumn ';
@@ -8,6 +8,7 @@ import { OptionsRendererComponent } from '../../../../generic-components/smart-g
 import { ODataQueryBuilder, parseODataResponse } from '../../../../generic-components/smart-grid/odata-query-builder';
 import { UserMainService } from '../../../../shared/services/userMain.service';
 import { AdminMainService } from '../../../../shared/services/admin-main.service';
+import { firstValueFrom } from 'rxjs';
 
 /**
  * Example component showing how to use SmartGrid with OData backend
@@ -20,6 +21,7 @@ import { AdminMainService } from '../../../../shared/services/admin-main.service
 })
 export class UsersListComponent {
     adminService = inject(AdminMainService);
+    userService = inject(UserMainService);
     // Table state
     filterParams = signal<CustomTableState>(INITIAL_STATE);
     loading = signal(false);
@@ -35,80 +37,68 @@ export class UsersListComponent {
     users = signal<UserResponseDTO[]>([]);
 
     // Options for filters
-    statuses: StatusAccountDTO[] = [
-        {
-            id: '1',
-            name: 'Active',
-            color: '#000'
-        },
-        {
-            id: '2',
-            name: 'Inactive',
-            color: '#000'
-        },
-        {
-            id: '3',
-            name: 'Pending',
-            color: '#000'
-        }
-    ];
+    statuses = signal<StatusAccountDTO[]>([]);
 
     // Column definitions
-    columns = signal<DynamicColDef[]>([
-        {
-            field: 'firstName',
-            header: 'First Name',
-            type: 'text',
-            sortable: true,
-            sortField: 'firstName',
-            filterable: true,
-            width: '200px'
-        },
-        {
-            field: 'firstName',
-            header: 'First Name',
-            type: 'text',
-            sortable: true,
-            sortField: 'firstName',
-            filterable: true,
-            width: '200px'
-        },
-        {
-            field: 'email',
-            header: 'Email',
-            cellRenderer: 'default',
-            type: 'text',
-            sortable: true,
-            sortField: 'email',
-            filterable: true
-        },
-        {
-            field: 'status', // JavaScript path for display
-            header: 'Status',
-            type: 'array',
-            valueFormatter: (status) => (status as StatusAccountDTO)?.name,
-            options: this.statuses,
-            optionLabel: 'name',
-            optionValue: 'id',
-            filterable: true,
-            filterField: 'statusId',
-            cellRenderer: 'options',
-            cellRendererParams: {
-                options: this.statuses,
+    columns = computed<DynamicColDef[]>(() => {
+        const statuses = this.statuses();
+        return [
+            {
+                field: 'firstName',
+                header: 'Prénom',
+                type: 'text',
+                sortable: true,
+                sortField: 'firstName',
+                filterable: true,
+                width: '200px'
+            },
+            {
+                field: 'lastName',
+                header: 'Nom de famille',
+                type: 'text',
+                sortable: true,
+                sortField: 'lastName',
+                filterable: true,
+                width: '200px'
+            },
+            {
+                field: 'email',
+                header: 'Email',
+                type: 'text',
+                sortable: true,
+                sortField: 'email',
+                filterable: true
+            },
+            {
+                field: 'status',
+                header: 'Statut',
+                type: 'array',
+                valueFormatter: (status) => (status as StatusAccountDTO)?.name,
+                options: this.statuses(),
                 optionLabel: 'name',
-                optionValue: 'id'
+                optionValue: 'id',
+                filterable: true,
+                filterField: 'statusId',
+                cellRenderer: 'options',
+                cellRendererParams: {
+                    field: 'status', // Tell the renderer which field to extract
+                    options: this.statuses,
+                    optionLabel: 'name',
+                    optionValue: 'id'
+                }
+            },
+            {
+                field: 'dateOfBirth',
+                header: 'Date de naissance',
+                type: 'date',
+                filterable: true,
+                sortable: true
             }
-        },
-        {
-            field: 'dateOfBirth',
-            header: 'Date of Birth',
-            type: 'date',
-            filterable: true,
-            sortable: true
-        }
-    ]);
+        ];
+    });
 
     constructor() {
+        this.getStatuses();
         effect(
             () => {
                 const state = this.filterParams();
@@ -123,14 +113,21 @@ export class UsersListComponent {
      */
     async loadUsers(state: CustomTableState) {
         try {
-            // this.loading.set(true);
+            this.loading.set(true);
             const response = await this.adminService.getUsers(state);
             this.users.set(response.data ?? []);
             this.totalRecords.set(response.count ?? 0);
         } catch (error) {
             console.error('Error loading users:', error);
         } finally {
-            // this.loading.set(false);
+            this.loading.set(false);
         }
+    }
+
+    async getStatuses() {
+        this.statuses.set([]);
+        const response = await firstValueFrom(this.userService.getStatusAccount());
+        this.statuses.set(response.data ?? []);
+        return response.data ?? [];
     }
 }

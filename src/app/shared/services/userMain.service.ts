@@ -17,6 +17,10 @@ import {
     PasswordRecoveryInput,
     PasswordResetResponseDTO,
     PasswordResetResponseDTOResponseDTO,
+    StatusAccountDTO,
+    StatusAccountResponseDTO,
+    StatusAccountResponseDTOListResponseDTO,
+    StatusAccountService,
     StringResponseDTO,
     UserCreateDTO,
     UserInfosWithtoken,
@@ -46,6 +50,7 @@ export class UserMainService {
     router = inject(Router);
     messageService = inject(MessageService);
     cookieConsentService = inject(CookieConsentService);
+    statusAccountService = inject(StatusAccountService);
     // pour la page profile
     userConnected = signal({} as UserResponseDTO);
 
@@ -317,6 +322,20 @@ export class UserMainService {
                     this.userConnected.set(res.data);
                     this.localStorageService.setUser(res.data);
                 }
+            })
+        );
+    }
+
+    // status account
+    getStatusAccount(): Observable<ResponseDTO<StatusAccountDTO[]>> {
+        return this.statusAccountService.statusaccountAllGet().pipe(
+            switchMap((response: StatusAccountResponseDTOListResponseDTO) => {
+                const legacyResponse: ResponseDTO<StatusAccountDTO[]> = {
+                    message: response.message || '',
+                    status: response.status || 200,
+                    data: response.data as StatusAccountDTO[]
+                };
+                return of(legacyResponse);
             })
         );
     }

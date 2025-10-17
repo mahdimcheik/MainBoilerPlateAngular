@@ -863,11 +863,66 @@ export interface StatusAccount {
     icon?: string | null;
 }
 
+/** DTO pour la création d'un nouveau statut de compte */
+export interface StatusAccountCreateDTO {
+    /** Nom du statut */
+    name: string;
+    /** Couleur associée au statut (code hexadécimal) */
+    color: string;
+    /** Icône associée au statut */
+    icon?: string | null;
+}
+
+/** DTO pour l'affichage des informations d'un statut de compte */
 export interface StatusAccountDTO {
+    /** Identifiant unique du statut */
     readonly id: string;
+    /** Nom du statut */
     readonly name: string;
+    /** Couleur associée au statut (code hexadécimal) */
     readonly color: string;
+    /** Icône associée au statut */
     readonly icon?: string | null;
+}
+
+/** DTO pour l'affichage détaillé d'un statut de compte */
+export interface StatusAccountResponseDTO {
+    /** Identifiant unique du statut */
+    id: string;
+    /** Nom du statut */
+    name: string;
+    /** Couleur associée au statut (code hexadécimal) */
+    color: string;
+    /** Icône associée au statut */
+    icon?: string | null;
+    /** Date de création de l'enregistrement */
+    createdAt: Date;
+    /** Date de dernière mise à jour */
+    updatedAt?: Date | null;
+}
+
+export interface StatusAccountResponseDTOListResponseDTO {
+    message: string;
+    status: number;
+    data?: StatusAccountResponseDTO[];
+    count?: number | null;
+}
+
+export interface StatusAccountResponseDTOResponseDTO {
+    message: string;
+    status: number;
+    data?: StatusAccountResponseDTO;
+    count?: number | null;
+}
+
+/** DTO pour la mise à jour d'un statut de compte existant */
+export interface StatusAccountUpdateDTO {
+    /** Nom du statut */
+    name: string;
+    /** Couleur associée au statut (code hexadécimal) */
+    color: string;
+    /** Icône associée au statut */
+    icon?: string | null;
 }
 
 export interface StringResponseDTO {

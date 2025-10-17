@@ -19,5 +19,6 @@ export { LanguagesService } from "./languages.service";
 export { LevelCursusService } from "./levelCursus.service";
 export { ProgrammingLanguagesService } from "./programmingLanguages.service";
 export { SlotsService } from "./slots.service";
+export { StatusAccountService } from "./statusAccount.service";
 export { TypeSlotService } from "./typeSlot.service";
 export { UsersService } from "./users.service";
