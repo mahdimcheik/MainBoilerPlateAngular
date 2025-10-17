@@ -101,6 +101,17 @@ export const appRoutes: Routes = [
         ]
     },
 
+    // Dashboard routes (protected)
+    {
+        path: ADMIN_PATH,
+        component: AppLayout,
+        canActivate: [isConnectedGuard],
+        children: [
+            { path: SETTINGS_PATH, component: SettingsComponent },
+            { path: 'users-list', component: UsersListComponent }
+        ]
+    },
+
     {
         path: 'notfound',
         component: Notfound

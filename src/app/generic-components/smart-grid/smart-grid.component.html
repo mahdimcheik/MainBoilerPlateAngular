@@ -152,7 +152,7 @@
                         <td>
                             @if (column.cellRenderer) {
                                 <!-- Custom cell renderer -->
-                                <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams }" />
+                                <ng-container *ngComponentOutlet="getComponent(column.cellRenderer); inputs: { data: item, params: column.cellRendererParams ?? {} }" />
                             } @else {
                                 <!-- Default rendering based on type -->
                                 @switch (column.type) {

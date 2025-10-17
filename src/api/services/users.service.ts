@@ -24,10 +24,10 @@ export class UsersService {
         return context.set(this.clientContextToken, 'default');
     }
 
-    usersListGet(userAppDynamicFilters?: UserAppDynamicFilters, observe?: 'body', options?: RequestOptions<'json'>): Observable<UserResponseDTOListResponseDTO>;
-    usersListGet(userAppDynamicFilters?: UserAppDynamicFilters, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<UserResponseDTOListResponseDTO>>;
-    usersListGet(userAppDynamicFilters?: UserAppDynamicFilters, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<UserResponseDTOListResponseDTO>>;
-    usersListGet(userAppDynamicFilters?: UserAppDynamicFilters, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    usersListPost(userAppDynamicFilters?: UserAppDynamicFilters, observe?: 'body', options?: RequestOptions<'json'>): Observable<UserResponseDTOListResponseDTO>;
+    usersListPost(userAppDynamicFilters?: UserAppDynamicFilters, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<UserResponseDTOListResponseDTO>>;
+    usersListPost(userAppDynamicFilters?: UserAppDynamicFilters, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<UserResponseDTOListResponseDTO>>;
+    usersListPost(userAppDynamicFilters?: UserAppDynamicFilters, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/users/list`;
 
         const requestOptions: any = {
@@ -37,6 +37,6 @@ export class UsersService {
             context: this.createContextWithClientId(options?.context)
         };
 
-        return this.httpClient.get(url, requestOptions);
+        return this.httpClient.post(url, userAppDynamicFilters, requestOptions);
     }
 }
