@@ -16,4 +16,5 @@ export class SmartSectionComponent {
 
     mainContent = contentChild<TemplateRef<any>>('main');
     emptyContent = contentChild<TemplateRef<any>>('empty');
+    rightContent = contentChild<TemplateRef<any>>('right');
 }

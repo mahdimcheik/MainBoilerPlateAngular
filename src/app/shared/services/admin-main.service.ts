@@ -17,6 +17,8 @@ import {
     PasswordRecoveryInput,
     PasswordResetResponseDTO,
     PasswordResetResponseDTOResponseDTO,
+    RoleAppResponseDTOListResponseDTO,
+    RoleAppService,
     StringResponseDTO,
     UserCreateDTO,
     UserInfosWithtoken,
@@ -43,6 +45,7 @@ import { CustomTableState } from '../models/TableColumn ';
 export class AdminMainService {
     baseUrl = environment.API_URL;
     private userService = inject(UsersService);
+    private roleAppService = inject(RoleAppService);
     private localStorageService = inject(LocalstorageService);
 
     getUsers(CustomTableState: CustomTableState) {

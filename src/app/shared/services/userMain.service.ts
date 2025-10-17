@@ -35,6 +35,7 @@ import {
 } from '../../../api';
 import { ResponseDTO } from '../models/response-dto';
 import { BrowserModule } from '@angular/platform-browser';
+import { CustomTableState } from '../models/TableColumn ';
 
 /**
  * service pour gérer les utilisateurs.
@@ -115,7 +116,8 @@ export class UserMainService {
             } else if (this.isSuperAdmin()) {
                 this.sideNavItems.set([
                     { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/admin'] },
-                    { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/admin/users-list'] }
+                    { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/admin/users-list'] },
+                    { label: 'Paramètres', icon: 'pi pi-cog', routerLink: ['/admin/adminitration'] }
                 ]);
             } else if (this.isTeacher()) {
                 this.sideNavItems.set([
@@ -345,8 +347,8 @@ export class UserMainService {
     }
 
     // users roles
-    getRoles(): Observable<ResponseDTO<RoleAppResponseDTO[]>> {
-        return this.roleAppService.roleappAllGet().pipe(
+    getRoles(CustomTableState: CustomTableState): Observable<ResponseDTO<RoleAppResponseDTO[]>> {
+        return this.roleAppService.roleappAllPost(CustomTableState).pipe(
             switchMap((response: RoleAppResponseDTOListResponseDTO) => {
                 const legacyResponse: ResponseDTO<RoleAppResponseDTO[]> = {
                     message: response.message || '',

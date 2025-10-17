@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, input, model, OnInit, signal, Type } from '@angular/core';
+import { Component, computed, contentChild, effect, input, model, OnInit, signal, TemplateRef, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -106,6 +106,10 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
     loading = model(false);
     columns = model.required<DynamicColDef[]>();
     searchValue = signal<string>('');
+    height = input<string>('flex');
+    // Content children
+    rightContent = contentChild<TemplateRef<any>>('right');
+    leftContent = contentChild<TemplateRef<any>>('left');
 
     // Internal signals
     private componentMap = signal<{ [key: string]: Type<ICellRendererAngularComp> }>({

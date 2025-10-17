@@ -1,0 +1,21 @@
+<div class="more-container">
+    <app-smart-section [editMode]="editMode()" title="Paramètres des utilisateurs">
+        <ng-template #main> </ng-template>
+    </app-smart-section>
+    <app-smart-section [editMode]="editMode()" title="Paramètres des rôles">
+        <ng-template #right>
+            <button pButton class="p-button-sm" outlined>
+                <i class="pi pi-plus" pButtonIcon></i>
+            </button>
+        </ng-template>
+        <ng-template #main>
+            <app-smart-grid [(data)]="roles" [columns]="colDefsRoles()" [(tableState)]="tableStateRoles" [(totalRecords)]="totalRecordsRoles" [(loading)]="loadingRoles"></app-smart-grid>
+        </ng-template>
+    </app-smart-section>
+    <app-smart-section [editMode]="editMode()" title="Paramètres des statuts">
+        <ng-template #main> </ng-template>
+    </app-smart-section>
+    <app-smart-section [editMode]="editMode()" title="Paramètres des langues">
+        <ng-template #main> </ng-template>
+    </app-smart-section>
+</div>

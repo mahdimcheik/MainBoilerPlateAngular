@@ -793,6 +793,15 @@ export interface RoleAppCreateDTO {
     name: string;
 }
 
+export interface RoleAppDynamicFilters {
+    first?: number;
+    rows?: number;
+    search?: string | null;
+    globalSearch?: string | null;
+    sorts?: Sort[];
+    filters?: Record<string, FilterItem>;
+}
+
 /** DTO pour l'affichage détaillé d'un rôle */
 export interface RoleAppResponseDTO {
     /** Identifiant unique du rôle */

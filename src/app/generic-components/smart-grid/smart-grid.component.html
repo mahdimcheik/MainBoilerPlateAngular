@@ -1,7 +1,15 @@
 <div class="table-container">
     <div class="flex flex-row items-center justify-between bg-gray-100 p-2 rounded-t-md dark:bg-gray-800">
-        <h3 class="text-lg font-semibold">{{ title() || 'Données' }}</h3>
+        <div class="flex items-center gap-2">
+            <h3 class="text-lg font-semibold">{{ title() || 'Données' }}</h3>
+            @if (leftContent()) {
+                <ng-container [ngTemplateOutlet]="rightContent()"></ng-container>
+            }
+        </div>
         <div class="flex gap-2">
+            @if (rightContent()) {
+                <ng-container [ngTemplateOutlet]="rightContent()"></ng-container>
+            }
             <input pInputText type="text" placeholder="Rechercher..." [value]="searchValue()" (input)="onSearchChange($event)" />
         </div>
     </div>
@@ -18,19 +26,9 @@
             [paginator]="true"
             [lazy]="true"
             [scrollable]="true"
-            scrollHeight="flex"
-            currentPageReportTemplate="Afficher {first} - {last} sur {totalRecords} entrées"
+            [scrollHeight]="height()"
             (onPage)="onPageChange($event)"
         >
-            <!-- Caption / Search bar -->
-            <!-- <ng-template pTemplate="caption">
-            <div class="flex items-center justify-between">
-                <h3 class="text-lg font-semibold">{{ title() || 'Données' }}</h3>
-                <div class="flex gap-2">
-                </div>
-            </div>
-        </ng-template> -->
-
             <!-- Header -->
             <ng-template pTemplate="header">
                 <tr>

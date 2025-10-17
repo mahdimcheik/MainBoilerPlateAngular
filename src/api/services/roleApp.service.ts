@@ -10,7 +10,7 @@
 import { HttpClient, HttpContext, HttpContextToken, HttpEvent, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Int32ResponseDTO, RequestOptions, RoleAppCreateDTO, RoleAppResponseDTOListResponseDTO, RoleAppResponseDTOResponseDTO, RoleAppUpdateDTO } from "../models";
+import { Int32ResponseDTO, RequestOptions, RoleAppCreateDTO, RoleAppDynamicFilters, RoleAppResponseDTOListResponseDTO, RoleAppResponseDTOResponseDTO, RoleAppUpdateDTO } from "../models";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT } from "../tokens";
 
 @Injectable({ providedIn: "root" })
@@ -24,10 +24,10 @@ export class RoleAppService {
         return context.set(this.clientContextToken, 'default');
     }
 
-    roleappAllGet(observe?: 'body', options?: RequestOptions<'json'>): Observable<RoleAppResponseDTOListResponseDTO>;
-    roleappAllGet(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<RoleAppResponseDTOListResponseDTO>>;
-    roleappAllGet(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<RoleAppResponseDTOListResponseDTO>>;
-    roleappAllGet(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    roleappAllPost(roleAppDynamicFilters?: RoleAppDynamicFilters, observe?: 'body', options?: RequestOptions<'json'>): Observable<RoleAppResponseDTOListResponseDTO>;
+    roleappAllPost(roleAppDynamicFilters?: RoleAppDynamicFilters, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<RoleAppResponseDTOListResponseDTO>>;
+    roleappAllPost(roleAppDynamicFilters?: RoleAppDynamicFilters, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<RoleAppResponseDTOListResponseDTO>>;
+    roleappAllPost(roleAppDynamicFilters?: RoleAppDynamicFilters, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/roleapp/all`;
 
         const requestOptions: any = {
@@ -37,7 +37,7 @@ export class RoleAppService {
             context: this.createContextWithClientId(options?.context)
         };
 
-        return this.httpClient.get(url, requestOptions);
+        return this.httpClient.post(url, roleAppDynamicFilters, requestOptions);
     }
 
     roleappIdGet(id: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<RoleAppResponseDTOResponseDTO>;

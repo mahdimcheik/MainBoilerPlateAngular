@@ -61,8 +61,8 @@ export class UsersListComponent {
                 options: this.roles(),
                 optionLabel: 'name',
                 optionValue: 'id',
-                filterable: true,
-                filterField: 'userRoles/roleId',
+                // filterable: true,
+                // filterField: 'userRoles/roleId',
                 cellRenderer: 'options',
                 cellRendererParams: {
                     field: 'roles',
@@ -152,7 +152,7 @@ export class UsersListComponent {
     }
 
     async getRoles() {
-        const response = await firstValueFrom(this.userService.getRoles());
+        const response = await firstValueFrom(this.userService.getRoles(this.filterParams()));
         this.roles.set(response.data ?? []);
         return response.data ?? [];
     }
