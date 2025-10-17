@@ -519,6 +519,11 @@ export interface GenderDTOListResponseDTO {
     count?: number | null;
 }
 
+export interface GuidIdentityUserRole {
+    userId?: string;
+    roleId?: string;
+}
+
 export interface Language {
     id: string;
     createdAt: Date;
@@ -1044,6 +1049,7 @@ export interface UserApp {
     teacherCursuses?: Cursus[];
     languages?: Language[];
     programmingLanguages?: ProgrammingLanguage[];
+    userRoles?: GuidIdentityUserRole[];
 }
 
 export interface UserAppDynamicFilters {
