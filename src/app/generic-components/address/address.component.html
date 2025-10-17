@@ -1,4 +1,4 @@
-<app-smart-element [title]="'Adresse'" [editMode]="true" [editButtonIcon]="'pi pi-pencil'" [deleteButtonIcon]="'pi pi-trash'" (onEditClick)="openEditModal()" (onDeleteClick)="deleteAddress()">
+<app-smart-element [title]="'Adresse'" [editMode]="editMode()" [editButtonIcon]="'pi pi-pencil'" [deleteButtonIcon]="'pi pi-trash'" (onEditClick)="openEditModal()" (onDeleteClick)="deleteAddress()">
     <ng-template #main>
         <div class="flex gap-2 p-2 pl-0">
             <span class="w-2"></span>

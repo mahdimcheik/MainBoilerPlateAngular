@@ -2,7 +2,7 @@
 <app-smart-section [title]="title" [editMode]="editMode()" [buttonIcon]="buttonIcon()" (onAddClick)="openModal()">
     <ng-template #main>
         @for (formation of formations(); track formation.id) {
-            <app-formation [formation]="formation"></app-formation>
+            <app-formation [formation]="formation" [editMode]="editMode()"></app-formation>
         }
     </ng-template>
 

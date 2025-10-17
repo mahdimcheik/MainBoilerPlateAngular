@@ -254,6 +254,7 @@ export interface CursusCreateDTO {
 export interface CursusDynamicFilters {
     first?: number;
     rows?: number;
+    search?: string | null;
     globalSearch?: string | null;
     sorts?: Sort[];
     filters?: Record<string, FilterItem>;

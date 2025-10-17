@@ -7,7 +7,6 @@ import { firstValueFrom } from 'rxjs';
 })
 export class FormationsMainService {
     formationsService = inject(FormationsService);
-
     formations = signal<FormationResponseDTO[]>([]);
 
     // Get formations by user

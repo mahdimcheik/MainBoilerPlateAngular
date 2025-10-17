@@ -1,4 +1,4 @@
-import { Component, computed, inject, linkedSignal, model, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, linkedSignal, model, OnInit, signal } from '@angular/core';
 import { SmartSectionComponent } from '../smart-section/smart-section.component';
 import { Image } from 'primeng/image';
 import { LanguageResponseDTO, LanguagesService, ProgrammingLanguageResponseDTO, UserResponseDTO, UserUpdateDTO } from '../../../api';
@@ -13,6 +13,8 @@ import { firstValueFrom } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CursusesMainService } from '../../shared/services/cursuses-main.service';
+import { ActivatedRoute } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-personnal-infos',
@@ -25,10 +27,14 @@ export class PersonnalInfosComponent implements OnInit {
     userservice = inject(UserMainService);
     messageService = inject(MessageService);
     cursusService = inject(CursusesMainService);
+    activatedRoute = inject(ActivatedRoute);
+    destroyRef = inject(DestroyRef);
 
-    user = this.userservice.userConnected;
+    user = signal<UserResponseDTO>({} as UserResponseDTO);
     programmingLanguages = this.languagesService.programmingLanguages;
     languages = this.languagesService.languages;
+    editMode = model(false);
+    userId = signal<string>(this.userservice.userConnected().id);
 
     // options pour les multiselects
     languagesOptions = this.languagesService.allLanguages;
@@ -79,16 +85,29 @@ export class PersonnalInfosComponent implements OnInit {
     });
 
     ngOnInit() {
-        this.loadUserData();
+        this.activatedRoute.params.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
+            const teacherId = params['id'];
+            if (teacherId && teacherId === 'me') {
+                this.editMode.set(true);
+                this.userId.set(this.userservice.userConnected().id);
+            } else {
+                this.userId.set(teacherId);
+                this.editMode.set(false);
+            }
+            var userId = this.userId();
+            this.loadUserData();
+        });
     }
 
     private async loadUserData() {
         try {
+            const response = await this.userservice.getPublicInformations(this.userId());
+            this.user.set(response.data as UserResponseDTO);
             await this.languagesService.loadLanguages();
             await this.languagesService.loadProgrammingLanguages();
             // charger les langues et langages de programmation de l'utilisateur
-            await this.languagesService.getLanguageByUserId(this.user().id);
-            await this.languagesService.getProgrammingLanguageByUserId(this.user().id);
+            await this.languagesService.getLanguageByUserId(this.userId());
+            await this.languagesService.getProgrammingLanguageByUserId(this.userId());
 
             // charger les categories et les niveaux de cursus
             await this.cursusService.loadAllCategories();

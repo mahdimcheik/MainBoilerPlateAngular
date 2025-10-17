@@ -136,6 +136,28 @@ export class AuthService {
         return this.httpClient.get(url, requestOptions);
     }
 
+    authPublicInformationsGet(userId?: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<UserResponseDTOResponseDTO>;
+    authPublicInformationsGet(userId?: string, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<UserResponseDTOResponseDTO>>;
+    authPublicInformationsGet(userId?: string, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<UserResponseDTOResponseDTO>>;
+    authPublicInformationsGet(userId?: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+        const url = `${this.basePath}/auth/public-informations`;
+
+        let params = new HttpParams();
+        if (userId != null) {
+            params = HttpParamsBuilder.addToHttpParams(params, userId, 'userId');
+        }
+
+        const requestOptions: any = {
+            observe: observe as any,
+            params,
+            reportProgress: options?.reportProgress,
+            withCredentials: options?.withCredentials,
+            context: this.createContextWithClientId(options?.context)
+        };
+
+        return this.httpClient.get(url, requestOptions);
+    }
+
     authForgotPasswordPost(forgotPasswordInput?: ForgotPasswordInput, observe?: 'body', options?: RequestOptions<'json'>): Observable<PasswordResetResponseDTOResponseDTO>;
     authForgotPasswordPost(forgotPasswordInput?: ForgotPasswordInput, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<PasswordResetResponseDTOResponseDTO>>;
     authForgotPasswordPost(forgotPasswordInput?: ForgotPasswordInput, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<PasswordResetResponseDTOResponseDTO>>;

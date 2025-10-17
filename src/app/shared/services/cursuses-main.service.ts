@@ -11,41 +11,38 @@ export class CursusesMainService {
     cursusCategoriesService = inject(CategoryCursusService);
     cursusLevelsService = inject(LevelCursusService);
 
-    // cursuses = signal<CursusResponseDTO[]>([]);
-    // totalRecords = signal(0);
+    cursuses = signal<CursusResponseDTO[]>([]);
     allCategories = signal<CategoryCursusResponseDTO[]>([]);
     allLevels = signal<LevelCursusDTO[]>([]);
 
     // cursus d'un utilisateur
     async getAllCursusesByUser(teacherId: string) {
         const cursuses = await firstValueFrom(this.cursusService.cursusTeacherTeacherIdGet(teacherId));
-        // this.cursuses.set(cursuses.data || []);
-        // this.totalRecords.set(cursuses.count || 0);
+        this.cursuses.set(cursuses.data || []);
         return cursuses.data || [];
     }
 
     async getAllCursusesByUserPaginated(filters: CustomTableState) {
         const cursuses = await firstValueFrom(this.cursusService.cursusAllPaginatedPost(filters));
-        // this.cursuses.set(cursuses.data || []);
-        // this.totalRecords.set(cursuses.count || 0);
+        this.cursuses.set(cursuses.data || []);
         return cursuses.data || [];
     }
 
     async createCursus(cursus: CursusCreateDTO) {
         const newCursus = await firstValueFrom(this.cursusService.cursusCreatePost(cursus));
-        // this.cursuses.update((current) => [...current, newCursus.data!]);
+        this.cursuses.update((current) => [...current, newCursus.data!]);
         return newCursus.data;
     }
 
     async updateCursus(cursusId: string, cursus: CursusUpdateDTO) {
         const updatedCursus = await firstValueFrom(this.cursusService.cursusUpdateIdPut(cursusId, cursus));
-        // this.cursuses.update((current) => current.map((c) => (c.id === cursusId ? updatedCursus.data! : c)));
+        this.cursuses.update((current) => current.map((c) => (c.id === cursusId ? updatedCursus.data! : c)));
         return updatedCursus.data;
     }
 
     async deleteCursus(cursusId: string) {
         await firstValueFrom(this.cursusService.cursusDeleteIdDelete(cursusId));
-        // this.cursuses.update((current) => current.filter((c) => c.id !== cursusId));
+        this.cursuses.update((current) => current.filter((c) => c.id !== cursusId));
     }
 
     // toutes les catégories de cursus
@@ -94,7 +91,7 @@ export class CursusesMainService {
 
     async getCursusByTeacher(teacherId: string) {
         const cursuses = await firstValueFrom(this.cursusService.cursusTeacherTeacherIdGet(teacherId));
-        // this.cursuses.set(cursuses.data || []);
+        this.cursuses.set(cursuses.data || []);
         return cursuses.data || [];
     }
 }

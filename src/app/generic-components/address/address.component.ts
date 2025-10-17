@@ -13,6 +13,7 @@ import { MessageService } from 'primeng/api';
     styleUrl: './address.component.scss'
 })
 export class AddressComponent {
+    editMode = model(false);
     addressMainService = inject(AddressesMainService);
     messageService = inject(MessageService);
 

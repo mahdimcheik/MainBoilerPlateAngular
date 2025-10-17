@@ -1,4 +1,4 @@
-<app-smart-element [title]="'Formation'" [editMode]="true" [editButtonIcon]="'pi pi-pencil'" [deleteButtonIcon]="'pi pi-trash'" (onEditClick)="openEditModal()" (onDeleteClick)="deleteFormation()">
+<app-smart-element [title]="'Formation'" [editMode]="editMode()" [editButtonIcon]="'pi pi-pencil'" [deleteButtonIcon]="'pi pi-trash'" (onEditClick)="openEditModal()" (onDeleteClick)="deleteFormation()">
     <ng-template #main>
         <div class="flex gap-2 p-2 pl-0">
             <span class="w-2"></span>

@@ -14,6 +14,7 @@ import { MessageService } from 'primeng/api';
     styleUrl: './formation.component.scss'
 })
 export class FormationComponent {
+    editMode = model(false);
     formationMainService = inject(FormationsMainService);
     messageService = inject(MessageService);
 

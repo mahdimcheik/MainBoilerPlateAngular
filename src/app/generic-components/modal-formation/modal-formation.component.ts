@@ -1,4 +1,4 @@
-import { Component, computed, inject, model } from '@angular/core';
+import { Component, computed, inject, model, signal } from '@angular/core';
 import { ConfigurableFormComponent } from '../configurable-form/configurable-form.component';
 import { DialogModule } from 'primeng/dialog';
 import { FormGroup } from '@angular/forms';
@@ -23,8 +23,6 @@ export class ModalFormationComponent {
     title = model('Gestion des Formations');
     showEditModal = model(false);
     formationInput = model<FormationResponseDTO>({} as FormationResponseDTO);
-
-    formations = this.formationService.formations;
 
     formationForm = computed<Structure>(() => {
         if (this.formationInput() && this.formationInput()?.id) {

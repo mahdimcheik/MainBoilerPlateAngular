@@ -2,7 +2,7 @@
 <app-smart-section [title]="title" [editMode]="editMode()" [buttonIcon]="buttonIcon()" (onAddClick)="openModal()">
     <ng-template #main>
         @for (address of addresses(); track address.id) {
-            <app-address [address]="address"></app-address>
+            <app-address [address]="address" [editMode]="editMode()"></app-address>
         }
     </ng-template>
 

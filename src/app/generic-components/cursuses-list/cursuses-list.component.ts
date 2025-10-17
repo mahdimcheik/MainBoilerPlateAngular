@@ -34,8 +34,7 @@ export class CursusesListComponent implements OnInit {
     buttonIcon = model('pi pi-plus');
     showEditModal = signal(false);
 
-    // cursuses = this.cursusService.cursuses;
-    cursuses = signal<CursusResponseDTO[]>([]);
+    cursuses = this.cursusService.cursuses;
 
     async ngOnInit() {
         this.activatedRoute.params.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {

@@ -1,5 +1,5 @@
 import { Injectable, computed, effect, inject, signal } from '@angular/core';
-import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, firstValueFrom, map, Observable, of, switchMap, tap } from 'rxjs';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
@@ -48,7 +48,6 @@ export class UserMainService {
     cookieConsentService = inject(CookieConsentService);
     // pour la page profile
     userConnected = signal({} as UserResponseDTO);
-    userToDisplay = signal({} as UserResponseDTO);
 
     isAdmin = computed(() => this.userConnected()?.roles?.includes('Admin'));
     isTeacher = computed(() => this.userConnected()?.roles?.includes('Teacher'));
@@ -209,6 +208,22 @@ export class UserMainService {
         );
     }
 
+    async getPublicInformations(userId: string) {
+        const response = await firstValueFrom(
+            this.authService.authPublicInformationsGet(userId).pipe(
+                switchMap((response: UserResponseDTOResponseDTO) => {
+                    const legacyResponse: ResponseDTO<UserResponseDTO> = {
+                        message: response.message || '',
+                        status: response.status || 200,
+                        data: response.data as UserResponseDTO
+                    };
+                    return of(legacyResponse);
+                })
+            )
+        );
+        return response;
+    }
+
     /**
      * Récupère le profil public d'un utilisateur par son ID.
      * @param input les données pour réinitialiser le mot de passe (email)
@@ -281,7 +296,6 @@ export class UserMainService {
             tap((res) => {
                 if (res.data) {
                     this.userConnected.set(res.data);
-                    this.userToDisplay.set(res.data);
                     this.localStorageService.setUser(res.data);
                 }
             })
