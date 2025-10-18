@@ -47,6 +47,7 @@ export class AdminMainService {
     private userService = inject(UsersService);
     private roleAppService = inject(RoleAppService);
     private localStorageService = inject(LocalstorageService);
+    private roleappService = inject(RoleAppService);
 
     getUsers(CustomTableState: CustomTableState) {
         try {

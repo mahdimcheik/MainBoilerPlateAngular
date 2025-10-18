@@ -22,11 +22,16 @@ import {
     PasswordResetResponseDTOResponseDTO,
     RoleAppResponseDTO,
     RoleAppResponseDTOListResponseDTO,
+    RoleAppResponseDTOResponseDTO,
     RoleAppService,
+    RoleAppUpdateDTO,
+    StatusAccountCreateDTO,
     StatusAccountDTO,
     StatusAccountResponseDTO,
     StatusAccountResponseDTOListResponseDTO,
+    StatusAccountResponseDTOResponseDTO,
     StatusAccountService,
+    StatusAccountUpdateDTO,
     StringResponseDTO,
     UserCreateDTO,
     UserInfosWithtoken,
@@ -349,6 +354,30 @@ export class UserMainService {
             })
         );
     }
+    CreateStatus(status: StatusAccountCreateDTO): Observable<ResponseDTO<StatusAccountResponseDTO>> {
+        return this.statusAccountService.statusaccountCreatePost(status).pipe(
+            switchMap((response: StatusAccountResponseDTOResponseDTO) => {
+                const legacyResponse: ResponseDTO<StatusAccountResponseDTO> = {
+                    message: response.message || '',
+                    status: response.status || 200,
+                    data: response.data as StatusAccountResponseDTO
+                };
+                return of(legacyResponse);
+            })
+        );
+    }
+    UpdateStatus(statusId: string, status: StatusAccountUpdateDTO): Observable<ResponseDTO<StatusAccountResponseDTO>> {
+        return this.statusAccountService.statusaccountUpdateIdPut(statusId, status).pipe(
+            switchMap((response: StatusAccountResponseDTOResponseDTO) => {
+                const legacyResponse: ResponseDTO<StatusAccountResponseDTO> = {
+                    message: response.message || '',
+                    status: response.status || 200,
+                    data: response.data as StatusAccountResponseDTO
+                };
+                return of(legacyResponse);
+            })
+        );
+    }
 
     // users roles
     getRoles(CustomTableState: CustomTableState): Observable<ResponseDTO<RoleAppResponseDTO[]>> {
@@ -363,6 +392,20 @@ export class UserMainService {
             })
         );
     }
+
+    UpdateRole(roleId: string, role: RoleAppUpdateDTO): Observable<ResponseDTO<RoleAppResponseDTO>> {
+        return this.roleAppService.roleappUpdateIdPut(roleId, role).pipe(
+            switchMap((response: RoleAppResponseDTOResponseDTO) => {
+                const legacyResponse: ResponseDTO<RoleAppResponseDTO> = {
+                    message: response.message || '',
+                    status: response.status || 200,
+                    data: response.data as RoleAppResponseDTO
+                };
+                return of(legacyResponse);
+            })
+        );
+    }
+    // languages
     getLanguages(CustomTableState: CustomTableState): Observable<ResponseDTO<LanguageResponseDTO[]>> {
         return this.languageService.languagesAllPost(CustomTableState).pipe(
             switchMap((response: LanguageResponseDTOListResponseDTO) => {

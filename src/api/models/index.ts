@@ -407,6 +407,7 @@ export interface ExperienceUpdateDTO {
 export interface FilterItem {
     value: any | null;
     matchMode: string | null;
+    specialFilter?: boolean | null;
 }
 
 export interface ForgotPasswordInput {
@@ -800,6 +801,7 @@ export interface ProgrammingLanguageUpdateDTO {
 export interface RoleAppCreateDTO {
     /** Nom du rôle */
     name: string;
+    color?: string | null;
 }
 
 export interface RoleAppDynamicFilters {
@@ -819,6 +821,7 @@ export interface RoleAppResponseDTO {
     name: string;
     /** Nom normalisé du rôle (en majuscules) */
     normalizedName?: string | null;
+    color?: string | null;
     /** Date de création de l'enregistrement */
     createdAt: Date;
     /** Date de dernière mise à jour */
@@ -843,6 +846,7 @@ export interface RoleAppResponseDTOResponseDTO {
 export interface RoleAppUpdateDTO {
     /** Nom du rôle */
     name: string;
+    color?: string | null;
 }
 
 export interface Slot {

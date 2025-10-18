@@ -4,15 +4,17 @@ import { SmartSectionComponent } from '../../../../generic-components/smart-sect
 import { SmartElementComponent } from '../../../../generic-components/smart-element/smart-element.component';
 import { UserMainService } from '../../../../shared/services/userMain.service';
 import { AdminMainService } from '../../../../shared/services/admin-main.service';
-import { LanguageResponseDTO, RoleAppResponseDTO, StatusAccountDTO } from '../../../../../api/models';
+import { LanguageResponseDTO, RoleAppResponseDTO, StatusAccountDTO, StatusAccountResponseDTO } from '../../../../../api/models';
 import { ButtonModule } from 'primeng/button';
 import { firstValueFrom } from 'rxjs';
 import { ColorGridComponent } from '../../../../generic-components/smart-grid/color-grid.component';
 import { ModalCreateEditLanguageComponent } from '../../../../generic-components/modal-create-edit-language/modal-create-edit-language';
+import { ModalEditRoleComponent } from '../../../../generic-components/modal-edit-role/modal-edit-role';
+import { ModalCreateEditStatusComponent } from '../../../../generic-components/modal-create-edit-status/modal-create-edit-status';
 
 @Component({
     selector: 'app-adminitration',
-    imports: [SmartGridComponent, SmartSectionComponent, ModalCreateEditLanguageComponent, ButtonModule],
+    imports: [SmartGridComponent, SmartSectionComponent, ModalCreateEditLanguageComponent, ButtonModule, ModalEditRoleComponent, ModalCreateEditStatusComponent],
     templateUrl: './adminitration.component.html',
     styleUrl: './adminitration.component.scss'
 })
@@ -29,6 +31,8 @@ export class AdminitrationComponent {
 
     // modals
     showEditModalLanguage = signal(false);
+    showEditModalRole = signal(false);
+    showEditModalStatus = signal(false);
 
     tableStateRoles = signal<CustomTableState>(INITIAL_STATE);
     tableStateStatusesAccount = signal<CustomTableState>(INITIAL_STATE);
@@ -42,6 +46,8 @@ export class AdminitrationComponent {
 
     // selected language for modal
     selectedLanguage = signal<LanguageResponseDTO | null>(null);
+    selectedRole = signal<RoleAppResponseDTO | null>(null);
+    selectedStatus = signal<StatusAccountResponseDTO | null>(null);
 
     customComponents = signal<{ [key: string]: Type<ICellRendererAngularComp> }>({
         color: ColorGridComponent,
@@ -63,8 +69,10 @@ export class AdminitrationComponent {
         const roles = this.roles();
         return [
             { field: 'name', header: 'Nom', type: 'text' },
+            { field: 'color', header: 'Couleur', type: 'array', cellRenderer: 'color', cellRendererParams: { editMode: this.editModeLanguages() } },
             { field: 'createdAt', header: 'Créé le', type: 'date', valueFormatter: (data: any) => new Date(data).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }) },
-            { field: 'updatedAt', header: 'Mis à jour le', type: 'date', valueFormatter: (data: any) => (data ? new Date(data).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'Pas de date') }
+            { field: 'updatedAt', header: 'Mis à jour le', type: 'date', valueFormatter: (data: any) => (data ? new Date(data).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'Pas de date') },
+            { field: 'id', header: 'Actions', type: 'text', cellRenderer: 'Default', cellRendererParams: { showEdit: true, showDelete: false, onEdit: this.onEditClickRole.bind(this) } }
         ];
     });
 
@@ -72,9 +80,11 @@ export class AdminitrationComponent {
         const statusesAccount = this.statusesAccount();
         return [
             { field: 'name', header: 'Nom', type: 'text' },
+            { field: 'color', header: 'Couleur', type: 'array', cellRenderer: 'color', cellRendererParams: { editMode: this.showEditModalStatus() } },
+
             { field: 'createdAt', header: 'Créé le', type: 'date', valueFormatter: (data: any) => new Date(data).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }) },
             { field: 'updatedAt', header: 'Mis à jour le', type: 'date', valueFormatter: (data: any) => (data ? new Date(data).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'Pas de date') },
-            { field: 'id', header: 'Actions', type: 'text', cellRenderer: 'Default', cellRendererParams: { showEdit: true, showDelete: false, onEdit: this.onEditClickRole, onDelete: this.onDeleteClickRole } }
+            { field: 'id', header: 'Actions', type: 'text', cellRenderer: 'Default', cellRendererParams: { showEdit: true, showDelete: false, onEdit: this.onEditClickStatus.bind(this) } }
         ];
     });
 
@@ -124,6 +134,17 @@ export class AdminitrationComponent {
 
     onEditClickRole(role: RoleAppResponseDTO) {
         console.log('onEditClickRole', role);
+        this.selectedRole.set(role);
+        this.showEditModalRole.set(true);
+    }
+
+    onAddClickStatus() {
+        this.selectedStatus.set(null);
+        this.showEditModalStatus.set(true);
+    }
+    onEditClickStatus(Status: StatusAccountResponseDTO) {
+        this.selectedStatus.set(Status);
+        this.showEditModalStatus.set(true);
     }
 
     onDeleteClickRole(role: RoleAppResponseDTO) {
@@ -135,6 +156,14 @@ export class AdminitrationComponent {
         this.showEditModalLanguage.set(false);
         this.reloadLanguages();
     }
+    async onSubmitRole() {
+        this.showEditModalRole.set(false);
+        this.reloadRoles();
+    }
+    async onSubmitStatus() {
+        this.showEditModalStatus.set(false);
+        this.reloadStatusesAccount();
+    }
 
     async reloadLanguages() {
         this.loadingLanguages.set(true);
@@ -142,5 +171,19 @@ export class AdminitrationComponent {
         this.languages.set(languages.data ?? []);
         this.totalRecordsLanguages.set(languages.count ?? 0);
         this.loadingLanguages.set(false);
+    }
+    async reloadRoles() {
+        this.loadingRoles.set(true);
+        const roles = await firstValueFrom(this.userService.getRoles(this.tableStateRoles()));
+        this.roles.set(roles.data ?? []);
+        this.totalRecordsRoles.set(roles.count ?? 0);
+        this.loadingRoles.set(false);
+    }
+    async reloadStatusesAccount() {
+        this.loadingStatusesAccount.set(true);
+        const statusesAccount = await firstValueFrom(this.userService.getStatusAccount(this.tableStateStatusesAccount()));
+        this.statusesAccount.set(statusesAccount.data ?? []);
+        this.totalRecordsStatusesAccount.set(statusesAccount.count ?? 0);
+        this.loadingStatusesAccount.set(false);
     }
 }
