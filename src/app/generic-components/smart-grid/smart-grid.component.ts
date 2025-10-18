@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, contentChild, effect, input, model, OnInit, signal, TemplateRef, Type } from '@angular/core';
+import { Component, computed, contentChild, effect, input, model, OnInit, output, signal, TemplateRef, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -108,9 +108,13 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
     searchValue = signal<string>('');
     height = input<string>('flex');
     editMode = model<boolean>(false);
+    storageName = input<string>('');
     // Content children
     rightContent = contentChild<TemplateRef<any>>('right');
     leftContent = contentChild<TemplateRef<any>>('left');
+
+    // output
+    onRowClick = output<T | T[] | undefined>();
 
     // Internal signals
     private componentMap = signal<{ [key: string]: Type<ICellRendererAngularComp> }>({
@@ -141,6 +145,7 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
     }
 
     ngOnInit(): void {
+        this.getStateFromLocalStorage();
         // Initialize component map with custom components
         const customComps = this.customComponents();
         this.componentMap.set({
@@ -249,6 +254,7 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
             filters,
             first: 0 // Reset to first page when filters change
         }));
+        this.saveStateToLocalStorage();
     }
 
     // ========== Pagination Methods ==========
@@ -268,5 +274,21 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
             ...state,
             search: value
         }));
+    }
+
+    // save state to localStorage
+    saveStateToLocalStorage(): void {
+        if (this.storageName()) {
+            localStorage.setItem(this.storageName(), JSON.stringify(this.tableState()));
+        }
+    }
+
+    getStateFromLocalStorage(): void {
+        if (this.storageName()) {
+            const state = localStorage.getItem(this.storageName());
+            if (state) {
+                this.tableState.set(JSON.parse(state));
+            }
+        }
     }
 }

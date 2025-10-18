@@ -28,6 +28,10 @@
             [scrollable]="true"
             [scrollHeight]="height()"
             (onPage)="onPageChange($event)"
+            (onRowSelect)="onRowClick.emit($event.data)"
+            rowSelectionMode="single"
+            stripedRows
+            selectionMode="single"
         >
             <!-- Header -->
             <ng-template pTemplate="header">
@@ -145,7 +149,7 @@
 
             <!-- Body -->
             <ng-template pTemplate="body" let-item>
-                <tr>
+                <tr [pSelectableRow]="item">
                     @for (column of columns(); track column.field) {
                         <td>
                             @if (column.cellRenderer) {

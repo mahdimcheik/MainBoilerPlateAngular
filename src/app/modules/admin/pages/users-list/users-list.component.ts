@@ -170,4 +170,9 @@ export class UsersListComponent {
         this.roles.set(response.data ?? []);
         return response.data ?? [];
     }
+
+    // on row click
+    onRowClick(event: any) {
+        console.log('onRowClick', event);
+    }
 }
