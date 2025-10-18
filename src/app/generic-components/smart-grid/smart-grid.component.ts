@@ -194,30 +194,30 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
 
     onTextFilterChange(value: string, column: DynamicColDef): void {
         const filterField = column.filterField ?? column.field;
-        this.updateFilter(filterField, value, 'contains', column.field);
+        this.updateFilter(filterField, value, 'contains', column.field, column.specialFilter);
     }
 
     onSelectFilterChange(value: any, column: DynamicColDef): void {
         const filterField = column.filterField ?? column.field;
-        this.updateFilter(filterField, value, 'equals', column.field);
+        this.updateFilter(filterField, value, 'equals', column.field, column.specialFilter);
     }
 
     onArrayFilterChange(value: any[], column: DynamicColDef): void {
         const filterField = column.filterField ?? column.field;
-        this.updateFilter(filterField, value, 'in', column.field);
+        this.updateFilter(filterField, value, 'in', column.field, column.specialFilter);
     }
 
     onDateFilterChange(date: Date | null, column: DynamicColDef, matchMode?: string): void {
         const filterField = column.filterField ?? column.field;
         const mode = matchMode ?? this.getDateFilterMatchMode(filterField);
-        this.updateFilter(filterField, date, mode, column.field);
+        this.updateFilter(filterField, date, mode, column.field, column.specialFilter);
     }
 
     onDateFilterMatchModeChange(matchMode: string, column: DynamicColDef): void {
         const filterField = column.filterField ?? column.field;
         const currentFilter = this.tableState().filters?.[filterField];
         if (currentFilter) {
-            this.updateFilter(filterField, currentFilter.value, matchMode, column.field);
+            this.updateFilter(filterField, currentFilter.value, matchMode, column.field, currentFilter.specialFilter);
         }
     }
 
@@ -233,7 +233,7 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
         }));
     }
 
-    private updateFilter(filterField: string, value: any, matchMode: string, displayField?: string): void {
+    private updateFilter(filterField: string, value: any, matchMode: string, displayField?: string, specialFilter?: boolean): void {
         const filters = { ...this.tableState().filters };
         const fieldKey = displayField ?? filterField;
 
@@ -241,7 +241,7 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
             // Remove filter if value is empty
             delete filters[filterField];
         } else {
-            filters[filterField] = { value, matchMode };
+            filters[filterField] = { value, matchMode, specialFilter };
         }
 
         this.tableState.update((state) => ({

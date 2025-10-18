@@ -15,6 +15,7 @@ export interface DynamicColDef {
     filterable?: boolean;
     filterField?: string; // OData path for filtering (e.g., 'gender/name'), defaults to field if not provided
     type?: 'text' | 'date' | 'number' | 'boolean' | 'select' | 'custom' | 'array';
+    specialFilter?: boolean;
     valueFormatter?: (data: any) => string;
     cellRenderer?: Type<ICellRendererAngularComp> | string;
     cellRendererParams?: any;
@@ -43,6 +44,7 @@ export interface CustomTableState {
         [key: string]: {
             value: any;
             matchMode: string;
+            specialFilter?: boolean;
         };
     };
     search?: string;
