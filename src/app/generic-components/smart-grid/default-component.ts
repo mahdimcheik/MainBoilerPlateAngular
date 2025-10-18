@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, input } from '@angular/core';
+import { Component, Input, Output, EventEmitter, input, computed } from '@angular/core';
 import { ButtonModule } from 'primeng/button'; // Exemple avec PrimeNG
 import { ICellRendererAngularComp } from '../../shared/models/TableColumn ';
 
@@ -7,24 +7,38 @@ import { ICellRendererAngularComp } from '../../shared/models/TableColumn ';
     standalone: true,
     imports: [ButtonModule],
     template: `
-        <p-button icon="pi pi-pencil" styleClass="p-button-sm p-button-info" (click)="onEditClick()"> </p-button>
-        <p-button icon="pi pi-trash" styleClass="p-button-sm p-button-danger" (click)="onDeleteClick()" [style]="{ 'margin-left': '4px' }"> </p-button>
+        <div class="flex gap-2">
+            @if (showEdit()) {
+                <p-button icon="pi pi-pencil" styleClass="p-button-sm p-button-info" (click)="onEditClick($event)"> </p-button>
+            }
+            @if (showDelete()) {
+                <p-button icon="pi pi-trash" styleClass="p-button-sm p-button-danger" (click)="onDeleteClick($event)" [style]="{ 'margin-left': '4px' }"> </p-button>
+            }
+        </div>
     `
 })
 export class ActionButtonRendererComponent implements ICellRendererAngularComp {
     data = input<any>(); // Reçoit toute la ligne de données (rowData)
     params = input<any>(); // Reçoit les cellRendererParams
+    showEdit = computed(() => this.params().showEdit ?? true);
+    showDelete = computed(() => this.params().showDelete ?? true);
 
     // Exemple d'interaction vers le composant parent
     // @Output() action = new EventEmitter<any>();
 
-    onEditClick() {
-        console.log('Edit clicked for row:', this.data());
-        // this.action.emit({ type: 'edit', row: this.data });
+    onEditClick(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (this.params().onEdit) {
+            this.params().onEdit(this.data());
+        }
     }
 
-    onDeleteClick() {
-        console.log('Delete clicked for row:', this.params());
-        // this.action.emit({ type: 'delete', row: this.data });
+    onDeleteClick(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (this.params().onDelete) {
+            this.params().onDelete(this.data());
+        }
     }
 }

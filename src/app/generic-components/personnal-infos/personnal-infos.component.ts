@@ -7,7 +7,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DrawerModule } from 'primeng/drawer';
 import { ConfigurableFormComponent } from '../configurable-form/configurable-form.component';
 import { Structure } from '../configurable-form/related-models';
-import { LanguagesStoreService } from '../../shared/services/languages.store.service';
+import { LanguagesMainService } from '../../shared/services/languages.store.service';
 import { UserMainService } from '../../shared/services/userMain.service';
 import { firstValueFrom } from 'rxjs';
 import { FormGroup } from '@angular/forms';
@@ -23,7 +23,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     styleUrl: './personnal-infos.component.scss'
 })
 export class PersonnalInfosComponent implements OnInit {
-    languagesService = inject(LanguagesStoreService);
+    languagesService = inject(LanguagesMainService);
     userservice = inject(UserMainService);
     messageService = inject(MessageService);
     cursusService = inject(CursusesMainService);

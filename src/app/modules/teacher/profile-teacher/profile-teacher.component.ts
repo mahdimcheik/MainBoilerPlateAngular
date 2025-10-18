@@ -9,7 +9,7 @@ import { PersonnalInfosComponent } from '../../../generic-components/personnal-i
 import { ChipsListComponent } from '../../../generic-components/chips-list/chips-list.component';
 import { LanguageResponseDTO } from '../../../../api';
 import { CursusesListComponent } from '../../../generic-components/cursuses-list/cursuses-list.component';
-import { LanguagesStoreService } from '../../../shared/services/languages.store.service';
+import { LanguagesMainService } from '../../../shared/services/languages.store.service';
 import { UserMainService } from '../../../shared/services/userMain.service';
 
 @Component({
@@ -19,7 +19,7 @@ import { UserMainService } from '../../../shared/services/userMain.service';
     styleUrl: './profile-teacher.component.scss'
 })
 export class ProfileTeacherComponent {
-    languagesStoreService = inject(LanguagesStoreService);
+    languagesStoreService = inject(LanguagesMainService);
     userMainService = inject(UserMainService);
 
     languages = this.languagesStoreService.languages;

@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { LanguageResponseDTO, LanguagesService, ProgrammingLanguageResponseDTO, ProgrammingLanguagesService } from '../../../api';
+import { LanguageCreateDTO, LanguageResponseDTO, LanguagesService, LanguageUpdateDTO, ProgrammingLanguageResponseDTO, ProgrammingLanguagesService } from '../../../api';
 import { firstValueFrom } from 'rxjs';
 import { languagesOptions, programmingLanguagesOptions } from './constants';
 import { CustomTableState } from '../models/TableColumn ';
@@ -7,7 +7,7 @@ import { CustomTableState } from '../models/TableColumn ';
 @Injectable({
     providedIn: 'root'
 })
-export class LanguagesStoreService {
+export class LanguagesMainService {
     languagesService = inject(LanguagesService);
     programminglanguageService = inject(ProgrammingLanguagesService);
 
@@ -54,5 +54,18 @@ export class LanguagesStoreService {
     async updateLanguagesByUserId(languages: string[]) {
         const newLanguages = await firstValueFrom(this.languagesService.languagesUserUpdateLanguagesPost(languages));
         this.languages.set(newLanguages.data || []);
+    }
+
+    // admin methods
+    async createLanguage(language: LanguageCreateDTO) {
+        const newLanguage = await firstValueFrom(this.languagesService.languagesCreatePost(language));
+        this.allLanguages.update((current) => [...current, newLanguage.data!]);
+        return newLanguage.data;
+    }
+
+    async updateLanguage(languageId: string, language: LanguageUpdateDTO) {
+        const updatedLanguage = await firstValueFrom(this.languagesService.languagesUpdateIdPut(languageId, language));
+        this.allLanguages.update((current) => current.map((lang) => (lang.id === languageId ? updatedLanguage.data! : lang)));
+        return updatedLanguage.data;
     }
 }

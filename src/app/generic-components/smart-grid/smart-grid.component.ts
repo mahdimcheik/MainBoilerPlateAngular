@@ -130,18 +130,15 @@ export class SmartGridComponent<T extends Record<string, any>> implements OnInit
 
     constructor() {
         // Debug effect to monitor state changes
-        effect(
-            () => {
-                const state = this.tableState();
-                console.log('Table State Changed:', {
-                    filters: state.filters,
-                    sorts: state.sorts,
-                    first: state.first,
-                    rows: state.rows
-                });
-            },
-            { allowSignalWrites: true }
-        );
+        effect(() => {
+            const state = this.tableState();
+            console.log('Table State Changed:', {
+                filters: state.filters,
+                sorts: state.sorts,
+                first: state.first,
+                rows: state.rows
+            });
+        });
     }
 
     ngOnInit(): void {
