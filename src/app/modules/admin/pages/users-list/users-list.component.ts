@@ -58,7 +58,6 @@ export class UsersListComponent {
                 header: 'Rôles',
                 type: 'array',
                 specialFilter: true,
-                // valueFormatter: (roles) => (roles as string[])?.map((role) => role).join(', '),
                 options: this.roles(),
                 optionLabel: 'name',
                 optionValue: 'id',

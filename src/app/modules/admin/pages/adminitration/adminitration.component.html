@@ -9,7 +9,15 @@
             </button>
         </ng-template>
         <ng-template #main>
-            <app-smart-grid [(data)]="roles" [columns]="colDefsRoles()" [(tableState)]="tableStateRoles" [(totalRecords)]="totalRecordsRoles" [(loading)]="loadingRoles" [(customComponents)]="customComponents"></app-smart-grid>
+            <app-smart-grid
+                [title]="'Liste des rôles'"
+                [(data)]="roles"
+                [columns]="colDefsRoles()"
+                [(tableState)]="tableStateRoles"
+                [(totalRecords)]="totalRecordsRoles"
+                [(loading)]="loadingRoles"
+                [(customComponents)]="customComponents"
+            ></app-smart-grid>
         </ng-template>
     </app-smart-section>
     <app-smart-section [editMode]="editMode()" title="Paramètres des statuts">
@@ -21,6 +29,7 @@
                 [(totalRecords)]="totalRecordsStatusesAccount"
                 [(loading)]="loadingStatusesAccount"
                 [(customComponents)]="customComponents"
+                [title]="'Liste des statuts'"
             ></app-smart-grid>
         </ng-template>
     </app-smart-section>
@@ -34,6 +43,7 @@
                 [(loading)]="loadingLanguages"
                 [(customComponents)]="customComponents"
                 [editMode]="editModeLanguages()"
+                [title]="'Liste des langues'"
             ></app-smart-grid>
         </ng-template>
     </app-smart-section>
